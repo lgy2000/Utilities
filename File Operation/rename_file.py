@@ -1,17 +1,23 @@
 """
-rename_file.py
+Module name: rename_file_in_folder.py
 
 Description:
-Rename all files in a folder according to the user's preference'
+Renames all files within a specified folder according to configured patterns and modifications.
 
 Notes:
-- Input values for the configuration variables.
-
+- The module depends on the `os` module for file system operations and imports functionalities from other modules (`config.py`, `copy_folder.py`,
+`get_title_from_file.py`, `modify_text.py`).
+- The `rename_file_in_folder()` function prompts the user to input keyword, delimiter, prefix, and suffix if configured, and then iterates through
+all files in the specified folder to rename them accordingly.
+- If configured, it extracts titles from files using the specified keyword using functionality from the `get_title_from_file.py` module.
+- Prefixes and suffixes are added to filenames based on the configured options, and case modifications are applied as specified.
+- The `main()` function initiates the process by copying files from one folder to another using functionality from the `copy_folder.py` module,
+and then calls the `rename_file_in_folder()` function to rename files in the copied folder.
 """
 
 import os
 
-from config import to_add_title, to_remove_prefix, to_add_prefix, to_add_suffix
+from config import to_add_title, to_remove_prefix, to_add_prefix, to_add_suffix, to_change_case
 from copy_folder import copy_folder
 from get_title_from_file import get_title_from_file
 from modify_text import remove_prefix, add_prefix, add_suffix, change_case
@@ -40,13 +46,13 @@ def rename_file_in_folder(folder):
         extension = os.path.splitext(full_filename)[1].lower()
 
         # get prefix or suffix
-        prefix = add_prefix(file1, counter, prefix_str)
-        suffix = add_suffix(file1, counter, suffix_str)
+        prefix = add_prefix(to_add_prefix, file1, counter, prefix_str)
+        suffix = add_suffix(to_add_suffix, file1, counter, suffix_str)
 
         # file 2 properties
         filename2 = remove_prefix(filename1, delimiter)
         filename2 = f"{prefix}{filename2}{suffix}"
-        filename2 = change_case(filename2)
+        filename2 = change_case(to_change_case, filename2)
         file2 = os.path.join(folder, f"{filename2}{extension}")
 
         # rename file parsed in
@@ -56,7 +62,7 @@ def rename_file_in_folder(folder):
 
 
 def main():
-    folder1, folder2 = copy_folder()
+    _, folder2 = copy_folder()
     rename_file_in_folder(folder2)
     print("done")
 

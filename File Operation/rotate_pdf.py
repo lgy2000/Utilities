@@ -1,3 +1,20 @@
+"""
+Module name: rotate_pdf.py
+
+Description:
+Rotates all pages of a PDF file by a specified angle.
+
+Notes:
+- The module relies on the `tkinter` library for GUI functionality to prompt the user to select a PDF file.
+- It also utilizes the `PyPDF2` library for PDF manipulation.
+- The `rotate_pdf_page()` function rotates each page of the PDF by the specified angle and adds it to the output PDF.
+- The `rotate_pdf_pages()` function prompts the user to select a PDF file via a GUI dialog if `show_file_dialog` is enabled, otherwise it uses the
+`input_file` specified in the configuration.
+- It then opens the input PDF file, rotates each page using the `rotate_pdf_page()` function, and writes the rotated pages to the same file,
+effectively overwriting the original PDF.
+- The `main()` function orchestrates the PDF rotation process and prints "done" upon completion.
+"""
+
 from tkinter import filedialog
 
 from PyPDF2 import PdfReader, PdfWriter

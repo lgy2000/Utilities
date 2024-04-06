@@ -1,59 +1,34 @@
-# EMAIL OPERATION
-# general
-email_folder = "1"
+import configparser
 
+# Create a ConfigParser object
+config = configparser.ConfigParser()
 
-# download_email_files.py
-require_original_filename = False
+# Read the configuration file
+config.read('config.ini')
 
-#
-#
-#
-# EXCEL
+# Retrieve values from the configuration file
+email = config['EMAIL OPERATION']['email']
+password = config['EMAIL OPERATION']['password']
+email_folder = config['EMAIL OPERATION']['email_folder']
+require_original_filename = config.getboolean('EMAIL OPERATION', 'require_original_filename')
 
+show_folder_dialog = config.getboolean('FILE OPERATION', 'show_folder_dialog')
+show_file_dialog = config.getboolean('FILE OPERATION', 'show_file_dialog')
+input_folder = config['FILE OPERATION']['input_folder']
+input_file = config['FILE OPERATION']['input_file']
 
-#
-#
-#
-# FILE OPERATION
-show_folder_dialog = False
-show_file_dialog = False
-input_folder = r"D:\YK\Downloads"
-input_file= r"D:\YK\Downloads\Test\MYP-000311-JEL-INC-SID-0001_SYSTEM_INTERCONNECTION_DRAWING_0.pdf"
+filename = config['FILE OPERATION']['filename']
+list_of_placeholders = config['FILE OPERATION']['list_of_placeholders']
 
-# csv_populate_word.py
-filename = "filename"
-list_of_placeholders = ["tpno", "tagno"]
+page_number = config.getint('FILE OPERATION', 'page_number')
 
-# delete_pdf_pages.py
-# delete_pdf_pages_in_folder.py
-page_number = 1
+keyword = config['FILE OPERATION']['keyword']
 
-# get_title_from_file.py
-keyword = "TITLE"
+input_text = config['FILE OPERATION']['input_text']
+to_add_title = config.getint('FILE OPERATION', 'to_add_title')
+to_remove_prefix = config.getint('FILE OPERATION', 'to_remove_prefix')
+to_add_prefix = config.getint('FILE OPERATION', 'to_add_prefix')
+to_add_suffix = config.getint('FILE OPERATION', 'to_add_suffix')
+to_change_case = config.getint('FILE OPERATION', 'to_change_case')
 
-# modify_text.py
-input_text = "input input"
-to_add_title = 1  # 0 do not change basename; 1 change basename to title extracted from the file
-to_remove_prefix = 0  # 0 do not remove prefix; 1 remove prefix
-to_add_prefix = 1  # 0 do not add prefix; 1 add counter; 2 add file modified time; 3 add user input
-to_add_suffix = 0  # 0 do not add suffix; 1 add counter; 2 add file modified time; 3 add user input
-to_change_case = 1  # 0 do not change case; 1 title case; 2 uppercase; 3 lowercase
-
-# rotate_pdf.py
-rotation_angle = 270
-
-#
-#
-#
-# KINDLE
-
-#
-#
-#
-# NOTIFICATION
-
-#
-#
-#
-# PRIMAVERA P6
+rotation_angle = config.getint('FILE OPERATION', 'rotation_angle')

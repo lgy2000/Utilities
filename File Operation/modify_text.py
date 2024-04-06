@@ -1,8 +1,27 @@
+"""
+Module name: modify_text.py
+
+Description:
+Modifies text based on specified configurations, such as adding prefixes or suffixes, removing prefixes, adding titles, and changing text case.
+
+Notes:
+- The module utilizes the `os` and `datetime` modules for file system operations and date-time manipulation respectively.
+- It also imports functionality from the `get_title_from_file.py` module for extracting titles from PDF files.
+- The `remove_prefix()` function removes prefixes from the input text based on the specified configuration.
+- The `add_prefix()` function adds prefixes to the input text based on the specified configuration, including options for counters, timestamps,
+and custom strings.
+- The `add_suffix()` function adds suffixes to the input text based on the specified configuration, similar to the `add_prefix()` function.
+- The `add_title()` function retrieves titles from PDF files if enabled in the configuration.
+- The `change_case()` function modifies the case of the input text based on the specified configuration, including options for title case,
+uppercase, and lowercase.
+- The `main()` function orchestrates the text modification process according to the specified configurations and prints the modified text.
+"""
+
 import os
 from datetime import datetime
 
 from config import input_text, to_add_title, to_remove_prefix, to_add_prefix, to_add_suffix, to_change_case
-from get_title_from_file import main as get_title
+from get_title_from_file import main as get_title_from_file
 
 
 def remove_prefix(to_remove_prefix, text, delimiter=" "):
@@ -36,11 +55,13 @@ def add_suffix(to_add_suffix, text, counter, suffix_str):
     elif to_add_suffix == 3:
         return f" {suffix_str}"
 
+
 def add_title(to_add_title):
     if to_add_title == 1:
-        return get_title()
+        return get_title_from_file()
     else:
         return ""
+
 
 def change_case(to_change_case, text):
     """return the text in selected case"""

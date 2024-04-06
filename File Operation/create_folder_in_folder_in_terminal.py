@@ -1,3 +1,21 @@
+"""
+Module name: create_folder_in_folder_in_terminal.py
+
+Description:
+Creates folders within a specified directory based on user input. Each folder name is entered interactively via the terminal, and folders are
+created inside the specified directory.
+
+Notes:
+
+The module allows users to input folder names interactively via the console until they press Enter to finish.
+The script utilizes the os module for file system operations and the tkinter module for GUI functionality to prompt the user to select the
+directory where folders will be created.
+Upon execution, the main() function prompts the user to select a directory using a GUI dialog. If a directory is selected, the create_folders()
+function is called to create folders within that directory based on user input.
+If no directory is selected, the script prints "No folder selected." and terminates.
+The user can terminate the folder creation process by entering 'Q' during the folder name input prompt, which raises a SystemExit exception.
+"""
+
 import os
 import sys
 

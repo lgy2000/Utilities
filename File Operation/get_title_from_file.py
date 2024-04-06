@@ -1,3 +1,21 @@
+"""
+Module name: get_title_from_file.py
+
+Description:
+Extracts the title from a PDF file based on a specified keyword present in the file's content.
+
+Notes:
+- The module utilizes the `PyPDF2` library for PDF processing and the `tkinter` library for GUI functionality.
+- The `get_title_from_text()` function extracts the title from a page text based on a given keyword. It splits the text using the keyword and
+retrieves the second part, which is assumed to be the title.
+- The `get_title_from_file()` function iterates through each page of the PDF file, extracts text, and searches for the specified keyword. Once
+found, it calls `get_title_from_text()` to extract the title from that page.
+- The `main()` function prompts the user to select a PDF file via a GUI dialog if `show_file_dialog` is set to True in the `config.py` file,
+otherwise it uses the `input_file` specified in `config.py`.
+- It then extracts the title from the selected PDF file based on the specified keyword and prints the title if found, otherwise prints "Title not
+found."
+"""
+
 from tkinter import filedialog
 
 import PyPDF2
@@ -34,8 +52,6 @@ def get_title_from_file(file, keyword):
             # You can customize this based on the actual structure of your PDF
             if keyword in page_text or keyword.upper() in page_text:
                 return get_title_from_text(keyword, page_text)
-                # Break the loop once the title is found
-                break
         return title
 
 
