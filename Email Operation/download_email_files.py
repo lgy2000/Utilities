@@ -71,11 +71,11 @@ def process_part(part, subject, require_original_filename, input_folder):
         print(f"Renamed file to '{new_filename}'")
 
 
-def process_attachments(email_address, password, email_folder, require_original_filename, input_folder):
+def process_attachments(email_address, email_password, email_folder, require_original_filename, input_folder):
     """
     Logs into the email account, fetches emails, processes each email, and logs out.
     """
-    mail, result, data = login_email(email_address, password, email_folder)
+    mail, result, data = login_email(email_address, email_password, email_folder)
     if result != "OK":
         raise email_search_error()
     for num in data[0].split():
@@ -89,12 +89,12 @@ def process_attachments(email_address, password, email_folder, require_original_
     mail.logout()
 
 
-def main(email_address, password, email_folder, require_original_filename, input_folder):
-    process_attachments(email_address, password, email_folder, require_original_filename, input_folder)
+def main(email_address, email_password, email_folder, require_original_filename, input_folder):
+    process_attachments(email_address, email_password, email_folder, require_original_filename, input_folder)
     print(f"Finish downloading emails in folder: {email_folder}")
 
 
 if __name__ == '__main__':
-    from config import email_folder, input_folder, require_original_filename, email_address, password
+    from config import email_folder, input_folder, require_original_filename, email_address, email_password
 
-    main(email_address, password, email_folder, require_original_filename, input_folder)
+    main(email_address, email_password, email_folder, require_original_filename, input_folder)

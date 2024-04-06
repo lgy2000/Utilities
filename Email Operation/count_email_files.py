@@ -51,20 +51,19 @@ def count_emails_and_attachments(email_address, password, email_folder):
     return email_count, attachment_count
 
 
-def main(email_address, password, email_folder):
+def main(email_address, email_password, email_folder):
     """
     Calls the count_emails_and_attachments function and prints the results.
     """
     try:
-        email_count, attachment_count = count_emails_and_attachments(email_address, password, email_folder)
+        email_count, attachment_count = count_emails_and_attachments(email_address, email_password, email_folder)
         print(f"Number of emails in folder '{email_folder}': {email_count}")
         print(f"Total number of attachments in folder '{email_folder}': {attachment_count}")
     except Exception as e:
         print(f"Error: {e}")
-        print(f"Folder {email_folder} is empty")
 
 
 if __name__ == '__main__':
-    from config import email_folder, email_address, password
+    from config import email_folder, email_address, email_password
 
-    main(email_address, password, email_folder)
+    main(email_address, email_password, email_folder)
