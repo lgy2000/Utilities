@@ -14,15 +14,13 @@ email_folder = config[email_operation]['email_folder']
 require_original_filename = config.getboolean(email_operation, 'require_original_filename')
 
 file_operation = 'FILE OPERATION'
-show_folder_dialog = config.getboolean(file_operation, 'show_folder_dialog')
-show_file_dialog = config.getboolean(file_operation, 'show_file_dialog')
-input_folder = config[file_operation]['input_folder']
-input_file = config[file_operation]['input_file']
+file_show_folder_dialog = config.getboolean(file_operation, 'show_folder_dialog')
+file_show_file_dialog = config.getboolean(file_operation, 'show_file_dialog')
+file_input_folder = config[file_operation]['input_folder']
+file_input_file = config[file_operation]['input_file']
 
 filename = config[file_operation]['filename']
 list_of_placeholders = config[file_operation]['list_of_placeholders']
-
-page_number = config.getint(file_operation, 'page_number')
 
 keyword = config[file_operation]['keyword']
 
@@ -34,3 +32,10 @@ to_add_suffix = config.getint(file_operation, 'to_add_suffix')
 to_change_case = config.getint(file_operation, 'to_change_case')
 
 rotation_angle = config.getint(file_operation, 'rotation_angle')
+
+pdf_operation = 'PDF OPERATION'
+pdf_show_folder_dialog = config.getboolean(pdf_operation, 'show_folder_dialog')
+pdf_show_file_dialog = config.getboolean(pdf_operation, 'show_file_dialog')
+pdf_input_folder = config[pdf_operation]['input_folder']
+pdf_input_file = config[pdf_operation]['input_file']
+page_number = config.getint(pdf_operation, 'page_number')
