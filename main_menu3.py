@@ -1,6 +1,7 @@
 import ast
 import os
 import subprocess
+
 from tabulate import tabulate
 
 # Input
@@ -9,10 +10,15 @@ exclude_folders = ["test", "youtube_transcript_api"]
 file_custom_input = ["modify_text.py"]
 
 
-def get_callable_functions(file_path, cache={}):
+def get_callable_functions(file_path, cache=None):
     """Detect callable functions in a Python file."""
+    if cache is None:
+        cache = {}
+
     if file_path in cache:
         return cache[file_path]
+
+    # Rest of the function...
 
     try:
         if file_path.endswith('.py'):
