@@ -1,3 +1,14 @@
+"""
+email_operation.py
+
+Handles email operations such as downloading attachments and counting emails.
+
+Description:
+This module provides functions for various email operations such as downloading attachments from a specified email folder and counting the number
+of emails and attachments in a specified email folder. It relies on other modules like `download_email_files.py` and `count_email_files.py` for
+specific operations.
+"""
+
 import email
 import imaplib
 import os
@@ -11,7 +22,8 @@ class EmailOperation:
         # No initialization required
         pass
 
-    def login_email(self, email_address, password, email_folder):
+    @staticmethod
+    def login_email(email_address, password, email_folder):
         # Connect to Gmail IMAP server
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
         mail.login(email_address, password)
@@ -25,7 +37,8 @@ class EmailOperation:
 
         return mail, result, data
 
-    def fetch_email_data(self, mail, num):
+    @staticmethod
+    def fetch_email_data(mail, num):
         """
         Fetches the raw data of a specific email.
         """
@@ -34,7 +47,8 @@ class EmailOperation:
             raise EmailSearchError()
         return data
 
-    def decode_header(self, header):
+    @staticmethod
+    def decode_header(header):
         """
         Decodes an email header into a string.
         """
@@ -47,7 +61,8 @@ class EmailOperation:
                 decoded_str.append(decoded_part)
         return ''.join(decoded_str)
 
-    def count_attachments_in_email(self, raw_email):
+    @staticmethod
+    def count_attachments_in_email(raw_email):
         """
         Counts the number of attachments in a given raw email data.
         """
@@ -74,7 +89,8 @@ class EmailOperation:
         mail.logout()
         return email_count, attachment_count
 
-    def save_attachment(self, part, filename, input_folder):
+    @staticmethod
+    def save_attachment(part, filename, input_folder):
         """
         Saves the email attachment to the specified directory.
         """
@@ -84,7 +100,8 @@ class EmailOperation:
             print(f"Attachment '{filename}' saved successfully.")
         return save_path
 
-    def rename_file(self, filename, subject, require_original_filename):
+    @staticmethod
+    def rename_file(filename, subject, require_original_filename):
         """
         Renames the downloaded file based on the email subject.
         """
