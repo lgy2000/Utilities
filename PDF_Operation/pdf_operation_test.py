@@ -21,10 +21,12 @@ from pdf_operation import PdfOperation
 class TestPdfOperation(unittest.TestCase):
     def setUp(self):
         self.pdf_ops = PdfOperation()
-        self.test_file = r"D:\YK\Python\Utilities\PDF_Operation\.test\test1.pdf"  # replace with your test file path
-        self.test_file_copy = r"D:\YK\Python\Utilities\PDF_Operation\.test\test1-2.pdf"
-        self.test_folder = r"D:\YK\Python\Utilities\PDF_Operation\.test\test1"  # replace with your test folder path
-        self.test_folder_copy = r"D:\YK\Python\Utilities\PDF_Operation\.test\test1-2"
+        base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+
+        self.test_file = os.path.join(base_dir, ".test", "test1.pdf")
+        self.test_file_copy = os.path.join(base_dir, ".test", "test1-2.pdf")
+        self.test_folder = os.path.join(base_dir, ".test", "test1")
+        self.test_folder_copy = os.path.join(base_dir, ".test", "test1-2")
 
         self.test_string_page_0 = "Aenean pulvinar euismod ligula at lacinia. Ut consectetur dui ipsum, a rhoncus lacus gravida"  # replace with a
         # string
