@@ -16,7 +16,7 @@ import traceback
 
 from eglogging import *
 
-from kindle_operation import KindleNotes
+from kindleoperation import KindleOperation
 
 logging_load_human_config()
 
@@ -67,7 +67,7 @@ def parse_command_line_args():
     return arguments
 
 
-if __name__ == '__main__':
+def main():
     """
     Main entry point of the script. It parses the command line arguments,
     reads the input HTML file, converts it to Markdown format, and writes
@@ -75,13 +75,16 @@ if __name__ == '__main__':
     """
     try:
         args = parse_command_line_args()
-
-        notes = KindleNotes()
-        notes.parse_file(args.input)
-        notes.output_md(args)
+        kindle_ops = KindleOperation()
+        kindle_ops.parse_file(args.input)
+        kindle_ops.output_md(args)
         input("Press any key to exit")
 
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()
         sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

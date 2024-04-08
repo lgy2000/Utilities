@@ -101,7 +101,7 @@ class EmailOperation:
         return save_path
 
     @staticmethod
-    def rename_file(filename, subject, require_original_filename):
+    def _rename_file(filename, subject, require_original_filename):
         """
         Renames the downloaded file based on the email subject.
         """
@@ -122,7 +122,7 @@ class EmailOperation:
         filename = os.path.basename(filename)
         if filename:
             save_path = self.save_attachment(part, filename, input_folder)
-            new_filename = self.rename_file(filename, subject, require_original_filename)
+            new_filename = self._rename_file(filename, subject, require_original_filename)
             duplicate_counter = 1
             while os.path.isfile(os.path.join(input_folder, new_filename)):
                 file_root, file_ext = os.path.splitext(new_filename)
@@ -131,7 +131,7 @@ class EmailOperation:
             os.rename(save_path, os.path.join(input_folder, new_filename))
             print(f"Renamed file to '{new_filename}'")
 
-    def process_attachments(self, email_address, email_password, email_folder, require_original_filename, input_folder):
+    def process_emails_and_attachments(self, email_address, email_password, email_folder, require_original_filename, input_folder):
         """
         Logs into the email account, fetches emails, processes each email, and logs out.
         """

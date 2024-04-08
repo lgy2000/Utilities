@@ -14,11 +14,11 @@ from pdf_operation import PdfOperation
 
 
 def main():
+    pdf_ops = PdfOperation()
     _, folder2 = copy_folder(pdf_input_folder)
     pdf_ops.rotate_pdf_in_folder(folder2, rotation_angle)
     print('Rotation angle:', rotation_angle)
 
 
 if __name__ == '__main__':
-    pdf_ops = PdfOperation()
     main()

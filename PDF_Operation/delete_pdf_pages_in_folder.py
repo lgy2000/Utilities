@@ -16,6 +16,7 @@ from pdf_operation import PdfOperation
 
 
 def main():
+    pdf_ops = PdfOperation()
     parser = argparse.ArgumentParser()
     parser.add_argument("--page_number", type=int, help="Page number to delete")
     parser.add_argument("--folder", type=str, help="Folder to process")
@@ -33,5 +34,4 @@ def main():
 
 
 if __name__ == '__main__':
-    pdf_ops = PdfOperation()
     main()

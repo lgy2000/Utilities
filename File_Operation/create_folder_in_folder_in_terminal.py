@@ -10,36 +10,32 @@ Notes:
 The module allows users to input folder names interactively via the console until they press Enter to finish.
 The script utilizes the os module for file system operations and the tkinter module for GUI functionality to prompt the user to select the
 directory where folders will be created.
-Upon execution, the main() function prompts the user to select a directory using a GUI dialog. If a directory is selected, the create_folders()
+Upon execution, the main() function prompts the user to select a directory using a GUI dialog. If a directory is selected,
+the create_folders_in_folder()
 function is called to create folders within that directory based on user input.
 If no directory is selected, the script prints "No folder selected." and terminates.
 The user can terminate the folder creation process by entering 'Q' during the folder name input prompt, which raises a SystemExit exception.
 """
 
-import os
 import sys
 
-
-def create_folders(folder, folder_names):
-    for folder_name in folder_names:
-        if not folder_name:
-            continue  # Skip empty lines
-        try:
-            folder_path = os.path.join(folder, folder_name)
-            os.makedirs(folder_path)
-            print(f"Successfully created folder '{folder_name}'.")
-        except OSError as e:
-            print(f"Error: {e}")
+from file_operation import FileOperation
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python create_folders.py <folder_path> <folder_name1> <folder_name2> ...")
-        sys.exit(1)
+    try:
+        file_ops = FileOperation()
+        if len(sys.argv) < 3:
+            print("Usage: python create_folders_in_folder.py <folder_path> <folder_name1> <folder_name2> ...")
+            sys.exit(1)
 
-    folder = sys.argv[1]
-    folder_names = sys.argv[2:]
-    create_folders(folder, folder_names)
+        folder = sys.argv[1]
+        if folder:
+            file_ops.create_folders_in_folder(folder)
+        else:
+            print("No folder selected.")
+    except OSError as e:
+        print(f"Error: {e}")
 
 
 if __name__ == "__main__":

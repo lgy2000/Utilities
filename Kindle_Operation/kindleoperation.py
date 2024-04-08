@@ -59,7 +59,7 @@ class ChapterNotes:
         return self.notes[next(reversed(self.notes))]
 
 
-class KindleNotes:
+class KindleOperation:
     """
     This class represents the notes for a Kindle book.
     """

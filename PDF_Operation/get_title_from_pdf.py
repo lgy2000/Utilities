@@ -15,6 +15,7 @@ from config import file_show_file_dialog, pdf_input_file, keyword
 
 
 def main():
+    pdf_ops = PdfOperation()
     if file_show_file_dialog == 1:
         file = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
     else:
@@ -27,5 +28,4 @@ def main():
 
 
 if __name__ == '__main__':
-    pdf_ops = PdfOperation()
     main()
