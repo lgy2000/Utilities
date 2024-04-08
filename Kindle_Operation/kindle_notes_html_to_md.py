@@ -58,12 +58,12 @@ def parse_command_line_args():
                         default='',
                         help='A file to which save the Markdown document')
 
-    args = parser.parse_args()
+    arguments = parser.parse_args()
 
     # if no output passed, output .md file next to original HTML notes
-    args.output = os.path.splitext(args.input)[0] + '.md'
+    arguments.output = os.path.splitext(arguments.input)[0] + '.md'
 
-    return args
+    return arguments
 
 
 if __name__ == '__main__':
