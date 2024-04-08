@@ -32,11 +32,12 @@ def parse_command_line_args():
                   "Kindle to a Markdown document"
     parser = argparse.ArgumentParser(description=description)
 
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+
     # positional input argument
     parser.add_argument('input',
                         nargs='?',  # makes the input argument optional
-                        default=r'D:\YK\Python\Utilities\Kindle_Operation\.test\example_notebook.html',  # default value if no input argument is
-                        # provided
+                        default=os.path.join(base_dir, ".test", "example_notebook.html"),  # default value if no input argument is provided
                         help='Input HTML file')
 
     parser.add_argument('-nl', '--no-location',
