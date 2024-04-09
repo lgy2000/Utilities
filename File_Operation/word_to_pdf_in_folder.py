@@ -14,28 +14,14 @@ the `input_folder` specified in the configuration.
 - Note: The `word_to_pdf_in_folder()` function is called twice unnecessarily at the end of the module and can be removed.
 """
 
-from tkinter import filedialog, Tk
-from docx2pdf import convert
-from config import file_show_folder_dialog, file_input_folder
-
-
-def word_to_pdf_in_folder():
-    """convert all the Word files in the folder into PDF files and save in another folder"""
-    root = Tk()
-    root.withdraw()
-    if file_show_folder_dialog == 1:
-        folder = filedialog.askdirectory()
-    else:
-        folder = file_input_folder
-    convert(folder, folder)
+from file_operation import FileOperation
 
 
 def main():
-    word_to_pdf_in_folder()
+    file_ops = FileOperation()
+    file_ops.word_to_pdf_in_folder()
     print('done')
 
 
 if __name__ == '__main__':
     main()
-
-word_to_pdf_in_folder()

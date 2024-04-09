@@ -1,21 +1,24 @@
 import os
 from datetime import datetime
 from shutil import copytree
-from tkinter import filedialog
+from tkinter import filedialog, Tk
 
 import pandas as pd
+from docx2pdf import convert
 from docxtpl import DocxTemplate
 
-from config import file_show_folder_dialog
+from PDF_Operation.pdf_operation import PdfOperation
+from config import file_show_folder_dialog, file_input_folder
+from config import to_add_title, to_remove_prefix, to_add_prefix, to_add_suffix, to_change_case
+from modify_text import remove_prefix, add_prefix, add_suffix, change_case
 from text_operation import TextOperation
-
-from tkinter import filedialog, Tk
 
 
 class FileOperation:
     def __init__(self):
         # No need to initialize anything
         self.text_ops = TextOperation()
+        self.pdf_ops = PdfOperation()
 
     @staticmethod
     def copy_folder(input_folder):
@@ -127,3 +130,48 @@ class FileOperation:
         # Read the latest file
         file = open(filename, 'r', encoding='utf-8')
         file.close()
+
+    def word_to_pdf_in_folder(self):
+        """convert all the Word files in the folder into PDF files and save in another folder"""
+        root = Tk()
+        root.withdraw()
+        if file_show_folder_dialog == 1:
+            folder = filedialog.askdirectory()
+        else:
+            folder = file_input_folder
+        convert(folder, folder)
+
+    def rename_file_in_folder(self, folder):
+        """rename all the files in the folder with a pattern"""
+        counter = 1
+        keyword = input("Input keyword: ") if to_add_title == 1 else ""
+        delimiter = input("Input delimiter: ") if to_remove_prefix == 1 else ""
+        prefix_str = input("Input prefix: ") if to_add_prefix == 3 else ""
+        suffix_str = input("Input suffix: ") if to_add_suffix == 3 else ""
+
+        # iterate all the files in the folder & rename file
+        for count, file in enumerate(os.listdir(folder)):
+            # file 1 properties
+            file1 = os.path.join(folder, file)
+            full_filename = os.path.split(file1)[1]
+
+            if to_add_title == 1:
+                filename1 = self.pdf_ops.get_title_from_pdf(file1, keyword)
+            else:
+                filename1 = os.path.splitext(full_filename)[0]
+            extension = os.path.splitext(full_filename)[1].lower()
+
+            # get prefix or suffix
+            prefix = add_prefix(to_add_prefix, file1, counter, prefix_str)
+            suffix = add_suffix(to_add_suffix, file1, counter, suffix_str)
+
+            # file 2 properties
+            filename2 = remove_prefix(filename1, delimiter)
+            filename2 = f"{prefix}{filename2}{suffix}"
+            filename2 = change_case(to_change_case, filename2)
+            file2 = os.path.join(folder, f"{filename2}{extension}")
+
+            # rename file parsed in
+            print(file2)
+            os.rename(file1, file2)
+            counter += 1

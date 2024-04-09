@@ -12,13 +12,8 @@ Notes:
 - It then reopens the file in read mode to ensure that the latest changes are read.
 - The `main()` function is provided for standalone execution, which initiates the text read-write process and prints "done" upon completion.
 """
+from config import text
 from file_operation import FileOperation
-
-# Input
-text = "SANTA"
-
-
-
 
 
 def main():
