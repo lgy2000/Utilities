@@ -12,7 +12,6 @@ folder path are configured in the `config.py` file.
 from email_operation import EmailOperation
 
 
-
 def main(email_address, email_password, email_folder):
     """
     Calls the count_emails_and_attachments function and prints the results.

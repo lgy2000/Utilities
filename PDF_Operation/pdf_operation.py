@@ -20,8 +20,7 @@ from File_Operation.text_operation import TextOperation
 
 class PdfOperation:
     def __init__(self):
-        # no need to initialize anything
-        pass
+        self.text_ops = TextOperation(text="")
 
     @staticmethod
     def delete_pdf_page(filepath: str, page_number: int) -> None:
@@ -72,18 +71,6 @@ class PdfOperation:
                 self.rotate_pdf(file, angle)
 
     @staticmethod
-    def extract_text_from_pdf(file_path):
-        pdf = PdfReader(file_path)
-        text = ""
-        for page in range(len(pdf.pages)):
-            text += pdf.pages[page].extract_text()
-        return text
-
-    def is_string_in_pdf(self, file_path, search_string):
-        content = self.extract_text_from_pdf(file_path)
-        return search_string in content
-
-    @staticmethod
     def check_pdf_rotation(file_path):
         pdf = PdfReader(file_path)
         rotations = []
@@ -92,10 +79,28 @@ class PdfOperation:
             rotations.append(rotation)
         return rotations
 
+    def is_string_in_pdf(self, file_path, search_string):
+        content = self.get_text_from_pdf(file_path)
+        return search_string in content
+
+    @staticmethod
+    def get_text_from_pdf(file_path):
+        pdf = PdfReader(file_path)
+        text = ""
+        for page in range(len(pdf.pages)):
+            text += pdf.pages[page].extract_text()
+        return text
+
     def get_title_from_pdf(self, file, keyword):
         # Extract text from the PDF file
-        page_text = self.extract_text_from_pdf(file)
+        page_text = self.get_text_from_pdf(file)
         # Search for the title block in the extracted text
         if keyword in page_text or keyword.upper() in page_text:
-            return TextOperation().get_title_from_text(keyword, page_text)
+            return self.text_ops.get_title_from_text(page_text)
         return None
+
+    def get_pdf_title(self, file, to_add_title):
+        if to_add_title == 1:
+            return self.get_title_from_pdf(file, self.text_ops.keyword)
+        else:
+            return ""

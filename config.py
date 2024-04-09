@@ -22,8 +22,6 @@ file_input_file = config[file_operation]['input_file']
 filename = config[file_operation]['filename']
 list_of_placeholders = config[file_operation]['list_of_placeholders']
 
-keyword = config[file_operation]['keyword']
-
 input_text = config[file_operation]['input_text']
 to_add_title = config.getint(file_operation, 'to_add_title')
 to_remove_prefix = config.getint(file_operation, 'to_remove_prefix')
@@ -40,5 +38,7 @@ pdf_input_folder = config[pdf_operation]['input_folder']
 pdf_input_file = config[pdf_operation]['input_file']
 page_number = config.getint(pdf_operation, 'page_number')
 
-text_operation= 'TEXT OPERATION'
-text = config[text_operation]['text']
+text_operation = 'TEXT OPERATION'
+keyword = config[text_operation]['keyword']
+prefix_str = config[text_operation]['prefix_str']
+suffix_str = config[text_operation]['suffix_str']

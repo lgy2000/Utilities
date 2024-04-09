@@ -16,7 +16,7 @@ import traceback
 
 from eglogging import *
 
-from kindleoperation import KindleOperation
+from kindle_operation import KindleOperation
 
 logging_load_human_config()
 

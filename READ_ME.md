@@ -71,6 +71,6 @@ Each script can be run independently or run from the `main_menu.py`. Please refe
 
 ## Current To-do List
 
-- Tidy up the code and add more comments in the classes and functions.
+- Tidy up the code in `File_Operation`, add more comments and docstrings in the classes and modules.
 - Add more functionality and instructions in the main menu.
 - Enable the user to input arguments in the main menu.
