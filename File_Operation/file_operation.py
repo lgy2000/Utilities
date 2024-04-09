@@ -9,15 +9,13 @@ from docxtpl import DocxTemplate
 
 from PDF_Operation.pdf_operation import PdfOperation
 from config import file_show_folder_dialog, file_input_folder
-from config import to_add_title, to_remove_prefix, to_add_prefix, to_add_suffix, to_change_case
-from modify_text import remove_prefix, add_prefix, add_suffix, change_case
 from text_operation import TextOperation
 
 
 class FileOperation:
     def __init__(self):
         # No need to initialize anything
-        self.text_ops = TextOperation()
+        self.text_ops = TextOperation(text="")
         self.pdf_ops = PdfOperation()
 
     @staticmethod
@@ -41,8 +39,8 @@ class FileOperation:
     def create_folders_in_folder(self, folder):
         print("Enter folder names (press Enter to finish):")
         while True:
-
-            folder_name = self.text_ops.clean_string(input())
+            self.text_ops.text = input("Enter folder names: ")
+            folder_name = self.text_ops.clean_string()
             if folder_name.upper() == 'Q':
                 raise SystemExit
             if not folder_name:
@@ -54,7 +52,8 @@ class FileOperation:
             except OSError as e:
                 print(f"Error: {e}")
 
-    def select_folder_word_csv(self):
+    @staticmethod
+    def select_folder_word_csv():
         """
         Prompts the user to select a folder to save populated Word documents,
         a Word template file, and a CSV file containing data.
@@ -116,7 +115,8 @@ class FileOperation:
             except Exception as e:
                 print(f"Error populating Word document: {e}")
 
-    def read_write_txt(self, text_input):
+    @staticmethod
+    def read_write_txt(text_input):
         # function that read & write .docx file
         root = Tk()
         root.withdraw()
@@ -131,7 +131,8 @@ class FileOperation:
         file = open(filename, 'r', encoding='utf-8')
         file.close()
 
-    def word_to_pdf_in_folder(self):
+    @staticmethod
+    def word_to_pdf_in_folder():
         """convert all the Word files in the folder into PDF files and save in another folder"""
         root = Tk()
         root.withdraw()
@@ -144,10 +145,6 @@ class FileOperation:
     def rename_file_in_folder(self, folder):
         """rename all the files in the folder with a pattern"""
         counter = 1
-        keyword = input("Input keyword: ") if to_add_title == 1 else ""
-        delimiter = input("Input delimiter: ") if to_remove_prefix == 1 else ""
-        prefix_str = input("Input prefix: ") if to_add_prefix == 3 else ""
-        suffix_str = input("Input suffix: ") if to_add_suffix == 3 else ""
 
         # iterate all the files in the folder & rename file
         for count, file in enumerate(os.listdir(folder)):
@@ -155,20 +152,24 @@ class FileOperation:
             file1 = os.path.join(folder, file)
             full_filename = os.path.split(file1)[1]
 
-            if to_add_title == 1:
-                filename1 = self.pdf_ops.get_title_from_pdf(file1, keyword)
+            if self.text_ops.to_get_title_from_file == 1:
+                # detect for file type 
+                # and create functions to get title from word/excel/text in the future 
+                filename1 = self.pdf_ops.get_title_from_pdf(file1)
             else:
                 filename1 = os.path.splitext(full_filename)[0]
             extension = os.path.splitext(full_filename)[1].lower()
 
             # get prefix or suffix
-            prefix = add_prefix(to_add_prefix, file1, counter, prefix_str)
-            suffix = add_suffix(to_add_suffix, file1, counter, suffix_str)
+            self.text_ops.prefix = self.text_ops.get_prefix(counter)
+            self.text_ops.suffix = self.text_ops.get_suffix(counter)
 
             # file 2 properties
-            filename2 = remove_prefix(filename1, delimiter)
-            filename2 = f"{prefix}{filename2}{suffix}"
-            filename2 = change_case(to_change_case, filename2)
+            self.text_ops.text = filename1
+            filename2 = self.text_ops.remove_prefix()
+            filename2 = f"{self.text_ops.prefix}{filename2}{self.text_ops.suffix}"
+            self.text_ops.text = filename2
+            filename2 = self.text_ops.change_case()
             file2 = os.path.join(folder, f"{filename2}{extension}")
 
             # rename file parsed in

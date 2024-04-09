@@ -12,15 +12,15 @@ folder path are configured in the `config.py` file.
 from email_operation import EmailOperation
 
 
-def main(email_address, email_password, email_folder):
+def main(_email_address, _email_password, _email_folder):
     """
     Calls the count_emails_and_attachments function and prints the results.
     """
     try:
         email_ops = EmailOperation()
-        email_count, attachment_count = email_ops.count_emails_and_attachments(email_address, email_password, email_folder)
-        print(f"Number of emails in folder '{email_folder}': {email_count}")
-        print(f"Total number of attachments in folder '{email_folder}': {attachment_count}")
+        email_count, attachment_count = email_ops.count_emails_and_attachments(_email_address, _email_password, _email_folder)
+        print(f"Number of emails in folder '{_email_folder}': {email_count}")
+        print(f"Total number of attachments in folder '{_email_folder}': {attachment_count}")
     except Exception as e:
         print(f"Error: {e}")
 

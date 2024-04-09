@@ -13,10 +13,10 @@ and renaming options are configured in the `config.py` file.
 from email_operation import EmailOperation
 
 
-def main(email_address, email_password, email_folder, require_original_filename, input_folder):
+def main(_email_address, _email_password, _email_folder, _require_original_filename, _input_folder):
     email_ops = EmailOperation()
-    email_ops.process_emails_and_attachments(email_address, email_password, email_folder, require_original_filename, input_folder)
-    print(f"Finish downloading emails in folder: {email_folder}")
+    email_ops.process_emails_and_attachments(_email_address, _email_password, _email_folder, _require_original_filename, _input_folder)
+    print(f"Finish downloading emails in folder: {_email_folder}")
 
 
 if __name__ == '__main__':

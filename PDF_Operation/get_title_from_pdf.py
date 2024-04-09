@@ -20,7 +20,7 @@ def main():
         file = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
     else:
         file = pdf_input_file
-    title = pdf_ops.get_title_from_pdf(file, keyword)
+    title = pdf_ops.get_title_from_pdf(file)
     if title:
         print("Title:", title)
     else:

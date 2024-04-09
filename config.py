@@ -23,7 +23,7 @@ filename = config[file_operation]['filename']
 list_of_placeholders = config[file_operation]['list_of_placeholders']
 
 input_text = config[file_operation]['input_text']
-to_add_title = config.getint(file_operation, 'to_add_title')
+to_get_title_from_file = config.getint(file_operation, 'to_get_title_from_file')
 to_remove_prefix = config.getint(file_operation, 'to_remove_prefix')
 to_add_prefix = config.getint(file_operation, 'to_add_prefix')
 to_add_suffix = config.getint(file_operation, 'to_add_suffix')

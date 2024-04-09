@@ -5,7 +5,7 @@ import subprocess
 from tabulate import tabulate
 
 # Input
-project_folder = r"D:\YK\Python\Utilities"
+project_folder = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
 exclude_folders = ["test", "youtube_transcript_api"]
 file_custom_input = ["modify_text.py"]
 
@@ -37,12 +37,12 @@ def get_callable_functions(file_path, cache=None):
     return None
 
 
-def list_python_files(project_folder, exclude_folders):
+def list_python_files(_project_folder, _exclude_folders):
     """List Python files excluding specified folders."""
     all_files_list = []
     num = 0
-    for (current_path, dir_names, file_names) in os.walk(project_folder):
-        if not any(exclude_folder in current_path for exclude_folder in exclude_folders):
+    for (current_path, dir_names, file_names) in os.walk(_project_folder):
+        if not any(exclude_folder in current_path for exclude_folder in _exclude_folders):
             for file_name in file_names:
                 if file_name.endswith('.py'):
                     file_object = []
