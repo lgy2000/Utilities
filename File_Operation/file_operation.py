@@ -9,6 +9,8 @@ from docxtpl import DocxTemplate
 from config import file_show_folder_dialog
 from text_operation import TextOperation
 
+from tkinter import filedialog, Tk
+
 
 class FileOperation:
     def __init__(self):
@@ -111,4 +113,17 @@ class FileOperation:
             except Exception as e:
                 print(f"Error populating Word document: {e}")
 
-        print("done")
+    def read_write_txt(self, text_input):
+        # function that read & write .docx file
+        root = Tk()
+        root.withdraw()
+        filename = filedialog.askopenfilename()
+
+        # Read & write file
+        file = open(filename, 'r+', encoding='utf-8')
+        file.write(str(text_input))
+        file.close()
+
+        # Read the latest file
+        file = open(filename, 'r', encoding='utf-8')
+        file.close()

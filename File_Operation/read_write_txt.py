@@ -12,31 +12,18 @@ Notes:
 - It then reopens the file in read mode to ensure that the latest changes are read.
 - The `main()` function is provided for standalone execution, which initiates the text read-write process and prints "done" upon completion.
 """
-
-from tkinter import filedialog, Tk
+from file_operation import FileOperation
 
 # Input
 text = "SANTA"
 
 
-def read_write_txt(text_input):
-    # function that read & write .docx file
-    root = Tk()
-    root.withdraw()
-    filename = filedialog.askopenfilename()
 
-    # Read & write file
-    file = open(filename, 'r+', encoding='utf-8')
-    file.write(str(text_input))
-    file.close()
-
-    # Read the latest file
-    file = open(filename, 'r', encoding='utf-8')
-    file.close()
 
 
 def main():
-    read_write_txt(text)
+    file_ops = FileOperation()
+    file_ops.read_write_txt(text)
     print('done')
 
 

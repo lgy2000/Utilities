@@ -20,7 +20,6 @@ from file_operation import FileOperation
 def main():
     file_ops = FileOperation()
     file_ops.copy_folder(file_input_folder)
-    print("done")
 
 
 if __name__ == "__main__":
