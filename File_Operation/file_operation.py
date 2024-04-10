@@ -7,9 +7,9 @@ import pandas as pd
 from docx2pdf import convert
 from docxtpl import DocxTemplate
 
+from File_Operation.text_operation import TextOperation
 from PDF_Operation.pdf_operation import PdfOperation
 from config import file_show_folder_dialog, file_input_folder
-from text_operation import TextOperation
 
 
 class FileOperation:
@@ -36,21 +36,17 @@ class FileOperation:
         print(folder2)
         return folder1, folder2
 
-    def create_folders_in_folder(self, folder):
-        print("Enter folder names (press Enter to finish):")
-        while True:
-            self.text_ops.text = input("Enter folder names: ")
-            folder_name = self.text_ops.clean_string()
-            if folder_name.upper() == 'Q':
-                raise SystemExit
-            if not folder_name:
-                break  # Stop input loop if Enter is pressed
-            try:
-                folder_path = os.path.join(folder, folder_name)
-                os.makedirs(folder_path)
-                print(f"Created folder '{folder_name}'.")
-            except OSError as e:
-                print(f"Error: {e}")
+    def create_folders_in_folder(self, folder, text):
+        self.text_ops.text = text
+        folder_name = self.text_ops.clean_string()
+        if folder_name == "":
+            raise SystemExit
+        try:
+            folder_path = os.path.join(folder, folder_name)
+            os.makedirs(folder_path)
+            print(f"Created folder '{folder_name}'.")
+        except OSError as e:
+            print(f"Error: {e}")
 
     @staticmethod
     def select_folder_word_csv():
@@ -155,7 +151,7 @@ class FileOperation:
             if self.text_ops.to_get_title_from_file == 1:
                 # detect for file type 
                 # and create functions to get title from word/excel/text in the future 
-                filename1 = self.pdf_ops.get_title_from_pdf(file1)
+                filename1 = self.pdf_ops.get_title_from_pdf(file1, keyword="Title")
             else:
                 filename1 = os.path.splitext(full_filename)[0]
             extension = os.path.splitext(full_filename)[1].lower()

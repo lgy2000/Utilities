@@ -40,7 +40,7 @@ def main():
     text_ops.text = text_ops.remove_prefix()
     prefix = text_ops.get_prefix(counter)
     suffix = text_ops.get_suffix(counter)
-    title = pdf_ops.get_title_from_pdf(file="")
+    title = pdf_ops.get_title_from_pdf(file="", keyword="Title")
     text_ops.text = f"{prefix}{text_ops.text}{suffix}{title}"
     text_ops.text = text_ops.change_case()
 

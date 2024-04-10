@@ -18,8 +18,6 @@ def get_callable_functions(file_path, cache=None):
     if file_path in cache:
         return cache[file_path]
 
-    # Rest of the function...
-
     try:
         if file_path.endswith('.py'):
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -43,7 +41,7 @@ def list_python_files(_project_folder, _exclude_folders):
     num = 0
     for (current_path, dir_names, file_names) in os.walk(_project_folder):
         if not any(exclude_folder in current_path for exclude_folder in _exclude_folders):
-            for file_name in file_names:
+            for file_name in sorted(file_names):
                 if file_name.endswith('.py'):
                     file_object = []
                     num += 1
@@ -72,10 +70,10 @@ def main_menu():
     print("\n", tabulate(all_files_list, headers=["NO", "PATH", "FILE", "FUNCTIONS"]))
 
     print("\nInput the file number to execute a python script, or type \"folder\" to open folder location")
-    file_folder_input = input("Action: ")
+    user_input = input("Action: ")
 
-    if str(file_folder_input).lower() != "folder":
-        file_num_input = int(file_folder_input) - int(1)
+    if user_input.isdigit():
+        file_num_input = int(user_input) - int(1)
         file_path_input = all_files_list[file_num_input][1]
         file_name_input = all_files_list[file_num_input][2]
 
@@ -84,17 +82,18 @@ def main_menu():
             execute_script(os.path.join(file_path_input, file_name_input), custom_input)
         else:
             execute_script(os.path.join(file_path_input, file_name_input))
-    else:
+    if str(user_input).lower() == "folder":
         subprocess.Popen(f'explorer /select, {project_folder}')
 
     again()
 
 
 def again():
-    again_input = input('\nPress M (Main Menu) or Q (Quit): ')
+    print("\n")
+    again_input = input("Press M (Main Menu) or Blank (Quit): ")
     if again_input.upper() == 'M':
         main_menu()
-    elif again_input.upper() == 'Q':
+    elif not again_input.upper():
         raise SystemExit
     else:
         again()

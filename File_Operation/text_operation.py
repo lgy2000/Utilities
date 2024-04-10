@@ -1,8 +1,6 @@
 import os
 from datetime import datetime
 
-from PDF_Operation.pdf_operation import PdfOperation
-
 
 class TextOperation:
     def __init__(self, text,
@@ -18,7 +16,6 @@ class TextOperation:
                  prefix_delimiter=" ",
                  prefix_str="",
                  suffix_str=""):
-        self.pdf_ops = PdfOperation()
         self.text = text
         self.to_get_title_from_file = to_get_title_from_file
         self.to_remove_prefix = to_remove_prefix
@@ -40,15 +37,35 @@ class TextOperation:
         self.text = self.text.translate(str.maketrans('', '', '?!@$%^*:/\\=+{}<>'))  # Remove specific symbols
         return self.text
 
-    def get_title_from_text(self, page_text):
+    def get_title_from_text(self, page_text, keyword):
+        self.keyword = keyword
         # Split the text using the title identifier
-        title_parts = page_text.split(self.keyword) if self.keyword in page_text else page_text.split(self.keyword.upper())
+        # print(page_text)
+        if self.keyword in page_text:
+            title_parts = page_text.split(self.keyword)
+        elif self.keyword.upper() in page_text:
+            title_parts = page_text.split(self.keyword.upper())
+        else:
+            title_parts = page_text.split(self.keyword.capitalize())
+        # print(title_parts)
+
         # Get the second part in a list (the title itself)
-        self.text = title_parts[1]
-        # Clean the title
-        self.text = self.clean_string()
-        # If there are multiple lines in the title, combine them into one string
-        self.text = " ".join(self.text.splitlines()[:3])[:60]
+        try:
+            title = title_parts[1]
+            # print(title)
+
+            # Clean the title
+            self.text = title
+            self.text = self.clean_string()
+            # If there are multiple lines in the title, combine them into one string
+            self.text = " ".join(self.text.splitlines()[:3])[:60]
+            # print(self.text)
+        except IndexError:
+            if title_parts:
+                self.text = title_parts
+                print("Title not found.")
+            else:
+                print("Text not found in the file.")
         return self.text
 
     def remove_prefix(self):

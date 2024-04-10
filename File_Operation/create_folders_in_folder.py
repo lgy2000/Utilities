@@ -23,12 +23,20 @@ from file_operation import FileOperation
 
 
 def main():
+    print("Enter folder names: ")
     try:
         file_ops = FileOperation()
         folder = filedialog.askdirectory()
-
-        if folder:
-            file_ops.create_folders_in_folder(folder)
+        folder_names = []
+        while True:
+            line = input()
+            if line != "":
+                folder_names.append(line)
+            else:
+                break
+        if folder_names:
+            for folder_name in folder_names:
+                file_ops.create_folders_in_folder(folder, folder_name)
         else:
             print("No folder selected.")
     except OSError as e:

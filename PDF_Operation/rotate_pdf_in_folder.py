@@ -12,12 +12,29 @@ from File_Operation.file_operation import FileOperation
 from config import pdf_input_folder, rotation_angle
 from pdf_operation import PdfOperation
 
+import argparse
+from tkinter import filedialog
+
+from config import rotation_angle, file_show_file_dialog, file_input_file
+from pdf_operation import PdfOperation
+
+
 
 def main():
     pdf_ops = PdfOperation()
     file_ops = FileOperation()
-    _, folder2 = file_ops.copy_folder(pdf_input_folder)
-    pdf_ops.rotate_pdf_in_folder(folder2, rotation_angle)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--rotation_angle", type=int, help="Rotation angle in degrees")
+    parser.add_argument("--file", type=str, help="File to process")
+    args = parser.parse_args()
+
+    # Use the rotation_angle from args if it's not None, otherwise use the one from config
+    _rotation_angle = args.rotation_angle if args.rotation_angle is not None else rotation_angle
+    if not args.file:
+        _, folder = file_ops.copy_folder(pdf_input_folder)
+    else:
+        folder = args.folder
+    pdf_ops.rotate_pdf_in_folder(folder, rotation_angle)
     print('Rotation angle:', rotation_angle)
 
 

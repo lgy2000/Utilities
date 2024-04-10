@@ -1,5 +1,5 @@
 """
-delete_pdf_pages.py
+delete_pdf_page.py
 
 Removes specific pages from a PDF file.
 
@@ -13,7 +13,7 @@ The page number and file to process can be provided as command-line arguments or
 import argparse
 from tkinter import filedialog
 
-from config import page_number
+from config import pdf_page_number, file_show_file_dialog, file_input_file
 from pdf_operation import PdfOperation
 
 
@@ -25,15 +25,18 @@ def main():
     args = parser.parse_args()
 
     # Use the page_number from args if it's not None, otherwise use the one from config
-    delete_page_number = args.page_number if args.page_number is not None else page_number
+    delete_page_number = args.page_number if args.page_number is not None else pdf_page_number
     if not args.file:
-        filename = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
+        if file_show_file_dialog == 1:
+            filename = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
+        else:
+            filename = file_input_file
     else:
         filename = args.file
 
     print(f'Folder: {filename}')
     pdf_ops.delete_pdf_page(filename, delete_page_number)
-    print(f'Delete number of pages: {delete_page_number}')
+    print(f'Delete page: {delete_page_number}')
 
 
 if __name__ == '__main__':

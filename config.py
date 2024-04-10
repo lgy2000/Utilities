@@ -36,9 +36,9 @@ pdf_show_folder_dialog = config.getboolean(pdf_operation, 'show_folder_dialog')
 pdf_show_file_dialog = config.getboolean(pdf_operation, 'show_file_dialog')
 pdf_input_folder = config[pdf_operation]['input_folder']
 pdf_input_file = config[pdf_operation]['input_file']
-page_number = config.getint(pdf_operation, 'page_number')
+pdf_page_number = config.getint(pdf_operation, 'page_number')
 
 text_operation = 'TEXT OPERATION'
-keyword = config[text_operation]['keyword']
-prefix_str = config[text_operation]['prefix_str']
-suffix_str = config[text_operation]['suffix_str']
+text_keyword = config[text_operation]['keyword']
+text_prefix_str = config[text_operation]['prefix_str']
+text_suffix_str = config[text_operation]['suffix_str']
