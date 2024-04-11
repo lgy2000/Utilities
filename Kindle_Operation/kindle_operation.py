@@ -1,11 +1,12 @@
 """
 kindle_operation.py
 
-Provides functionality to convert an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
+Handles the conversion of Kindle notes from HTML to Markdown format.
 
 Description:
-This module contains the KindleOperation class which has methods to parse the HTML file, extract notes, and output them in a Markdown format. It also
-includes the Note and Chapter_notes classes to structure the notes data.
+This module defines the KindleOperation class, which provides methods for parsing an HTML file of Kindle notes,
+converting the notes to Markdown format, and exporting the output to a file or the clipboard. It also handles
+various options such as whether to include the location of notes/highlights and whether to override an existing output file.
 """
 
 # !/usr/bin/env python3
@@ -62,7 +63,9 @@ class ChapterNotes:
 
     def get_last_note(self):
         """
-        Returns the most recently-added note.
+        Retrieves the most recently added note in the current chapter.
+        Returns:
+            Notes: The most recently added note object.
         """
         return self.notes[next(reversed(self.notes))]
 
@@ -86,7 +89,9 @@ class KindleOperation:
 
     def parse_file(self, html_file):
         """
-        Parse the given HTML file and extract the notes.
+        Parses the given HTML file and extracts the notes.
+        Args:
+            html_file (str): The path to the HTML file to be parsed.
         """
         soup = self._read_parse_file(html_file)
         all_divs = self._get_all_divs(soup)
@@ -95,7 +100,11 @@ class KindleOperation:
     @staticmethod
     def _read_parse_file(html_file):
         """
-        Read the contents of the given HTML file and parse the given HTML string using BeautifulSoup.
+        Reads the contents of the given HTML file and parses it using BeautifulSoup.
+        Args:
+            html_file (str): The path to the HTML file to be read and parsed.
+        Returns:
+            BeautifulSoup: The parsed HTML content.
         """
         with open(html_file, 'r', encoding='utf8') as fp:
             htmls = fp.read()
@@ -105,16 +114,22 @@ class KindleOperation:
     @staticmethod
     def _get_all_divs(soup):
         """
-        Get all div elements from the given BeautifulSoup object.
+        Retrieves all div elements from the given BeautifulSoup object.
+        Args:
+            soup (BeautifulSoup): The parsed HTML content.
+        Returns:
+            list: A list of all div elements in the parsed HTML content.
         """
         all_divs = soup.select('[class]')
         return all_divs
 
     def _process_divs(self, all_divs):
         """
-        Process the given div elements and extract the notes.
-        This method iterates over all div elements in the parsed HTML file. For each div, it gets the class attribute and the text content.
-        Depending on the class attribute, it processes the div as a book title, author, section heading, note heading, or note text.
+        Processes div elements from an HTML file, extracting notes.
+        It iterates through each div, capturing its class attribute and text content. Depending on the class, it identifies and handles book
+        titles, authors, section headings, note headings, and note text.
+        Args:
+            all_divs (list): A list of all div elements in the parsed HTML content.
         """
         # Initialize variables for the work-in-progress note and the last note type
         wip_note = None
@@ -146,13 +161,14 @@ class KindleOperation:
 
     def _process_note_heading(self, div):
         """
-        Process the given div element as a note heading.
-        This method processes a div element that represents a note heading. It extracts the source and location of the note from the div element.
-        The source is a string that contains information about the source of the note, and the location is an integer that represents the location
-        of the note as given by Kindle.
-        The method also determines the type of the note (whether it's a 'Note' or 'Highlight') and initializes a new `Notes` object if necessary.
-        If the last note type was 'Note', it tries to get the last note added to the current chapter. If it can't find one, it initializes a new
-        `Notes` object and adds it to the current chapter's notes.
+        Processes a div element representing a note heading.
+        It extracts the note's source, location (given by Kindle), and type (either 'Note' or 'Highlight'). If the last note type was 'Note',
+        it attempts to retrieve the last note added to the current chapter; otherwise, it initializes a new `Notes` object and adds it to the
+        chapter's notes.
+        Args:
+            div (bs4.element.Tag): The div element to be processed.
+        Returns:
+            tuple: A tuple containing the source, location, last note type, and work-in-progress (WIP) note.
         """
         # Extract the source and location of the note from the div element
         source = ' '.join(div.stripped_strings)
@@ -183,11 +199,15 @@ class KindleOperation:
     @staticmethod
     def _process_note_text(div_contents, last_note_type, wip_note):
         """
-        Process the given div element as a note text.
-        This method processes a div element that represents a note text. It extracts the text of the note from the div element and assigns it to
-        the appropriate attribute of the `Notes` object depending on the type of the note. If the last note type was 'Highlight', it assigns the
-        text to the `text` attribute of the `Notes` object. If the last note type was 'Note', it assigns the text to the `note` attribute of the
-        `Notes` object.
+        Processes a div element as note text, extracting the note's text and assigning it to the appropriate attribute of the Notes object based on
+        the note type ('Highlight' or 'Note'). If the last note type was 'Highlight,' the text is assigned to the text attribute; if it was 'Note,
+        ' the text is assigned to the note attribute.
+        Args:
+            div_contents (str): The text content of the div element.
+            last_note_type (str): The type of the last note.
+            wip_note (Notes): The work-in-progress note.
+        Returns:
+            tuple: A tuple containing the last note type and the work-in-progress note.
         """
         div_contents = div_contents.split('\n')[0]
         if last_note_type == 'Highlight':
@@ -198,17 +218,20 @@ class KindleOperation:
 
     def output_md(self, args):
         """
-        Create the header for the Markdown document.
-        This method creates the header for the Markdown document. The header includes the book title and the author.
+        Main entry point of the script. It parses the command line arguments, reads the input HTML file,
+        converts it to Markdown format, and writes the output to a file or clipboard based on the arguments.
+        Returns:
+            None
         """
         md = self._create_md_header()
         md += self._create_md_body(args)
-        self._output_md(md, args)
+        self._output_markdown_to_destination(md, args)
 
     def _create_md_header(self):
         """
-        Create the header for the Markdown document.
-        This method creates the header for the Markdown document. The header includes the book title and the author.
+        Creates the header for the Markdown document, which includes the book title and the author.
+        Returns:
+            str: The Markdown-formatted header.
         """
         # Format the book title and author into a Markdown header
         md = "\n\n# {}\n".format(self.book_title)
@@ -217,9 +240,12 @@ class KindleOperation:
 
     def _create_md_body(self, args):
         """
-        Create the body for the Markdown document.
-        This method iterates over all chapters and notes, formatting them into a Markdown document. It also includes the source of each note if the
-        'location' argument is True.
+        Creates the body for the Markdown document by iterating over all chapters and notes,
+        and formatting them into a Markdown document.
+        Args:
+            args (argparse.Namespace): The parsed command line arguments.
+        Returns:
+            str: The Markdown-formatted body.
         """
         # Initialize an empty string for the Markdown body
         md = ""
@@ -242,11 +268,14 @@ class KindleOperation:
         return md
 
     @staticmethod
-    def _output_md(md, args):
+    def _output_markdown_to_destination(md, args):
         """
-        Output the given Markdown string to the appropriate location.
-        This method outputs the given Markdown string to the clipboard if the 'clipboard' argument is True. Otherwise, it writes the Markdown
-        string to a file. If the file already exists and the 'override' argument is False, it prints an error message.
+        Outputs the given Markdown string to the appropriate location, either to the clipboard or a file.
+        Args:
+            md (str): The Markdown-formatted string.
+            args (argparse.Namespace): The parsed command line arguments.
+        Returns:
+            None
         """
         print("\n")
 
@@ -265,7 +294,7 @@ class KindleOperation:
                 INFO("Output to {}".format(args.output), LOG_COLORS['GREEN'])
             else:
                 # If the output file exists and the 'override' argument is False, print an error message
-                INFO("Could not save .md file, because it already exists. Use --override flag.", LOG_COLORS['RED'])
+                INFO("The Markdown file has already exists. Use -y or --override flag.", LOG_COLORS['RED'])
         # print(args)
 
     # ================================================================================================================
@@ -276,6 +305,7 @@ class KindleOperation:
         Get the book title and author from the parsed HTML.
         """
         # This is a placeholder. The actual implementation will depend on the structure of your HTML file.
+        # Might extract book info from the HTML file or get from the internet
         pass
 
     def _extract_notes_only(self, soup):

@@ -65,18 +65,18 @@ Utilities
 │   
 ├───Kindle_Operation
 │   │   kindle_notes_html_to_md.py
-│   │       ['parse_command_line_args', 'main']
+│   │       ['parse_command_line_args', 'get_user_input', 'main']
 │   │   kindle_notes_html_to_md_README.md
 │   │   kindle_notes_html_to_md_screenshot.png
 │   │   kindle_operation.py
-│   │       ['__init__', '__init__', 'get_last_note', '__init__', 'parse_file', '_read_parse_file', '_parse_html', '_get_all_divs', '_process_divs', '_process_note_heading', '_process_note_text', 'output_md', '_create_md_header', '_create_md_body', '_output_md']
+│   │       ['__init__', '__init__', 'get_last_note', '__init__', 'parse_file', '_read_parse_file', '_get_all_divs', '_process_divs', '_process_note_heading', '_process_note_text', 'output_md', '_create_md_header', '_create_md_body', '_output_markdown_to_destination', '_get_book_info', '_extract_notes_only', '_extract_highlights_only', '_format_notes']
 │   │   
 │   ├───__init__
 │   
 ├───PDF_Operation
-│   │   delete_pdf_pages.py
+│   │   delete_pdf_page.py
 │   │       ['main']
-│   │   delete_pdf_pages_in_folder.py
+│   │   delete_pdf_page_in_folder.py
 │   │       ['main']
 │   │   get_title_from_pdf.py
 │   │       ['main']

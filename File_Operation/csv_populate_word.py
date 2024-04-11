@@ -1,19 +1,11 @@
 """
-Module name: csv_populate_word.py
+csv_populate_word.py
+
+Populates a Word template document with data from a CSV file.
 
 Description:
-Populates a Word template document with data from a CSV file, replacing placeholders in the template with values from each row of the CSV.
-
-Notes:
-
-The module utilizes the tkinter, pandas, and docxtpl modules for GUI functionality, CSV file handling, and Word document templating respectively.
-The csv_populate_word() function prompts the user to select a folder to save the populated Word documents, a Word template file (.docx or .doc),
-and a CSV file containing data.
-It iterates through each row in the CSV file, replacing placeholders in the Word template with corresponding values from each row.
-Placeholders and their corresponding values are defined by the filename and list_of_placeholders variables respectively, sourced from the config.py
-file.
-The populated Word documents are saved in the selected folder with filenames derived from the value in the specified filename column of the CSV.
-The main() function is provided for standalone execution, which initiates the population process and prints "done" upon completion.
+This module provides a function to populate a Word template document with data from a CSV file. It replaces placeholders in the template with
+values from each row of the CSV. It utilizes the pandas and docx modules for data manipulation and Word document operations respectively.
 """
 
 from config import filename, list_of_placeholders

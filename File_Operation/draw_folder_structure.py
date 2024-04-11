@@ -1,3 +1,13 @@
+"""
+draw_folder_structure.py
+
+Draws the structure of a specified folder.
+
+Description:
+This module provides a function to draw the structure of a specified folder. It prints the folder structure to the console, with indentation
+indicating subfolders. It utilizes the os module for directory operations.
+"""
+
 import ast
 import os
 
@@ -77,7 +87,8 @@ def main():
     Main function to execute the script.
     """
     # Ask the user for the directory path
-    folder = input("Enter the directory path: ")
+    print("Enter the directory path: ")
+    folder = input()
     # Check if the path exists, otherwise use a default path
     folder = folder if os.path.exists(folder) else r"D:\YK\Python\Utilities"
     # Define the folders to exclude

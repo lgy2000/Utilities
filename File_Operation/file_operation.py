@@ -1,3 +1,14 @@
+"""
+file_operation.py
+
+Provides various file operations such as copying folders, populating Word documents with CSV data, and converting Word documents to PDF.
+
+Description:
+This module defines a class that provides various file operations. These operations include copying folders, populating Word documents with CSV
+data, renaming files in a folder, and converting Word documents to PDF. It utilizes the os, pandas, docx, and tkinter modules for directory and
+file operations, data manipulation, Word document operations, and GUI functionality respectively.
+"""
+
 import os
 from datetime import datetime
 from shutil import copytree
@@ -23,6 +34,8 @@ class FileOperation:
         """copy the folder and its contents"""
         if file_show_folder_dialog:
             folder1 = filedialog.askdirectory()
+            if not folder1:
+                raise SystemExit("No input folder selected.")
         else:
             folder1 = input_folder
 
@@ -58,7 +71,6 @@ class FileOperation:
         # Prompt user to select a folder to save populated Word documents
         folder = filedialog.askdirectory()
         if not folder:
-            print("No folder selected.")
             return None, None, None
 
         # Prompt user to select Word template file
@@ -69,24 +81,24 @@ class FileOperation:
         # Prompt user to select CSV file containing data
         csv_file = filedialog.askopenfilename(filetypes=[("Excel Files", ".xlsx .xls .csv")])
         if not csv_file:
-            print("No CSV file selected.")
             return None, None, None
 
-        if not template_file or csv_file:
+        if not all([folder, template_file, csv_file]):
             raise SystemExit("No input file selected.")
+        else:
+            print("Folder: ", folder)
+            print("Template File: ", template_file)
+            print("CSV File: ", csv_file)
 
         return folder, template_file, csv_file
 
-    def csv_populate_word(self, filename, list_of_placeholders):
+    def csv_populate_word(self, filename_placeholder, list_of_placeholders):
         """
         Populates a Word template document with data from a CSV file, replacing placeholders
         in the template with values from each row of the CSV.
         """
         # Select files
         folder, template_file, csv_file = self.select_folder_word_csv()
-        if not all((folder, template_file, csv_file)):
-            return
-
         # Read CSV file into DataFrame
         try:
             dataframe = pd.read_csv(csv_file)
@@ -97,7 +109,7 @@ class FileOperation:
         # Iterate through each row in the CSV file
         for index, row in dataframe.iterrows():
             # Create context dictionary with placeholder values from current row
-            context = {filename: row[filename]}
+            context = {filename_placeholder: row[filename_placeholder]}
             for value in list_of_placeholders:
                 context[value] = row[value]
 
@@ -107,7 +119,7 @@ class FileOperation:
             # Populate template with context and save
             try:
                 docx.render(context)
-                file_name = f"{folder}/{row[filename]}.docx"
+                file_name = f"{folder}/{row[filename_placeholder]}.docx"
                 docx.save(file_name)
                 print(f"Created populated Word document: {file_name}")
             except Exception as e:
@@ -138,6 +150,8 @@ class FileOperation:
         root.withdraw()
         if file_show_folder_dialog == 1:
             folder = filedialog.askdirectory()
+            if not folder:
+                raise SystemExit("No input folder selected.")
         else:
             folder = file_input_folder
         convert(folder, folder)

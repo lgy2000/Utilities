@@ -20,7 +20,8 @@ file_input_folder = config[file_operation]['input_folder']
 file_input_file = config[file_operation]['input_file']
 
 filename = config[file_operation]['filename']
-list_of_placeholders = config[file_operation]['list_of_placeholders']
+filename_placeholders = config[file_operation]['filename_placeholders']
+list_of_placeholders = config[file_operation]['list_of_placeholders'].split(',')
 
 input_text = config[file_operation]['input_text']
 to_get_title_from_file = config.getint(file_operation, 'to_get_title_from_file')
@@ -42,3 +43,21 @@ text_operation = 'TEXT OPERATION'
 text_keyword = config[text_operation]['keyword']
 text_prefix_str = config[text_operation]['prefix_str']
 text_suffix_str = config[text_operation]['suffix_str']
+
+#
+#
+# config = {
+#     'csv_populate_word': {
+#         'filename': 'filename',
+#         'list_of_placeholders': ["tpno", "tagno"],
+#     },
+#     'modify_text': {
+#         'input_text': 'input input',
+#         'filename': 'another_filename',
+#     },
+#     'rotate_pdf': {
+#         'rotation_angle': 270,
+#         'filename': 'yet_another_filename',
+#     },
+#     # and so on for the other scripts...
+# }

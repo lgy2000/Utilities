@@ -4,8 +4,9 @@ kindle_notes_html_to_md.py
 Converts an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
 
 Description:
-This module parses command line arguments, reads the input HTML file, converts it to Markdown format using the KindleNotes class from
-kindle_operation module, and writes the output to a file or clipboard based on the arguments.
+This module provides a command-line interface to convert an HTML file of book notes exported from an Amazon Kindle
+to a Markdown document. It allows users to specify various options such as whether to include the location of notes/highlights,
+whether to export the output to the clipboard or a file, and whether to override an existing output file.
 """
 
 # !/usr/bin/env python3
@@ -24,10 +25,11 @@ logging_load_human_config()
 
 def parse_command_line_args():
     """
-    Parse the command line arguments passed to the script.
-
+    Parses the command line arguments passed to the script.
     Returns:
-        argparse.Namespace: The parsed command line arguments.
+        argparse.Namespace: The parsed command line arguments, which include the input HTML file,
+        whether to include the location of notes/highlights, whether to export the output to the clipboard or a file,
+        and whether to override an existing output file.
     """
     description = "Convert an HTML file of book notes exported from an Amazon " \
                   "Kindle to a Markdown document"
@@ -67,10 +69,11 @@ def parse_command_line_args():
 
 def get_user_input(arguments):
     """
-    Get user input for configurations if no arguments are provided from the system terminal.
-
+    Prompts the user for input if no arguments are provided from the system terminal.
     Args:
         arguments (argparse.Namespace): The parsed command line arguments.
+    Returns:
+        None
     """
     # Define a dictionary to store the prompts and corresponding attribute names
     configurations = {
@@ -88,12 +91,12 @@ def get_user_input(arguments):
     print("Press enter to skip other configurations or any other key to continue: ")
     other_args = input()
     # If the user didn't press enter, ask for the other configurations
-    if other_args != "":
+    if other_args:
         for attr, prompt in configurations.items():
             while True:  # Loop until a valid input is provided
                 user_input = input(prompt).lower()
-                if user_input in ['yes', 'no']:
-                    bool_map = {'yes': True, 'no': False}
+                if user_input in ['yes', 'no', '']:
+                    bool_map = {'yes': True, 'no': False, '': False}
                     setattr(arguments, attr, bool_map[user_input])  # Set the attribute based on the user input
                     break  # Break the loop as a valid input is provided
                 else:
@@ -106,14 +109,16 @@ def get_user_input(arguments):
         if os.path.splitext(user_input)[1] == '.md':
             setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
             break  # Break the loop as a valid input is provided
-        else:
-            print("Invalid input. Please try again.")
+        elif user_input in ['no', '']:
+            break
 
 
 def main():
     """
-    Main entry point of the script. It parses the command line arguments,reads the input HTML file, converts it to Markdown format, and writes the
-    output to a file or clipboard based on the arguments.
+    Main entry point of the script. It parses the command line arguments, reads the input HTML file,
+    converts it to Markdown format, and writes the output to a file or clipboard based on the arguments.
+    Returns:
+        None
     """
     try:
         args = parse_command_line_args()
