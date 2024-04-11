@@ -15,7 +15,7 @@ import os
 import pikepdf
 from PyPDF2 import PdfReader, PdfWriter
 
-from File_Operation.text_operation import TextOperation
+from Text_Operation.text_operation import TextOperation
 
 
 class PdfOperation:

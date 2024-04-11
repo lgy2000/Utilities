@@ -18,7 +18,7 @@ import pandas as pd
 from docx2pdf import convert
 from docxtpl import DocxTemplate
 
-from File_Operation.text_operation import TextOperation
+from Text_Operation.text_operation import TextOperation
 from PDF_Operation.pdf_operation import PdfOperation
 from config import file_show_folder_dialog, file_input_folder
 
