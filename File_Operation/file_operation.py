@@ -39,7 +39,7 @@ class FileOperation:
     def create_folders_in_folder(self, folder, text):
         self.text_ops.text = text
         folder_name = self.text_ops.clean_string()
-        if folder_name == "":
+        if not folder_name:
             raise SystemExit
         try:
             folder_path = os.path.join(folder, folder_name)
@@ -64,7 +64,6 @@ class FileOperation:
         # Prompt user to select Word template file
         template_file = filedialog.askopenfilename(filetypes=[("Word Files", ".docx .doc")])
         if not template_file:
-            print("No Word template file selected.")
             return None, None, None
 
         # Prompt user to select CSV file containing data
@@ -72,6 +71,9 @@ class FileOperation:
         if not csv_file:
             print("No CSV file selected.")
             return None, None, None
+
+        if not template_file or csv_file:
+            raise SystemExit("No input file selected.")
 
         return folder, template_file, csv_file
 
@@ -117,6 +119,8 @@ class FileOperation:
         root = Tk()
         root.withdraw()
         filename = filedialog.askopenfilename()
+        if not filename:
+            raise SystemExit("No input file selected.")
 
         # Read & write file
         file = open(filename, 'r+', encoding='utf-8')

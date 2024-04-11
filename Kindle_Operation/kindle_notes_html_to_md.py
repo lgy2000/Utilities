@@ -58,7 +58,7 @@ def parse_command_line_args():
 
     parser.add_argument('-o', '--output',
                         default='',
-                        help='A file to which save the Markdown document')
+                        help='Change markdown document filepath')
 
     arguments = parser.parse_args()
 
@@ -81,6 +81,8 @@ def get_user_input(arguments):
 
     # Get the input file from the user
     arguments.input = filedialog.askopenfilename(filetypes=[("HTML Files", ".html")])
+    if not arguments.input:
+        raise SystemExit("No input file selected.")
 
     # Ask the user if they want to skip other configurations
     print("Press enter to skip other configurations or any other key to continue: ")
@@ -97,19 +99,19 @@ def get_user_input(arguments):
                 else:
                     print("Invalid input. Please try again.")
 
-        # Handle the 'output' attribute separately
-        while True:
-            user_input = input("A file to which save the Markdown document (filepath/no) ").lower()
-            # if no output passed, output .md file next to original HTML notes
-            if user_input == 'no':
-                arguments.output = os.path.splitext(arguments.input)[0] + '.md'
-                break  # Break the loop as a valid input is provided
-            # if a valid file path is provided, set the output attribute
-            elif os.path.splitext(user_input)[1] == '.md':
-                setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
-                break  # Break the loop as a valid input is provided
-            else:
-                print("Invalid input. Please try again.")
+    # Handle the 'output' attribute separately
+    while True:
+        user_input = input("Change markdown document filepath (filepath/no) ").lower()
+        # if no output passed, output .md file next to original HTML notes
+        if user_input == 'no' or user_input == '':
+            arguments.output = os.path.splitext(arguments.input)[0] + '.md'
+            break  # Break the loop as a valid input is provided
+        # if a valid file path is provided, set the output attribute
+        elif os.path.splitext(user_input)[1] == '.md':
+            setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
+            break  # Break the loop as a valid input is provided
+        else:
+            print("Invalid input. Please try again.")
 
 
 def main():

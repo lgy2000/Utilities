@@ -9,9 +9,10 @@ The output format is particularly suitable for copy-pasting into
 
 # Quickstart
 
-Install python packages:
+Install python packages in the terminal with the following commands:
 
-    pip install -r requirements.txt
+    pip install pyperclip
+    pip install beautifulsoup4
 
 Convert the example notes:
 

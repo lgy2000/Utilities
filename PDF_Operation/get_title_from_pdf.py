@@ -24,6 +24,8 @@ def main():
     if not args.file:
         if file_show_file_dialog == 1:
             file = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
+            if not file:
+                raise SystemExit("No input file selected.")
         else:
             file = pdf_input_file
     else:
