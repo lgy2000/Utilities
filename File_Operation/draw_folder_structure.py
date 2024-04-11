@@ -14,7 +14,12 @@ import os
 
 def get_callable_functions(filepath, cache=None):
     """
-    Detect callable functions in a Python file.
+    Detects and returns the names of callable functions in a Python file.
+    Args:
+        filepath (str): The path to the Python file to be parsed.
+        cache (dict, optional): A cache to store previously parsed files. Defaults to None.
+    Returns:
+        list: A list of callable function names in the Python file.
     """
     if cache is None:
         cache = {}
@@ -42,6 +47,14 @@ def get_callable_functions(filepath, cache=None):
 
 
 def calculate_indent(level, is_dir=True):
+    """
+    Calculates the indentation based on the level of depth in the directory structure.
+    Args:
+        level (int): The level of depth in the directory structure.
+        is_dir (bool, optional): A flag indicating whether the current item is a directory. Defaults to True.
+    Returns:
+        str: The indentation string.
+    """
     if level > 0:
         indent = '│   ' * (level - 1) + '├───' if is_dir else '│   ' * level
     else:
@@ -50,11 +63,25 @@ def calculate_indent(level, is_dir=True):
 
 
 def print_with_indent(name, indent, file):
+    """
+    Prints a name with the specified indentation to the console and writes it to a file.
+    Args:
+        name (str): The name to be printed.
+        indent (str): The indentation string.
+        file (file): The file to write the name and indentation to.
+    """
     print('{}{}'.format(indent, name))
     file.write('{}{}\n'.format(indent, name))
 
 
 def print_callable_functions(filepath, indent, file):
+    """
+    Prints the callable functions in a Python file with the specified indentation to the console and writes them to a file.
+    Args:
+        filepath (str): The path to the Python file.
+        indent (str): The indentation string.
+        file (file): The file to write the callable functions and indentation to.
+    """
     callable_functions = get_callable_functions(filepath)
     if callable_functions:
         print('{}{}'.format(indent + '    ', callable_functions))
@@ -62,6 +89,13 @@ def print_callable_functions(filepath, indent, file):
 
 
 def draw_directory_structure(folder, exclude_folders, file):
+    """
+    Draws the structure of a specified folder, excluding certain subfolders, and writes it to a file.
+    Args:
+        folder (str): The path to the folder.
+        exclude_folders (list): A list of subfolder names to exclude.
+        file (file): The file to write the directory structure to.
+    """
     for root, dirs, files in os.walk(folder):
         if any(exclude_folder in root for exclude_folder in exclude_folders):
             continue
@@ -84,7 +118,7 @@ def draw_directory_structure(folder, exclude_folders, file):
 
 def main():
     """
-    Main function to execute the script.
+    Main function to execute the script. It prompts the user for a directory path, checks if the path exists, and draws the directory structure.
     """
     # Ask the user for the directory path
     print("Enter the directory path: ")

@@ -25,13 +25,20 @@ from config import file_show_folder_dialog, file_input_folder
 
 class FileOperation:
     def __init__(self):
+        """
+        Initializes the FileOperation class with no parameters.
+        """
         # No need to initialize anything
         self.text_ops = TextOperation(text="")
         self.pdf_ops = PdfOperation()
 
     @staticmethod
     def copy_folder(input_folder):
-        """copy the folder and its contents"""
+        """
+        Copies a selected folder along with all its contents and appends the current date and time to the copied folder's name.
+        Args:
+            input_folder (str): The path to the folder to be copied.
+        """
         if file_show_folder_dialog:
             folder1 = filedialog.askdirectory()
             if not folder1:
@@ -50,6 +57,12 @@ class FileOperation:
         return folder1, folder2
 
     def create_folders_in_folder(self, folder, text):
+        """
+        Creates a new folder with a specified name within a given folder.
+        Args:
+            folder (str): The path to the folder where the new folder will be created.
+            text (str): The name of the new folder.
+        """
         self.text_ops.text = text
         folder_name = self.text_ops.clean_string()
         if not folder_name:
@@ -64,9 +77,9 @@ class FileOperation:
     @staticmethod
     def select_folder_word_csv():
         """
-        Prompts the user to select a folder to save populated Word documents,
-        a Word template file, and a CSV file containing data.
-        Returns the paths of the selected files.
+        Prompts the user to select a folder to save populated Word documents, a Word template file, and a CSV file containing data.
+        Returns:
+            tuple: The paths of the selected folder, Word template file, and CSV file.
         """
         # Prompt user to select a folder to save populated Word documents
         folder = filedialog.askdirectory()
@@ -94,8 +107,10 @@ class FileOperation:
 
     def csv_populate_word(self, filename_placeholder, list_of_placeholders):
         """
-        Populates a Word template document with data from a CSV file, replacing placeholders
-        in the template with values from each row of the CSV.
+        Populates a Word template document with data from a CSV file, replacing placeholders in the template with values from each row of the CSV.
+        Args:
+            filename_placeholder (str): The placeholder in the Word template to be replaced with the filename.
+            list_of_placeholders (list): A list of placeholders in the Word template to be replaced with values from the CSV file.
         """
         # Select files
         folder, template_file, csv_file = self.select_folder_word_csv()
@@ -127,6 +142,11 @@ class FileOperation:
 
     @staticmethod
     def read_write_txt(text_input):
+        """
+        Reads a text file, appends a specified text to it, and writes the result back to the file.
+        Args:
+            text_input (str): The text to be appended to the file.
+        """
         # function that read & write .docx file
         root = Tk()
         root.withdraw()
@@ -145,7 +165,9 @@ class FileOperation:
 
     @staticmethod
     def word_to_pdf_in_folder():
-        """convert all the Word files in the folder into PDF files and save in another folder"""
+        """
+        Converts all Word documents in a selected folder to PDF format.
+        """
         root = Tk()
         root.withdraw()
         if file_show_folder_dialog == 1:
@@ -157,7 +179,11 @@ class FileOperation:
         convert(folder, folder)
 
     def rename_file_in_folder(self, folder):
-        """rename all the files in the folder with a pattern"""
+        """
+        Renames all files in a specified folder according to a certain pattern.
+        Args:
+            folder (str): The path to the folder containing the files to be renamed.
+        """
         counter = 1
 
         # iterate all the files in the folder & rename file
