@@ -9,6 +9,7 @@ a PDF file, checking if a string is present in a PDF file, and extracting a titl
 file operations.
 """
 
+# !/usr/bin/env python3
 import logging
 import os
 

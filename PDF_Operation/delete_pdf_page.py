@@ -11,6 +11,7 @@ The page number and file to process can be provided as command-line arguments or
 """
 
 # !/usr/bin/env python3
+
 import argparse
 import sys
 import traceback
@@ -18,8 +19,9 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from config import pdf_page_number, file_show_file_dialog, file_input_file
-from pdf_operation import PdfOperation
+from PDF_Operation.pdf_operation import PdfOperation
+from config import file_show_file_dialog
+from config import pdf_page_number, file_input_file
 
 logging_load_human_config()
 
@@ -44,7 +46,7 @@ def main():
         else:
             filename = args.file
 
-        print(f'Folder: {filename}')
+        print(f'File: {filename}')
         pdf_ops.delete_pdf_page(filename, delete_page_number)
         print(f'Delete page: {delete_page_number}')
         if len(sys.argv) > 1:

@@ -32,7 +32,7 @@ This directory contains modules and scripts related to file operations. The foll
 
 - `file_operation.py`: Contains a class that includes various operations related to files.
 - `text_operation.py`: Contains a class that includes various operations related to text.
-- `copy_folder.py`: Copies a folder.
+- `copy_folder_and_files.py`: Copies a folder.
 - `create_folder_in_folder_in_terminal.py`: Creates a folder within another folder from the terminal.
 - `create_folders_in_folder.py`: Creates multiple folders within a folder.
 - `csv_populate_word.py`: Populates a Word document with data from a CSV file.

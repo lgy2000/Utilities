@@ -1,12 +1,20 @@
 """
-kindle_notes_html_to_md.py
-
-Converts an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
+Module name: rename_file_in_folder.py
 
 Description:
-This module provides a command-line interface to convert an HTML file of book notes exported from an Amazon Kindle
-to a Markdown document. It allows users to specify various options such as whether to include the location of notes/highlights,
-whether to export the output to the clipboard or a file, and whether to override an existing output file.
+Renames all files within a specified folder according to configured patterns and modifications.
+
+Notes:
+- The module depends on the `os` module for file system operations and imports functionalities from other modules (`config.py`,
+`copy_folder_and_files.py`,
+`get_title_from_pdf.py`, `modify_text.py`).
+- The `rename_file_in_folder()` function prompts the user to input keyword, delimiter, prefix, and suffix if configured, and then iterates through
+all files in the specified folder to rename them accordingly.
+- If configured, it extracts titles from files using the specified keyword using functionality from the `get_title_from_pdf.py` module.
+- Prefixes and suffixes are added to filenames based on the configured options, and case modifications are applied as specified.
+- The `main()` function initiates the process by copying files from one folder to another using functionality from the `copy_folder_and_files.py`
+module,
+and then calls the `rename_file_in_folder()` function to rename files in the copied folder.
 """
 
 # !/usr/bin/env python3
@@ -19,6 +27,18 @@ from tkinter import filedialog
 from eglogging import logging_load_human_config, CRITICAL
 
 from kindle_operation import KindleOperation
+
+from config import file_input_folder
+from file_operation import FileOperation
+import argparse
+import sys
+import traceback
+from tkinter import filedialog
+
+from eglogging import logging_load_human_config, CRITICAL
+
+from PDF_Operation.pdf_operation import PdfOperation
+from config import file_show_file_dialog, pdf_input_file
 
 logging_load_human_config()
 
@@ -114,24 +134,14 @@ def get_user_input(arguments):
 
 
 def main():
-    """
-    Main entry point of the script. It parses the command line arguments, reads the input HTML file,
-    converts it to Markdown format, and writes the output to a file or clipboard based on the arguments.
-    Returns:
-        None
-    """
     try:
-        kindle_ops = KindleOperation()
+        file_ops = FileOperation()
         args = parse_command_line_args()
         # if no arguments are provided from the system terminal, get user input from the console
         if len(sys.argv) == 1:
             get_user_input(args)
-
-        print(f"{args.input} is processed.")
-        kindle_ops.parse_file(args.input)
-        kindle_ops.output_md(args)
-        if len(sys.argv) > 1:
-            input("Press any key to exit")
+        _, folder2 = file_ops.copy_folder_and_files(file_input_folder)
+        file_ops.rename_file_in_folder(folder2)
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()

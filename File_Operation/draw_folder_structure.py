@@ -8,8 +8,15 @@ This module provides a function to draw the structure of a specified folder. It 
 indicating subfolders. It utilizes the os module for directory operations.
 """
 
+# !/usr/bin/env python3
 import ast
 import os
+import sys
+import traceback
+
+from eglogging import logging_load_human_config, CRITICAL
+
+logging_load_human_config()
 
 
 def get_callable_functions(filepath, cache=None):
@@ -120,20 +127,25 @@ def main():
     """
     Main function to execute the script. It prompts the user for a directory path, checks if the path exists, and draws the directory structure.
     """
-    # Ask the user for the directory path
-    print("Enter the directory path: ")
-    folder = input()
-    # Check if the path exists, otherwise use a default path
-    folder = folder if os.path.exists(folder) else r"D:\YK\Python\Utilities"
-    # Define the folders to exclude
-    exclude_folders = ["__pycache__", ".temp", ".idea", ".git", ".test", "youtube_transcript_api"]
-    # Draw the directory structure
-    md_file = os.path.join(folder, 'project_structure.md')
-    with open(md_file, 'w', encoding='utf-8') as file:
+    try:
+        # Ask the user for the directory path
+        print("Enter the directory path: ")
+        folder = input()
+        # Check if the path exists, otherwise use a default path
+        folder = folder if os.path.exists(folder) else r"D:\YK\Python\Utilities"
+        # Define the folders to exclude
+        exclude_folders = ["__pycache__", ".temp", ".idea", ".git", ".test", "youtube_transcript_api"]
         # Draw the directory structure
-        file.write('```')
-        draw_directory_structure(folder, exclude_folders, file)
-        file.write('```')
+        md_file = os.path.join(folder, 'project_structure.md')
+        with open(md_file, 'w', encoding='utf-8') as file:
+            # Draw the directory structure
+            file.write('```')
+            draw_directory_structure(folder, exclude_folders, file)
+            file.write('```')
+    except Exception as ex:
+        CRITICAL("Exception: {}".format(ex))
+        traceback.print_exc()
+        sys.exit(1)
 
 
 if __name__ == '__main__':

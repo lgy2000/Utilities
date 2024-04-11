@@ -40,7 +40,7 @@ Utilities
 │   ├───__init__
 │   
 ├───File_Operation
-│   │   copy_folder.py
+│   │   copy_folder_and_files.py
 │   │       ['main']
 │   │   create_folders_in_folder.py
 │   │       ['main']
@@ -49,7 +49,7 @@ Utilities
 │   │   draw_folder_structure.py
 │   │       ['get_callable_functions', 'calculate_indent', 'print_with_indent', 'print_callable_functions', 'draw_directory_structure', 'main']
 │   │   file_operation.py
-│   │       ['__init__', 'copy_folder', 'create_folders_in_folder', 'select_folder_word_csv', 'csv_populate_word', 'read_write_txt', 'word_to_pdf_in_folder', 'rename_file_in_folder']
+│   │       ['__init__', 'copy_folder_and_files', 'create_folders_in_folder', 'select_folder_word_csv', 'csv_populate_word', 'read_write_txt', 'word_to_pdf_in_folder', 'rename_file_in_folder']
 │   │   modify_text.py
 │   │       ['main']
 │   │   read_write_txt.py

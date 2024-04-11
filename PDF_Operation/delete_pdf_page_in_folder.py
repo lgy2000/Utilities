@@ -34,10 +34,11 @@ def main():
         # Use the page_number from args if it's not None, otherwise use the one from config
         delete_page_number = args.page_number if args.page_number is not None else pdf_page_number
         if not args.folder:
-            _, folder = file_ops.copy_folder(pdf_input_folder)
+            _, folder = file_ops.copy_folder_and_files(pdf_input_folder)
         else:
             folder = args.folder
 
+        print(f'Folder: {folder}')
         pdf_ops.delete_pdf_page_in_folder(folder, delete_page_number)
         print(f'Delete page: {delete_page_number}')
         if len(sys.argv) > 1:

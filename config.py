@@ -14,6 +14,8 @@ email_folder = config[email_operation]['email_folder']
 require_original_filename = config.getboolean(email_operation, 'require_original_filename')
 
 file_operation = 'FILE OPERATION'
+file_allowed_paths = config[file_operation]['allowed_paths'].split('"')
+file_allowed_paths = [item for item in file_allowed_paths if item != '']
 file_show_folder_dialog = config.getboolean(file_operation, 'show_folder_dialog')
 file_show_file_dialog = config.getboolean(file_operation, 'show_file_dialog')
 file_input_folder = config[file_operation]['input_folder']

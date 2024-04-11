@@ -35,7 +35,7 @@ def main():
         # Use the rotation_angle from args if it's not None, otherwise use the one from config
         _rotation_angle = args.rotation_angle if args.rotation_angle is not None else rotation_angle
         if not args.file:
-            _, folder = file_ops.copy_folder(pdf_input_folder)
+            _, folder = file_ops.copy_folder_and_files(pdf_input_folder)
         else:
             folder = args.folder
         pdf_ops.rotate_pdf_in_folder(folder, rotation_angle)

@@ -8,14 +8,21 @@ This module provides a function to create multiple folders within a specified di
 text file. It utilizes the os module for directory and file operations.
 """
 
+# !/usr/bin/env python3
+import sys
+import traceback
 from tkinter import filedialog
+
+from eglogging import logging_load_human_config, CRITICAL
 
 from file_operation import FileOperation
 
+logging_load_human_config()
+
 
 def main():
-    print("Enter folder names: ")
     try:
+        print("Enter folder names: ")
         file_ops = FileOperation()
         folder = filedialog.askdirectory()
         if not folder:
@@ -33,7 +40,9 @@ def main():
         else:
             print("No folder selected.")
     except OSError as e:
-        print(f"Error: {e}")
+        CRITICAL("Exception: {}".format(e))
+        traceback.print_exc()
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -1,14 +1,18 @@
 """
 file_operation.py
 
-Provides various file operations such as copying folders, populating Word documents with CSV data, and converting Word documents to PDF.
+Module for performing various file operations including reading, writing, renaming, and converting files.
 
 Description:
-This module defines a class that provides various file operations. These operations include copying folders, populating Word documents with CSV
-data, renaming files in a folder, and converting Word documents to PDF. It utilizes the os, pandas, docx, and tkinter modules for directory and
-file operations, data manipulation, Word document operations, and GUI functionality respectively.
+This module provides a collection of methods for performing various operations on files. It includes methods for reading and writing text files,
+validating file paths, converting Word documents to PDF, and renaming files in a folder. The module utilizes the `tkinter` library for GUI
+functionality to prompt the user to select files or folders, the `pandas` library for reading CSV files, the `docx2pdf` library for converting Word
+documents to PDF, and the `os` library for file and directory operations. The `FileOperation` class is the main class in this module,
+which encapsulates all the file operation methods. The `main()` function is provided for standalone execution, which initiates the file operations
+and prints "done" upon completion.
 """
 
+# !/usr/bin/env python3
 import os
 from datetime import datetime
 from shutil import copytree
@@ -17,10 +21,13 @@ from tkinter import filedialog, Tk
 import pandas as pd
 from docx2pdf import convert
 from docxtpl import DocxTemplate
+from eglogging import logging_load_human_config
 
-from Text_Operation.text_operation import TextOperation
 from PDF_Operation.pdf_operation import PdfOperation
-from config import file_show_folder_dialog, file_input_folder
+from Text_Operation.text_operation import TextOperation
+from config import file_show_folder_dialog
+
+logging_load_human_config()
 
 
 class FileOperation:
@@ -46,10 +53,39 @@ class FileOperation:
         else:
             folder1 = input_folder
 
-        # copy folder with time of now
+        # folder path with time of now
         now = datetime.now().strftime("%Y.%m.%d %H.%M")
-
         folder2 = f'{folder1} {now}'
+
+        # Create the new folder structure
+        for dirpath, dirnames, filenames in os.walk(folder1):
+            structure = os.path.join(folder2, dirpath[len(folder1):])
+            if not os.path.isdir(structure):
+                os.mkdir(structure)
+
+        print(folder1)
+        print(folder2)
+        return folder1, folder2
+
+    @staticmethod
+    def copy_folder_and_files(input_folder):
+        """
+        Copies a selected folder along with all its contents and appends the current date and time to the copied folder's name.
+        Args:
+            input_folder (str): The path to the folder to be copied.
+        """
+        if file_show_folder_dialog:
+            folder1 = filedialog.askdirectory()
+            if not folder1:
+                raise SystemExit("No input folder selected.")
+        else:
+            folder1 = input_folder
+
+        # folder path with time of now
+        now = datetime.now().strftime("%Y.%m.%d %H.%M")
+        folder2 = f'{folder1} {now}'
+
+        # copy folder
         copytree(folder1, folder2)
 
         print(folder1)
@@ -67,12 +103,9 @@ class FileOperation:
         folder_name = self.text_ops.clean_string()
         if not folder_name:
             raise SystemExit
-        try:
-            folder_path = os.path.join(folder, folder_name)
-            os.makedirs(folder_path)
-            print(f"Created folder '{folder_name}'.")
-        except OSError as e:
-            print(f"Error: {e}")
+        folder_path = os.path.join(folder, folder_name)
+        os.makedirs(folder_path)
+        print(f"Created folder '{folder_name}'.")
 
     @staticmethod
     def select_folder_word_csv():
@@ -115,11 +148,7 @@ class FileOperation:
         # Select files
         folder, template_file, csv_file = self.select_folder_word_csv()
         # Read CSV file into DataFrame
-        try:
-            dataframe = pd.read_csv(csv_file)
-        except Exception as e:
-            print(f"Error reading CSV file: {e}")
-            return
+        dataframe = pd.read_csv(csv_file)
 
         # Iterate through each row in the CSV file
         for index, row in dataframe.iterrows():
@@ -132,51 +161,69 @@ class FileOperation:
             docx = DocxTemplate(template_file)
 
             # Populate template with context and save
-            try:
-                docx.render(context)
-                file_name = f"{folder}/{row[filename_placeholder]}.docx"
-                docx.save(file_name)
-                print(f"Created populated Word document: {file_name}")
-            except Exception as e:
-                print(f"Error populating Word document: {e}")
+            docx.render(context)
+            file_name = f"{folder}/{row[filename_placeholder]}.docx"
+            docx.save(file_name)
+            print(f"Created Word document: {file_name}")
 
-    @staticmethod
-    def read_write_txt(text_input):
+    def is_filepath_valid(self, filename, allowed_paths):
+        """
+        Validates a file path to prevent traversal attacks.
+        Args:
+            filename (str): The absolute path to the file.
+            allowed_paths (list): A list of paths to directories where files can be accessed.
+        Returns:
+            bool: True if the file path is valid, False otherwise.
+        """
+        # Normalize and get absolute path
+        filename = os.path.abspath(os.path.normpath(filename))
+
+        # Check if file path starts with any of the allowed paths
+        for path in allowed_paths:
+            if filename.startswith(os.path.abspath(os.path.normpath(path))) and not filename.startswith(".."):
+                return True
+        return False
+
+    def read_write_txt(self, filename, text_input, allowed_paths):
         """
         Reads a text file, appends a specified text to it, and writes the result back to the file.
+        If the file does not exist, it creates the file.
         Args:
+            filename (str): The absolute path to the text file.
             text_input (str): The text to be appended to the file.
+            allowed_paths (list): The path to the directory where files can be written.
         """
-        # function that read & write .docx file
+        # function that read & write .txt file
         root = Tk()
         root.withdraw()
-        filename = filedialog.askopenfilename()
-        if not filename:
-            raise SystemExit("No input file selected.")
+
+        # Validate and sanitize the filename
+        if not self.is_filepath_valid(filename, allowed_paths):
+            raise ValueError("Filepath is not accessible.")
+
+        # Check if file exists, if not, create it
+        if not os.path.exists(filename):
+            open(filename, 'w').close()
 
         # Read & write file
-        file = open(filename, 'r+', encoding='utf-8')
-        file.write(str(text_input))
-        file.close()
+        with open(filename, 'r+', encoding='utf-8') as file:
+            file.write(str(text_input))
 
         # Read the latest file
-        file = open(filename, 'r', encoding='utf-8')
-        file.close()
+        with open(filename, 'r', encoding='utf-8') as file:
+            open(filename, 'r').close()
 
     @staticmethod
-    def word_to_pdf_in_folder():
+    def word_to_pdf_in_folder(folder):
         """
-        Converts all Word documents in a selected folder to PDF format.
+        Converts all Word documents in a specified folder to PDF format.
+        Args:
+            folder (str): The path to the folder containing the Word documents to be converted.
         """
         root = Tk()
         root.withdraw()
-        if file_show_folder_dialog == 1:
-            folder = filedialog.askdirectory()
-            if not folder:
-                raise SystemExit("No input folder selected.")
-        else:
-            folder = file_input_folder
-        convert(folder, folder)
+        folder1, folder2 = FileOperation.copy_folder(folder)
+        convert(folder1, folder2)
 
     def rename_file_in_folder(self, folder):
         """
