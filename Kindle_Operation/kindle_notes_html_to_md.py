@@ -13,8 +13,9 @@ import argparse
 import os
 import sys
 import traceback
+from tkinter import filedialog
 
-from eglogging import *
+from eglogging import logging_load_human_config, CRITICAL
 
 from kindle_operation import KindleOperation
 
@@ -48,7 +49,7 @@ def parse_command_line_args():
 
     parser.add_argument('-c', '--clipboard',
                         action='store_true',
-                        help='Use to export .md directly to the clipboard instead of file')
+                        help='Whether to export .md directly to the clipboard instead of file')
 
     parser.add_argument('-y', '--override',
                         action='store_true',
@@ -61,25 +62,73 @@ def parse_command_line_args():
 
     arguments = parser.parse_args()
 
-    # if no output passed, output .md file next to original HTML notes
-    arguments.output = os.path.splitext(arguments.input)[0] + '.md'
-
     return arguments
+
+
+def get_user_input(arguments):
+    """
+    Get user input for configurations if no arguments are provided from the system terminal.
+
+    Args:
+        arguments (argparse.Namespace): The parsed command line arguments.
+    """
+    # Define a dictionary to store the prompts and corresponding attribute names
+    configurations = {
+        'location': "Whether to skip export of location of notes/highlights? (yes/no) ",
+        'clipboard': "Whether to export .md directly to the clipboard instead of a file? (yes/no) ",
+        'override': "Whether to override .md file in case if one already exists? (yes/no) "
+    }
+
+    # Get the input file from the user
+    arguments.input = filedialog.askopenfilename(filetypes=[("HTML Files", ".html")])
+
+    # Ask the user if they want to skip other configurations
+    print("Press enter to skip other configurations or any other key to continue: ")
+    other_args = input()
+    # If the user didn't press enter, ask for the other configurations
+    if other_args != "":
+        for attr, prompt in configurations.items():
+            while True:  # Loop until a valid input is provided
+                user_input = input(prompt).lower()
+                if user_input in ['yes', 'no']:
+                    bool_map = {'yes': True, 'no': False}
+                    setattr(arguments, attr, bool_map[user_input])  # Set the attribute based on the user input
+                    break  # Break the loop as a valid input is provided
+                else:
+                    print("Invalid input. Please try again.")
+
+        # Handle the 'output' attribute separately
+        while True:
+            user_input = input("A file to which save the Markdown document (filepath/no) ").lower()
+            # if no output passed, output .md file next to original HTML notes
+            if user_input == 'no':
+                arguments.output = os.path.splitext(arguments.input)[0] + '.md'
+                break  # Break the loop as a valid input is provided
+            # if a valid file path is provided, set the output attribute
+            elif os.path.splitext(user_input)[1] == '.md':
+                setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
+                break  # Break the loop as a valid input is provided
+            else:
+                print("Invalid input. Please try again.")
 
 
 def main():
     """
-    Main entry point of the script. It parses the command line arguments,
-    reads the input HTML file, converts it to Markdown format, and writes
-    the output to a file or clipboard based on the arguments.
+    Main entry point of the script. It parses the command line arguments,reads the input HTML file, converts it to Markdown format, and writes the
+    output to a file or clipboard based on the arguments.
     """
     try:
         args = parse_command_line_args()
+        # if no arguments are provided from the system terminal, get user input from the console
+        if len(sys.argv) == 1:
+            get_user_input(args)
+
+        print(f"{args.input} is processed.")
         kindle_ops = KindleOperation()
         kindle_ops.parse_file(args.input)
         kindle_ops.output_md(args)
-        input("Press any key to exit")
-
+        if len(sys.argv) > 1:
+            input("Press any key to exit")
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()
