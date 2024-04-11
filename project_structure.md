@@ -69,7 +69,7 @@ Utilities
 │   │   kindle_notes_html_to_md_README.md
 │   │   kindle_notes_html_to_md_screenshot.png
 │   │   kindle_operation.py
-│   │       ['__init__', '__init__', 'get_last_note', '__init__', 'parse_file', '_read_file', '_parse_html', '_get_all_divs', '_process_divs', '_process_note_heading', '_process_note_text', 'output_md', '_create_md_header', '_create_md_body', '_output_md']
+│   │       ['__init__', '__init__', 'get_last_note', '__init__', 'parse_file', '_read_parse_file', '_parse_html', '_get_all_divs', '_process_divs', '_process_note_heading', '_process_note_text', 'output_md', '_create_md_header', '_create_md_body', '_output_md']
 │   │   
 │   ├───__init__
 │   
