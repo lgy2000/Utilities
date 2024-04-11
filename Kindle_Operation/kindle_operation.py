@@ -248,12 +248,16 @@ class KindleOperation:
         This method outputs the given Markdown string to the clipboard if the 'clipboard' argument is True. Otherwise, it writes the Markdown
         string to a file. If the file already exists and the 'override' argument is False, it prints an error message.
         """
-        # If the 'clipboard' argument is True, copy the Markdown string to the clipboard
         print("\n")
+
+        # If the 'clipboard' argument is True, copy the Markdown string to the clipboard
         if args.clipboard:
             pyperclip.copy(md)
             INFO("Copied the output to clipboard", LOG_COLORS['GREEN'])
         else:
+            # If the 'output' argument is not provided, set the output file to the same location as the input file with a .md extension
+            if not args.output:
+                args.output = os.path.splitext(args.input)[0] + '.md'
             # If the output file doesn't exist or the 'override' argument is True, write the Markdown string to the file
             if not os.path.exists(args.output) or args.override:
                 with open(args.output, 'w', encoding='utf8') as fp:
@@ -262,6 +266,7 @@ class KindleOperation:
             else:
                 # If the output file exists and the 'override' argument is False, print an error message
                 INFO("Could not save .md file, because it already exists. Use --override flag.", LOG_COLORS['RED'])
+        print(args)
 
     # ================================================================================================================
     # TO-DO LIST

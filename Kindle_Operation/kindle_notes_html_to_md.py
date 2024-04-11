@@ -103,11 +103,7 @@ def get_user_input(arguments):
     while True:
         user_input = input("Change markdown document filepath (filepath/no) ").lower()
         # if no output passed, output .md file next to original HTML notes
-        if user_input == 'no' or user_input == '':
-            arguments.output = os.path.splitext(arguments.input)[0] + '.md'
-            break  # Break the loop as a valid input is provided
-        # if a valid file path is provided, set the output attribute
-        elif os.path.splitext(user_input)[1] == '.md':
+        if os.path.splitext(user_input)[1] == '.md':
             setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
             break  # Break the loop as a valid input is provided
         else:
