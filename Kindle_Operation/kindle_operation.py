@@ -266,7 +266,7 @@ class KindleOperation:
             else:
                 # If the output file exists and the 'override' argument is False, print an error message
                 INFO("Could not save .md file, because it already exists. Use --override flag.", LOG_COLORS['RED'])
-        print(args)
+        # print(args)
 
     # ================================================================================================================
     # TO-DO LIST

@@ -1,11 +1,22 @@
-# Kindle Notes to MD
+# Kindle Notes HTML to MD
 
 Convert an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
+Originally forked from https://github.com/krystofl/kindle-notes-to-md.
 
 The output format is particularly suitable for copy-pasting into
 [Roam Research](https://roamresearch.com):
 
 ![Screenshot](kindle_notes_html_to_md_screenshot.png)
+
+<!-- TOC -->
+
+* [Kindle Notes HTML to MD](#kindle-notes-html-to-md)
+* [Quickstart](#quickstart)
+* [Optional functions](#optional-functions)
+  * [Copying the output directly to the clipboard](#copying-the-output-directly-to-the-clipboard)
+* [How to get your notes in HTML format](#how-to-get-your-notes-in-html-format)
+
+<!-- TOC -->
 
 # Quickstart
 
@@ -14,16 +25,9 @@ Install python packages in the terminal with the following commands:
     pip install pyperclip
     pip install beautifulsoup4
 
-Convert the example notes:
+Convert the example notes with the relative path `.test\example_notebook.html` (or an absolute path) to a Markdown file with override function:
 
-    kindle_notes_to_md.py example_notebook.html
-
-Optional arguments:
-
-    -nl, --no-location    Do not include the source location of each note/highlight
-    -c, --clipboard       Export .md directly to the clipboard instead of file
-    -y, --override        Override .md file if one already exists
-    -o OUTPUT, --output   A file to which save the Markdown document
+    python kindle_notes_html_to_md.py -y ".test\example_notebook.html" 
 
 You can then open `example_notebook.md` in your favorite text editor.
 
@@ -33,6 +37,13 @@ Copy-pasting into Roam no longer works.
 
 Roam seems to be in decline; you may wish to explore alternatives,
 such as [Obsidian](https://obsidian.md/).
+
+# Optional functions
+
+    -nl, --no-location    Do not include the source location of each note/highlight
+    -c, --clipboard       Export .md directly to the clipboard instead of file
+    -y, --override        Override .md file if one already exists
+    -o OUTPUT, --output   A file to which save the Markdown document
 
 ## Copying the output directly to the clipboard
 
