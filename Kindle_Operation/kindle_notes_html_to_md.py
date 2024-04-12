@@ -43,7 +43,7 @@ def parse_command_line_args():
         and whether to override an existing output file.
     """
     description = "Convert an HTML file of book notes exported from an Amazon " \
-                  "Kindle to a Markdown document"
+                  "Kindle to a Markdown document."
     parser = argparse.ArgumentParser(description=description)
 
     test_file = get_test_file()
@@ -52,7 +52,7 @@ def parse_command_line_args():
     parser.add_argument('input',
                         nargs='?',  # makes the input argument optional
                         default=test_file,  # default value if no input argument is provided
-                        help='Input HTML file')
+                        help='Input HTML filepath')
 
     parser.add_argument('-nl', '--no-location',
                         dest='location',
