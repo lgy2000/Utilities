@@ -23,6 +23,17 @@ from kindle_operation import KindleOperation
 logging_load_human_config()
 
 
+def get_test_file():
+    """
+    Get the test file path.
+    Returns:
+        str: The test file path.
+    """
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+    test_file = os.path.join(base_dir, ".test", "example_notebook.html")
+    return test_file
+
+
 def parse_command_line_args():
     """
     Parses the command line arguments passed to the script.
@@ -35,12 +46,12 @@ def parse_command_line_args():
                   "Kindle to a Markdown document"
     parser = argparse.ArgumentParser(description=description)
 
-    base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+    test_file = get_test_file()
 
     # positional input argument
     parser.add_argument('input',
                         nargs='?',  # makes the input argument optional
-                        default=os.path.join(base_dir, ".test", "example_notebook.html"),  # default value if no input argument is provided
+                        default=test_file,  # default value if no input argument is provided
                         help='Input HTML file')
 
     parser.add_argument('-nl', '--no-location',
@@ -85,7 +96,8 @@ def get_user_input(arguments):
     # Get the input file from the user
     arguments.input = filedialog.askopenfilename(filetypes=[("HTML Files", ".html")])
     if not arguments.input:
-        raise SystemExit("No input file selected.")
+        test_file = get_test_file()
+        setattr(arguments, 'input', test_file)
 
     # Ask the user if they want to skip other configurations
     print("Press enter to skip other configurations or any other key to continue: ")
