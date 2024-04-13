@@ -25,7 +25,6 @@ from eglogging import logging_load_human_config
 
 from PDF_Operation.pdf_operation import PdfOperation
 from Text_Operation.text_operation import TextOperation
-from config import file_show_folder_dialog
 
 logging_load_human_config()
 
@@ -40,13 +39,13 @@ class FileOperation:
         self.pdf_ops = PdfOperation()
 
     @staticmethod
-    def copy_folder(input_folder):
+    def copy_folder_structure(input_folder=None):
         """
-        Copies a selected folder along with all its contents and appends the current date and time to the copied folder's name.
+        Copies a selected folder structure and appends the current date and time to the copied folder's name.
         Args:
             input_folder (str): The path to the folder to be copied.
         """
-        if file_show_folder_dialog:
+        if input_folder is None:
             folder1 = filedialog.askdirectory()
             if not folder1:
                 raise SystemExit("No input folder selected.")
@@ -58,8 +57,8 @@ class FileOperation:
         folder2 = f'{folder1} {now}'
 
         # Create the new folder structure
-        for dirpath, dirnames, filenames in os.walk(folder1):
-            structure = os.path.join(folder2, dirpath[len(folder1):])
+        for folder_path, folder_names, filenames in os.walk(folder1):
+            structure = os.path.join(folder2, folder_path[len(folder1):])
             if not os.path.isdir(structure):
                 os.mkdir(structure)
 
@@ -68,13 +67,13 @@ class FileOperation:
         return folder1, folder2
 
     @staticmethod
-    def copy_folder_and_files(input_folder):
+    def copy_folder_and_files(input_folder=None):
         """
         Copies a selected folder along with all its contents and appends the current date and time to the copied folder's name.
         Args:
             input_folder (str): The path to the folder to be copied.
         """
-        if file_show_folder_dialog:
+        if input_folder is None:
             folder1 = filedialog.askdirectory()
             if not folder1:
                 raise SystemExit("No input folder selected.")
@@ -166,7 +165,8 @@ class FileOperation:
             docx.save(file_name)
             print(f"Created Word document: {file_name}")
 
-    def is_filepath_valid(self, filename, allowed_paths):
+    @staticmethod
+    def is_filepath_valid(filename, allowed_paths):
         """
         Validates a file path to prevent traversal attacks.
         Args:
@@ -213,8 +213,9 @@ class FileOperation:
         with open(filename, 'r', encoding='utf-8') as file:
             open(filename, 'r').close()
 
-    @staticmethod
-    def word_to_pdf_in_folder(folder):
+        return file
+
+    def word_to_pdf_in_folder(self, folder):
         """
         Converts all Word documents in a specified folder to PDF format.
         Args:
@@ -222,16 +223,27 @@ class FileOperation:
         """
         root = Tk()
         root.withdraw()
-        folder1, folder2 = FileOperation.copy_folder(folder)
+        folder1, folder2 = self.copy_folder_structure(folder)
         convert(folder1, folder2)
 
-    def rename_file_in_folder(self, folder):
+    def rename_file_in_folder(self, args):
         """
         Renames all files in a specified folder according to a certain pattern.
         Args:
-            folder (str): The path to the folder containing the files to be renamed.
+            args (argparse.Namespace): The parsed command line arguments.
         """
         counter = 1
+        folder = args.input
+        self.text_ops.to_add_title_from_file = args.to_add_title_from_file
+
+        self.text_ops.to_remove_prefix = args.to_remove_prefix
+        self.text_ops.to_add_prefix = args.to_add_prefix
+        self.text_ops.to_add_suffix = args.to_add_suffix
+        self.text_ops.to_change_case = args.to_change_case
+        self.text_ops.keyword = args.keyword if self.text_ops.to_add_title_from_file == 1 else ""
+        self.text_ops.prefix_delimiter = args.prefix_delimiter if self.text_ops.to_remove_prefix == 1 else ""
+        self.text_ops.prefix_str = args.prefix_str if self.text_ops.to_add_prefix == 3 else ""
+        self.text_ops.suffix_str = args.suffix_str if self.text_ops.to_add_suffix == 3 else ""
 
         # iterate all the files in the folder & rename file
         for count, file in enumerate(os.listdir(folder)):
@@ -239,7 +251,7 @@ class FileOperation:
             file1 = os.path.join(folder, file)
             full_filename = os.path.split(file1)[1]
 
-            if self.text_ops.to_get_title_from_file == 1:
+            if self.text_ops.to_add_title_from_file == 1:
                 # detect for file type 
                 # and create functions to get title from word/excel/text in the future 
                 filename1 = self.pdf_ops.get_title_from_pdf(file1, keyword="Title")

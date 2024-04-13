@@ -4,7 +4,7 @@ from datetime import datetime
 
 class TextOperation:
     def __init__(self, text,
-                 to_get_title_from_file=0,
+                 to_add_title_from_file=0,
                  to_remove_prefix=0,
                  to_add_prefix=0,
                  to_add_suffix=0,
@@ -17,7 +17,7 @@ class TextOperation:
                  prefix_str="",
                  suffix_str=""):
         self.text = text
-        self.to_get_title_from_file = to_get_title_from_file
+        self.to_add_title_from_file = to_add_title_from_file
         self.to_remove_prefix = to_remove_prefix
         self.to_add_prefix = to_add_prefix
         self.to_add_suffix = to_add_suffix
@@ -26,7 +26,7 @@ class TextOperation:
         self.prefix = prefix
         self.suffix = suffix
         self.page_text = page_text
-        self.keyword = keyword if self.to_get_title_from_file == 1 else ""
+        self.keyword = keyword if self.to_add_title_from_file == 1 else ""
         self.prefix_delimiter = prefix_delimiter if self.to_remove_prefix == 1 else ""
         self.prefix_str = prefix_str if self.to_add_prefix == 3 else ""
         self.suffix_str = suffix_str if self.to_add_suffix == 3 else ""

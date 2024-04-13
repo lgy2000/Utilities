@@ -24,7 +24,7 @@ from text_operation import TextOperation
 
 def main():
     pdf_ops = PdfOperation()
-    text_ops = TextOperation(text=input_text, to_get_title_from_file=0,
+    text_ops = TextOperation(text=input_text, to_add_title_from_file=0,
                              to_remove_prefix=0,
                              to_add_prefix=0,
                              to_add_suffix=0,

@@ -26,61 +26,75 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from kindle_operation import KindleOperation
-
-from config import file_input_folder
 from file_operation import FileOperation
-import argparse
-import sys
-import traceback
-from tkinter import filedialog
-
-from eglogging import logging_load_human_config, CRITICAL
-
-from PDF_Operation.pdf_operation import PdfOperation
-from config import file_show_file_dialog, pdf_input_file
 
 logging_load_human_config()
+
+
+def get_test_folder():
+    """
+    Get the test file path.
+    Returns:
+        str: The test file path.
+    """
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+    test_folder = os.path.join(base_dir, r".test\test")
+    return test_folder
 
 
 def parse_command_line_args():
     """
     Parses the command line arguments passed to the script.
     Returns:
-        argparse.Namespace: The parsed command line arguments, which include the input HTML file,
-        whether to include the location of notes/highlights, whether to export the output to the clipboard or a file,
-        and whether to override an existing output file.
+        argparse.Namespace: The parsed command line arguments.
     """
-    description = "Convert an HTML file of book notes exported from an Amazon " \
-                  "Kindle to a Markdown document"
+    description = "Renames all files within a specified folder " \
+                  "according to configured patterns and modifications."
     parser = argparse.ArgumentParser(description=description)
 
-    base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
+    test_folder = get_test_folder()
 
     # positional input argument
     parser.add_argument('input',
                         nargs='?',  # makes the input argument optional
-                        default=os.path.join(base_dir, ".test", "example_notebook.html"),  # default value if no input argument is provided
-                        help='Input HTML file')
+                        default=test_folder,  # default value if no input argument is provided
+                        help='Input folder path')
 
-    parser.add_argument('-nl', '--no-location',
-                        dest='location',
-                        action='store_false',
-                        default=True,
-                        help='Whether to skip export of location of notes/highlights')
-
-    parser.add_argument('-c', '--clipboard',
+    parser.add_argument('--to-add-title-from-file',
                         action='store_true',
-                        help='Whether to export .md directly to the clipboard instead of file')
+                        help='Whether to add title from file')
 
-    parser.add_argument('-y', '--override',
+    parser.add_argument('--to-remove-prefix',
                         action='store_true',
-                        default=False,
-                        help='Whether to override .md file in case if one already exists')
+                        help='Whether to remove prefix')
 
-    parser.add_argument('-o', '--output',
+    parser.add_argument('--to-add-prefix',
+                        action='store_true',
+                        help='Whether to add prefix')
+
+    parser.add_argument('--to-add-suffix',
+                        action='store_true',
+                        help='Whether to add suffix')
+
+    parser.add_argument('--to-change-case',
+                        action='store_true',
+                        help='Whether to change case')
+
+    parser.add_argument('--keyword',
                         default='',
-                        help='Change markdown document filepath')
+                        help='Keyword to use if to_get_title_from_file is set')
+
+    parser.add_argument('--prefix-delimiter',
+                        default='',
+                        help='Prefix delimiter to use if to_remove_prefix is set')
+
+    parser.add_argument('--prefix-str',
+                        default='',
+                        help='Prefix string to use if to_add_prefix is set')
+
+    parser.add_argument('--suffix-str',
+                        default='',
+                        help='Suffix string to use if to_add_suffix is set')
 
     arguments = parser.parse_args()
 
@@ -97,15 +111,22 @@ def get_user_input(arguments):
     """
     # Define a dictionary to store the prompts and corresponding attribute names
     configurations = {
-        'location': "Whether to skip export of location of notes/highlights? (yes/no) ",
-        'clipboard': "Whether to export .md directly to the clipboard instead of a file? (yes/no) ",
-        'override': "Whether to override .md file in case if one already exists? (yes/no) "
+        'to-get-title-from-file': "Whether to get title from file? (yes/no) ",
+        'to-remove-prefix': "Whether to remove prefix? (yes/no) ",
+        'to-add-prefix': "Whether to add prefix? (yes/no) ",
+        'to-add-suffix': "Whether to add suffix? (yes/no) ",
+        'to-change-case': "Whether to change case? (yes/no) ",
+        'keyword': "Keyword to use if to_get_title_from_file is set: ",
+        'prefix-delimiter': "Prefix delimiter to use if to_remove_prefix is set: ",
+        'prefix-str': "Prefix string to use if to_add_prefix is set: ",
+        'suffix-str': "Suffix string to use if to_add_suffix is set: "
     }
 
-    # Get the input file from the user
-    arguments.input = filedialog.askopenfilename(filetypes=[("HTML Files", ".html")])
+    # Get the input folder from the user
+    arguments.input = filedialog.askdirectory()
     if not arguments.input:
-        raise SystemExit("No input file selected.")
+        test_folder = get_test_folder()
+        setattr(arguments, 'input', test_folder)
 
     # Ask the user if they want to skip other configurations
     print("Press enter to skip other configurations or any other key to continue: ")
@@ -117,20 +138,13 @@ def get_user_input(arguments):
                 user_input = input(prompt).lower()
                 if user_input in ['yes', 'no', '']:
                     bool_map = {'yes': True, 'no': False, '': False}
-                    setattr(arguments, attr, bool_map[user_input])  # Set the attribute based on the user input
+                    if attr in ['to-get-title-from-file', 'to-remove-prefix', 'to-add-prefix', 'to-add-suffix', 'to-change-case']:
+                        setattr(arguments, attr, bool_map[user_input])  # Set the attribute based on the user input
+                    else:
+                        setattr(arguments, attr, user_input if user_input else None)
                     break  # Break the loop as a valid input is provided
                 else:
                     print("Invalid input. Please try again.")
-
-    # Handle the 'output' attribute separately
-    while True:
-        user_input = input("Change markdown document filepath (filepath/no) ").lower()
-        # if no output passed, output .md file next to original HTML notes
-        if os.path.splitext(user_input)[1] == '.md':
-            setattr(arguments, 'output', user_input)  # Set the attribute based on the user input
-            break  # Break the loop as a valid input is provided
-        elif user_input in ['no', '']:
-            break
 
 
 def main():
@@ -140,8 +154,11 @@ def main():
         # if no arguments are provided from the system terminal, get user input from the console
         if len(sys.argv) == 1:
             get_user_input(args)
-        _, folder2 = file_ops.copy_folder_and_files(file_input_folder)
-        file_ops.rename_file_in_folder(folder2)
+
+        print(f"{args.input} is processed.")
+        _, folder = file_ops.copy_folder_and_files(args.input)
+        args.input = folder
+        file_ops.rename_file_in_folder(args)
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()
