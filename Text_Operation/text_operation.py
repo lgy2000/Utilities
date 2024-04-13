@@ -31,6 +31,28 @@ class TextOperation:
         self.prefix_str = prefix_str if self.to_add_prefix == 3 else ""
         self.suffix_str = suffix_str if self.to_add_suffix == 3 else ""
 
+    def set_args(self, args):
+        self.to_add_title_from_file = args.to_add_title_from_file
+        self.to_remove_prefix = args.to_remove_prefix
+        self.to_add_prefix = args.to_add_prefix
+        self.to_add_suffix = args.to_add_suffix
+        self.to_change_case = args.to_change_case
+        self.keyword = args.keyword if self.to_add_title_from_file == 1 else ""
+        self.prefix_delimiter = args.prefix_delimiter if self.to_remove_prefix == 1 else ""
+        self.prefix_str = args.prefix_str if self.to_add_prefix == 3 else ""
+        self.suffix_str = args.suffix_str if self.to_add_suffix == 3 else ""
+
+    def set_counter(self, counter):
+        self.prefix = self.get_prefix(counter)
+        self.suffix = self.get_suffix(counter)
+
+    def process_filename(self):
+        filename = self.remove_prefix()
+        filename = f"{self.prefix}{filename}{self.suffix}"
+        self.text = filename
+        self.text = self.change_case()
+        return self.text
+
     def clean_string(self):
         self.text = self.text.strip()  # Remove leading and trailing whitespace
         self.text = ' '.join(self.text.split())  # Remove extra spaces
@@ -70,10 +92,9 @@ class TextOperation:
 
     def remove_prefix(self):
         if self.to_remove_prefix == 1:
-            parts = self.text.split(self.prefix_delimiter)
+            parts = self.text.split(self.prefix_delimiter, 1)  # Split only once
             if len(parts) > 1:
-                self.text = self.prefix_delimiter.join(parts[1:])
-                return self.text
+                self.text = parts[1]
         return self.text
 
     def get_prefix(self, counter):
@@ -122,15 +143,15 @@ class TextOperation:
     def get_title_case(self):
         """return the text in title case"""
         # List of small words to exclude from capitalization
-        small_words = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'nor', 'of', 'on', 'or', 'so', 'the',
-                       'to', 'up', 'yet']
+        small_words = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'nor', 'of', 'on', 'or', 'so', 'the', 'to', 'up', 'yet']
 
-        # Split the text into words
-        words = self.text.split()
+        # Convert the text to title case
+        title_case_text = self.text.title()
+        # Split the title case text into words
+        words = title_case_text.split()
+        # Convert the small words back to lowercase, unless it's the first word
+        title_words = [word.lower() if word.lower() in small_words and index != 0 else word for index, word in enumerate(words)]
 
-        # Convert the first letter of each word to uppercase, unless it's a small word and not the first word
-        title_words = [word.capitalize() if word.lower() not in small_words or index == 0 else word for index, word in
-                       enumerate(words)]
         # Join the title case words back into a string
         self.text = ' '.join(title_words)
         return self.text

@@ -15,6 +15,7 @@ and prints "done" upon completion.
 # !/usr/bin/env python3
 import os
 from datetime import datetime
+from pathlib import Path
 from shutil import copytree
 from tkinter import filedialog, Tk
 
@@ -227,51 +228,35 @@ class FileOperation:
         convert(folder1, folder2)
 
     def rename_file_in_folder(self, args):
-        """
-        Renames all files in a specified folder according to a certain pattern.
-        Args:
-            args (argparse.Namespace): The parsed command line arguments.
-        """
         counter = 1
-        folder = args.input
-        self.text_ops.to_add_title_from_file = args.to_add_title_from_file
+        folder = Path(args.input)
+        text_ops = self.text_ops
+        text_ops.set_args(args)
 
-        self.text_ops.to_remove_prefix = args.to_remove_prefix
-        self.text_ops.to_add_prefix = args.to_add_prefix
-        self.text_ops.to_add_suffix = args.to_add_suffix
-        self.text_ops.to_change_case = args.to_change_case
-        self.text_ops.keyword = args.keyword if self.text_ops.to_add_title_from_file == 1 else ""
-        self.text_ops.prefix_delimiter = args.prefix_delimiter if self.text_ops.to_remove_prefix == 1 else ""
-        self.text_ops.prefix_str = args.prefix_str if self.text_ops.to_add_prefix == 3 else ""
-        self.text_ops.suffix_str = args.suffix_str if self.text_ops.to_add_suffix == 3 else ""
+        # Get the list of files once and iterate over it
+        for entry in os.scandir(folder):
+            if entry.is_file():
+                # Get the full file path once and reuse it
+                file_path = Path(entry.path)
+                full_filename = Path(entry.name)
 
-        # iterate all the files in the folder & rename file
-        for count, file in enumerate(os.listdir(folder)):
-            # file 1 properties
-            file1 = os.path.join(folder, file)
-            full_filename = os.path.split(file1)[1]
+                if self.text_ops.to_add_title_from_file == 1:
+                    # To-do: detect for file type and create functions to get title from word/excel/text in the future
+                    filename1 = self.pdf_ops.get_title_from_pdf(file_path, keyword="Title")
+                else:
+                    filename1 = os.path.splitext(full_filename)[0]
 
-            if self.text_ops.to_add_title_from_file == 1:
-                # detect for file type 
-                # and create functions to get title from word/excel/text in the future 
-                filename1 = self.pdf_ops.get_title_from_pdf(file1, keyword="Title")
-            else:
-                filename1 = os.path.splitext(full_filename)[0]
-            extension = os.path.splitext(full_filename)[1].lower()
+                extension = full_filename.suffix.lower()
 
-            # get prefix or suffix
-            self.text_ops.prefix = self.text_ops.get_prefix(counter)
-            self.text_ops.suffix = self.text_ops.get_suffix(counter)
+                # Get prefix or suffix
+                text_ops.set_counter(counter)
 
-            # file 2 properties
-            self.text_ops.text = filename1
-            filename2 = self.text_ops.remove_prefix()
-            filename2 = f"{self.text_ops.prefix}{filename2}{self.text_ops.suffix}"
-            self.text_ops.text = filename2
-            filename2 = self.text_ops.change_case()
-            file2 = os.path.join(folder, f"{filename2}{extension}")
+                # file 2 properties
+                text_ops.text = filename1
+                filename2 = text_ops.process_filename()
+                file2 = folder / f"{filename2}{extension}"
 
-            # rename file parsed in
-            print(file2)
-            os.rename(file1, file2)
-            counter += 1
+                # rename file parsed in
+                print(file2)
+                file_path.rename(file2)
+                counter += 1

@@ -26,6 +26,7 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
+from Text_Operation.text_operation import TextOperation
 from file_operation import FileOperation
 
 logging_load_human_config()
@@ -150,6 +151,9 @@ def get_user_input(arguments):
 def main():
     try:
         file_ops = FileOperation()
+        text_ops = TextOperation(text="")  # create an instance of TextOperation
+        file_ops.text_ops = text_ops  # assign the instance to the text_ops attribute of file_ops
+
         args = parse_command_line_args()
         # if no arguments are provided from the system terminal, get user input from the console
         if len(sys.argv) == 1:
