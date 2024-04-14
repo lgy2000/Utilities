@@ -19,7 +19,6 @@ import traceback
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from config import file_input_folder
 from file_operation import FileOperation
 
 logging_load_human_config()
@@ -28,8 +27,7 @@ logging_load_human_config()
 def main():
     try:
         file_ops = FileOperation()
-        file_ops.word_to_pdf_in_folder(file_input_folder)
-        print('Folder: ', file_input_folder)
+        file_ops.word_to_pdf_in_folder()
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()

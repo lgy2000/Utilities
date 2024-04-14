@@ -72,9 +72,9 @@ class FileOperation:
 
         # Create the new folder structure
         for folder_path, folder_names, filenames in os.walk(folder1):
-            structure = os.path.join(folder2, folder_path[len(folder1):])
+            structure = folder_path.replace(folder1, folder2)
             if not os.path.isdir(structure):
-                os.mkdir(structure)
+                os.makedirs(structure)
 
         print(f"Input: {folder1}")
         print(f"Output: {folder2}")
@@ -229,16 +229,22 @@ class FileOperation:
 
         return file
 
-    def word_to_pdf_in_folder(self, folder):
+    def word_to_pdf_in_folder(self):
         """
         Converts all Word documents in a specified folder to PDF format.
-        Args:
-            folder (str): The path to the folder containing the Word documents to be converted.
         """
         root = Tk()
         root.withdraw()
-        folder1, folder2 = self.copy_folder_structure(folder)
+        folder1, folder2 = self.copy_folder_structure()
         convert(folder1, folder2)
+        for root, dirs, files in os.walk(folder1):
+            for directory in dirs:
+                print(root)
+                print(files)
+                folder_path1 = os.path.join(root, directory)
+                folder_path2 = folder_path1.replace(folder1, folder2)
+                convert(folder_path1, folder_path2)
+                print("\n")
 
     def rename_file_in_folder(self, args):
         """

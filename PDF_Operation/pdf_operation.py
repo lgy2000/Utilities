@@ -38,11 +38,12 @@ class PdfOperation:
             logging.error(f"Error processing file {filepath}:\n{e}")
 
     def delete_pdf_page_in_folder(self, folder: str, page_number: int) -> None:
-        """Delete a specific page from all PDF files within a folder."""
-        for filename in os.listdir(folder):
-            if filename.endswith('.pdf'):
-                filepath = os.path.join(folder, filename)
-                self.delete_pdf_page(filepath, page_number)
+        """Delete a specific page from all PDF files within a folder and its subfolders."""
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.endswith('.pdf'):
+                    file_path = os.path.join(root, file)
+                    self.delete_pdf_page(file_path, page_number)
 
     @staticmethod
     def rotate_pdf_page(angle: int, reader: PdfReader, writer: PdfWriter) -> None:
@@ -66,11 +67,12 @@ class PdfOperation:
                 writer.write(output_pdf)
 
     def rotate_pdf_in_folder(self, folder: str, angle: int) -> None:
-        """Rotate each page in all PDF files within a folder by a specified angle."""
-        for filename in os.listdir(folder):
-            if filename.endswith('.pdf'):
-                file = os.path.join(folder, filename)
-                self.rotate_pdf(file, angle)
+        """Rotate each page in all PDF files within a folder and its subfolders by a specified angle."""
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.endswith('.pdf'):
+                    file_path = os.path.join(root, file)
+                    self.rotate_pdf(file_path, angle)
 
     @staticmethod
     def check_pdf_rotation(file_path):
@@ -116,8 +118,9 @@ class PdfOperation:
             writer.write(f)
 
     def compress_pdf_in_folder(self, folder: str) -> None:
-        """Compresses all PDF files within a folder."""
-        for filename in os.listdir(folder):
-            if filename.endswith('.pdf'):
-                filename = os.path.join(folder, filename)
-                self.compress_pdf(filename)
+        """Compresses all PDF files within a folder and its subfolders."""
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.endswith('.pdf'):
+                    file_path = os.path.join(root, file)
+                    self.compress_pdf(file_path)
