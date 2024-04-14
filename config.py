@@ -1,10 +1,13 @@
 import configparser
+import os
 
 # Create a ConfigParser object
 config = configparser.ConfigParser()
 
 # Read the configuration file
-config.read(r"Utilities\config.ini")
+current_directory = os.path.dirname(os.path.abspath(__file__))
+config_file_path = os.path.join(current_directory, 'config.ini')  # Construct the full path to the config.ini file
+config.read(config_file_path)  # Use the full path as the argument
 
 # Retrieve values from the configuration file
 email_operation = 'EMAIL OPERATION'

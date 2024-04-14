@@ -29,12 +29,12 @@ def main():
     try:
         pdf_ops = PdfOperation()
         parser = argparse.ArgumentParser()
-        parser.add_argument("--rotation_angle", type=int, help="Rotation angle in degrees")
         parser.add_argument("--file", type=str, help="File to process")
+        parser.add_argument("--rotation_angle", type=int, help="Rotation angle in degrees")
         args = parser.parse_args()
 
         # Use the rotation_angle from args if it's not None, otherwise use the one from config
-        _rotation_angle = args.rotation_angle if args.rotation_angle is not None else rotation_angle
+        rotate_angle = args.rotation_angle if args.rotation_angle is not None else rotation_angle
         if not args.file:
             if file_show_file_dialog == 1:
                 file = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
@@ -44,9 +44,10 @@ def main():
                 file = file_input_file
         else:
             file = args.file
-        print(f'Folder: {file}')
-        pdf_ops.rotate_pdf(file, _rotation_angle)
-        print('Rotation angle:', _rotation_angle)
+        print(f'File: {file}')
+
+        pdf_ops.rotate_pdf(file, rotate_angle)
+        print('Rotation angle:', rotate_angle)
         if len(sys.argv) > 1:
             input("Press any key to exit")
     except Exception as ex:

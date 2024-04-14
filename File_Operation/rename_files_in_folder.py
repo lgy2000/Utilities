@@ -35,7 +35,7 @@ def get_test_folder():
         str: The test file path.
     """
     base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
-    test_folder = os.path.join(base_dir, r".test\test")
+    test_folder = os.path.join(base_dir, r".test\test1")
     return test_folder
 
 
@@ -168,7 +168,7 @@ def main():
         if len(sys.argv) == 1:
             get_user_input(args)
 
-        _, folder = file_ops.copy_folder_and_files(args.input)
+        _, folder = file_ops.copy_folder_and_files(args.input)  # If no folder is provided, open a file dialog to select a folder
         args.input = folder
         file_ops.rename_file_in_folder(args)
 

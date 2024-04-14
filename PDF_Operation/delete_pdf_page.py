@@ -31,24 +31,24 @@ def main():
     try:
         pdf_ops = PdfOperation()
         parser = argparse.ArgumentParser()
-        parser.add_argument("--page_number", type=int, help="Page number to delete")
         parser.add_argument("--file", type=str, help="File to process")
+        parser.add_argument("--page_number", type=int, help="Page number to delete")
         args = parser.parse_args()
 
         # Use the page_number from args if it's not None, otherwise use the one from config
         delete_page_number = args.page_number if args.page_number is not None else pdf_page_number
         if not args.file:
             if file_show_file_dialog == 1:
-                filename = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
-                if not filename:
+                file = filedialog.askopenfilename(filetypes=[("PDF Files", ".pdf")])
+                if not file:
                     raise SystemExit("No input file selected.")
             else:
-                filename = file_input_file
+                file = file_input_file
         else:
-            filename = args.file
+            file = args.file
+        print(f'File: {file}')
 
-        print(f'File: {filename}')
-        pdf_ops.delete_pdf_page(filename, delete_page_number)
+        pdf_ops.delete_pdf_page(file, delete_page_number)
         print(f'Delete page: {delete_page_number}')
         if len(sys.argv) > 1:
             input("Press any key to exit")

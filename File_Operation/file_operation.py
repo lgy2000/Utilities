@@ -77,8 +77,7 @@ class FileOperation:
                 os.mkdir(structure)
 
         print(f"Input: {folder1}")
-        print(f"Input: {folder2}")
-        print("\n")
+        print(f"Output: {folder2}")
         return folder1, folder2
 
     @staticmethod
@@ -103,8 +102,7 @@ class FileOperation:
         copytree(folder1, folder2)
 
         print(f"Input: {folder1}")
-        print(f"Input: {folder2}")
-        print("\n")
+        print(f"Output: {folder2}")
         return folder1, folder2
 
     def create_folders_in_folder(self, folder, text):

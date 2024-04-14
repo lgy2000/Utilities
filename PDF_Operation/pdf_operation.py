@@ -7,7 +7,7 @@ Provides a set of operations for manipulating PDF files.
 
 Description:
 This module includes functions for deleting pages, rotating pages, extracting text from a PDF file, checking if a string is present in a PDF file,
-and extracting a title from a PDF file. It uses the PyPDF2 and pikepdf libraries for PDF file operations.
+extracting a title from a PDF file and compressing PDF file. It uses the PyPDF2 and pikepdf libraries for PDF file operations.
 """
 
 import logging
@@ -108,6 +108,7 @@ class PdfOperation:
     @staticmethod
     def compress_pdf(filename):
         """Compresses a PDF file to reduce its size."""
+        print(f"Compressing {filename}")
         writer = PdfWriter(clone_from=filename)
         for page in writer.pages:
             page.compress_content_streams()  # This is CPU intensive!
