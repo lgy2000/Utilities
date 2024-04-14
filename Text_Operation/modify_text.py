@@ -18,15 +18,15 @@ from text_operation import TextOperation
 
 def main():
     pdf_ops = PdfOperation()
-    text_ops = TextOperation(text=input_text, to_add_title_from_file=0,
-                             to_remove_prefix=0,
+    text_ops = TextOperation(text=input_text, add_title=0,
+                             remove_prefix=0,
                              to_add_prefix=0,
                              to_add_suffix=0,
                              to_change_case=0,
                              prefix="",
                              suffix="",
                              page_text="",
-                             keyword="Title",
+                             title_keyword="Title",
                              prefix_delimiter=" ",
                              prefix_str="",
                              suffix_str="")
@@ -34,7 +34,7 @@ def main():
     text_ops.text = text_ops.remove_prefix()
     prefix = text_ops.get_prefix(counter)
     suffix = text_ops.get_suffix(counter)
-    title = pdf_ops.get_title_from_pdf(file="", keyword="Title")
+    title = pdf_ops.get_title_from_pdf(file="", title_keyword="Title")
     text_ops.text = f"{prefix}{text_ops.text}{suffix}{title}"
     text_ops.text = text_ops.change_case()
 

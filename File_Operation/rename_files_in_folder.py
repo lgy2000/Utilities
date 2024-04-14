@@ -14,6 +14,7 @@ copied folder.
 """
 
 import argparse
+import gc
 import os
 import sys
 import traceback
@@ -21,10 +22,12 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
+from ..Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
 from file_operation import FileOperation
 
 logging_load_human_config()
+
+sys.path.insert(0, r'D:\YK\Python\Utilities')
 
 
 def get_test_folder():
@@ -36,6 +39,10 @@ def get_test_folder():
     base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
     test_folder = os.path.join(base_dir, r".test\test")
     return test_folder
+
+
+def to_uppercase(value: str) -> str:
+    return value.upper()
 
 
 def parse_command_line_args():
@@ -55,45 +62,39 @@ def parse_command_line_args():
                         nargs='?',  # makes the input argument optional
                         default=test_folder,  # default value if no input argument is provided
                         help='Input folder path')
-
-    parser.add_argument('--to-add-title-from-file',
+    parser.add_argument('--add_title',
                         action='store_true',
                         help='Whether to add title from file')
-
-    parser.add_argument('--to-remove-prefix',
-                        action='store_true',
-                        help='Whether to remove prefix')
-
-    parser.add_argument('--prefix-operation',
-                        choices=list(Prefix),
-                        default=Prefix.NONE,
-                        help='Prefix operation to perform')
-
-    parser.add_argument('--suffix-operation',
-                        choices=list(Suffix),
-                        default=Suffix.NONE,
-                        help='Suffix operation to perform')
-
-    parser.add_argument('--case-operation',
-                        choices=list(Case),
-                        default=Case.NONE,
-                        help='Case operation to perform')
-
-    parser.add_argument('--keyword',
+    parser.add_argument('--title_keyword',
                         default='',
                         help='Keyword to use if to_get_title_from_file is set')
-
-    parser.add_argument('--prefix-delimiter',
-                        default='',
-                        help='Prefix delimiter to use if to_remove_prefix is set')
-
-    parser.add_argument('--prefix-str',
+    parser.add_argument('--prefix_operation',
+                        choices=[prefix.name for prefix in Prefix],
+                        type=to_uppercase,
+                        default=Prefix.NONE.name,
+                        help='Prefix operation to perform')
+    parser.add_argument('--suffix_operation',
+                        choices=[suffix.name for suffix in Suffix],
+                        type=to_uppercase,
+                        default=Suffix.NONE.name,
+                        help='Suffix operation to perform')
+    parser.add_argument('--case_operation',
+                        choices=[case.name for case in Case],
+                        type=to_uppercase,
+                        default=Case.NONE.name,
+                        help='Case operation to perform')
+    parser.add_argument('--prefix',
                         default='',
                         help='Prefix string to use if to_add_prefix is set')
-
-    parser.add_argument('--suffix-str',
+    parser.add_argument('--suffix',
                         default='',
                         help='Suffix string to use if to_add_suffix is set')
+    parser.add_argument('--_remove_prefix',
+                        action='store_true',
+                        help='Whether to remove prefix')
+    parser.add_argument('--prefix_delimiter',
+                        default=' ',
+                        help='Prefix delimiter to use if _remove_prefix is set')
 
     arguments = parser.parse_args()
 
@@ -115,8 +116,8 @@ def get_user_input(arguments):
         'to-add-prefix': "Whether to add prefix? (yes/no) ",
         'to-add-suffix': "Whether to add suffix? (yes/no) ",
         'to-change-case': "Whether to change case? (yes/no) ",
-        'keyword': "Keyword to use if to_get_title_from_file is set: ",
-        'prefix-delimiter': "Prefix delimiter to use if to_remove_prefix is set: ",
+        'title_keyword': "Keyword to use if to_get_title_from_file is set: ",
+        'prefix-delimiter': "Prefix delimiter to use if _remove_prefix is set: ",
         'prefix-str': "Prefix string to use if to_add_prefix is set: ",
         'suffix-str': "Suffix string to use if to_add_suffix is set: "
     }
@@ -161,6 +162,9 @@ def main():
         _, folder = file_ops.copy_folder_and_files(args.input)
         args.input = folder
         file_ops.rename_file_in_folder(args)
+
+        # Call gc.collect() to free up memory immediately
+        gc.collect()
     except Exception as ex:
         CRITICAL("Exception: {}".format(ex))
         traceback.print_exc()

@@ -26,8 +26,8 @@ filename_placeholders = config[file_operation]['filename_placeholders']
 list_of_placeholders = config[file_operation]['list_of_placeholders'].split(',')
 
 input_text = config[file_operation]['input_text']
-to_add_title_from_file = config.getint(file_operation, 'to_add_title_from_file')
-to_remove_prefix = config.getint(file_operation, 'to_remove_prefix')
+add_title = config.getint(file_operation, 'add_title')
+remove_prefix = config.getint(file_operation, '_remove_prefix')
 to_add_prefix = config.getint(file_operation, 'to_add_prefix')
 to_add_suffix = config.getint(file_operation, 'to_add_suffix')
 to_change_case = config.getint(file_operation, 'to_change_case')
@@ -42,7 +42,7 @@ pdf_input_file = config[pdf_operation]['input_file']
 pdf_page_number = config.getint(pdf_operation, 'page_number')
 
 text_operation = 'TEXT OPERATION'
-text_keyword = config[text_operation]['keyword']
+text_title_keyword = config[text_operation]['title_keyword']
 text_prefix_str = config[text_operation]['prefix_str']
 text_suffix_str = config[text_operation]['suffix_str']
 

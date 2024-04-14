@@ -6,7 +6,7 @@ get_title_from_pdf.py
 Extracts the title from a PDF file.
 
 Description:
-This module uses the PdfOperation class from the pdf_operation module to extract the title from a PDF file. The title is determined by a keyword
+This module uses the PdfOperation class from the pdf_operation module to extract the title from a PDF file. The title is determined by a title_keyword
 that is passed to the get_title_from_pdf method. The module can either prompt the user to select a file or use a predefined file path.
 """
 
@@ -39,8 +39,8 @@ def main():
                 file = pdf_input_file
         else:
             file = args.file
-        keyword = "Title"
-        title = pdf_ops.get_title_from_pdf(file, keyword)
+        title_keyword = "Title"
+        title = pdf_ops.get_title_from_pdf(file, title_keyword)
         if title:
             print("Title:", title)
         else:

@@ -93,10 +93,10 @@ class PdfOperation:
             text += pdf.pages[page].extract_text()
         return text
 
-    def get_title_from_pdf(self, file, keyword):
+    def get_title_from_pdf(self, file, title_keyword):
         # Extract text from the PDF file
         page_text = self.get_text_from_pdf(file)
         # Search for the title block in the extracted text
-        if keyword in page_text or keyword.upper() in page_text or keyword.capitalize() in page_text:
-            return self.text_ops.get_title_from_text(page_text, keyword)
+        if title_keyword in page_text or title_keyword.upper() in page_text or title_keyword.capitalize() in page_text:
+            return self.text_ops.get_title_from_text(page_text, title_keyword)
         return None

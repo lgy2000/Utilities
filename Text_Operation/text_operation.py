@@ -1,55 +1,87 @@
+# !/usr/bin/env python3
+
+"""
+text_operation.py
+
+Provides operations for modifying and handling text.
+
+Description:
+This module provides a variety of operations for handling and modifying text. It includes functionality to add or remove prefixes and suffixes,
+change the case of text, and extract titles from text. The module uses the `os` and `datetime` modules for file system operations and date-time
+manipulation respectively. It also imports functionality from the `get_title_from_pdf.py` module for extracting titles from PDF files.
+"""
+
 import os
 from datetime import datetime
+from enum import Enum
+
+
+class Prefix(Enum):
+    NONE = 0
+    ADD_COUNTER = 1
+    ADD_TIMESTAMP = 2
+    ADD_CUSTOM = 3
+
+
+class Suffix(Enum):
+    NONE = 0
+    ADD_COUNTER = 1
+    ADD_TIMESTAMP = 2
+    ADD_CUSTOM = 3
+
+
+class Case(Enum):
+    NONE = 0
+    TITLE = 1
+    UPPER = 2
+    LOWER = 3
 
 
 class TextOperation:
-    def __init__(self, text,
-                 to_add_title_from_file=0,
-                 to_remove_prefix=0,
-                 to_add_prefix=0,
-                 to_add_suffix=0,
-                 to_change_case=0,
-                 prefix="",
-                 suffix="",
-                 page_text="",
-                 keyword="Title",
-                 prefix_delimiter=" ",
-                 prefix_str="",
-                 suffix_str=""):
+    def __init__(self, text: str,
+                 add_title: bool = False,
+                 prefix_operation: Prefix = Prefix.NONE,
+                 suffix_operation: Suffix = Suffix.NONE,
+                 case_operation: Case = Case.NONE,
+                 prefix: str = "",
+                 suffix: str = "",
+                 page_text: str = "",
+                 title_keyword: str = "Title",
+                 remove_prefix: bool = False,
+                 prefix_delimiter: str = ""):
         self.text = text
-        self.to_add_title_from_file = to_add_title_from_file
-        self.to_remove_prefix = to_remove_prefix
-        self.to_add_prefix = to_add_prefix
-        self.to_add_suffix = to_add_suffix
-        self.to_change_case = to_change_case
-
+        self.add_title = add_title
+        self.prefix_operation = prefix_operation
+        self.suffix_operation = suffix_operation
+        self.case_operation = case_operation
         self.prefix = prefix
         self.suffix = suffix
         self.page_text = page_text
-        self.keyword = keyword if self.to_add_title_from_file == 1 else ""
-        self.prefix_delimiter = prefix_delimiter if self.to_remove_prefix == 1 else ""
-        self.prefix_str = prefix_str if self.to_add_prefix == 3 else ""
-        self.suffix_str = suffix_str if self.to_add_suffix == 3 else ""
+        self.title_keyword = title_keyword if self.add_title else ""
+        self.remove_prefix = remove_prefix
+        self.prefix_delimiter = prefix_delimiter
 
     def set_args(self, args):
-        self.to_add_title_from_file = args.to_add_title_from_file
-        self.to_remove_prefix = args.to_remove_prefix
-        self.to_add_prefix = args.to_add_prefix
-        self.to_add_suffix = args.to_add_suffix
-        self.to_change_case = args.to_change_case
-        self.keyword = args.keyword if self.to_add_title_from_file == 1 else ""
-        self.prefix_delimiter = args.prefix_delimiter if self.to_remove_prefix == 1 else ""
-        self.prefix_str = args.prefix_str if self.to_add_prefix == 3 else ""
-        self.suffix_str = args.suffix_str if self.to_add_suffix == 3 else ""
+        self.add_title = args.add_title
+        self.title_keyword = args.title_keyword if self.add_title == 1 else ""
+        self.prefix_operation = args.prefix_operation
+        self.suffix_operation = args.suffix_operation
+        self.case_operation = args.case_operation.upper()
+        self.prefix = args.prefix if self.prefix_operation == Prefix.ADD_CUSTOM else ""
+        self.suffix = args.suffix if self.suffix_operation == Suffix.ADD_CUSTOM else ""
+        self.remove_prefix = args.remove_prefix
+        self.prefix_delimiter = args.prefix_delimiter if self.remove_prefix == 1 else ""
 
     def set_counter(self, counter):
         self.prefix = self.get_prefix(counter)
         self.suffix = self.get_suffix(counter)
 
-    def process_filename(self):
-        filename = self.remove_prefix()
-        filename = f"{self.prefix}{filename}{self.suffix}"
-        self.text = filename
+    def process_text(self):
+        text = self.text
+        if self.remove_prefix:
+            text = self._remove_prefix()
+        text = f"{self.prefix}{text}{self.suffix}"
+        self.text = text
         self.text = self.change_case()
         return self.text
 
@@ -59,16 +91,16 @@ class TextOperation:
         self.text = self.text.translate(str.maketrans('', '', '?!@$%^*:/\\=+{}<>'))  # Remove specific symbols
         return self.text
 
-    def get_title_from_text(self, page_text, keyword):
-        self.keyword = keyword
+    def get_title_from_text(self, page_text, title_keyword):
+        self.title_keyword = title_keyword
         # Split the text using the title identifier
         # print(page_text)
-        if self.keyword in page_text:
-            title_parts = page_text.split(self.keyword)
-        elif self.keyword.upper() in page_text:
-            title_parts = page_text.split(self.keyword.upper())
+        if self.title_keyword in page_text:
+            title_parts = page_text.split(self.title_keyword)
+        elif self.title_keyword.upper() in page_text:
+            title_parts = page_text.split(self.title_keyword.upper())
         else:
-            title_parts = page_text.split(self.keyword.capitalize())
+            title_parts = page_text.split(self.title_keyword.capitalize())
         # print(title_parts)
 
         # Get the second part in a list (the title itself)
@@ -90,55 +122,54 @@ class TextOperation:
                 print("Text not found in the file.")
         return self.text
 
-    def remove_prefix(self):
-        if self.to_remove_prefix == 1:
+    def _remove_prefix(self) -> str:
+        if self.remove_prefix == 1:
             parts = self.text.split(self.prefix_delimiter, 1)  # Split only once
             if len(parts) > 1:
                 self.text = parts[1]
         return self.text
 
-    def get_prefix(self, counter):
-        """return the prefix"""
-        if self.to_add_prefix == 0:
-            self.prefix = ""
-            return self.prefix
-        elif self.to_add_prefix == 1:
+    def get_prefix(self, counter: int) -> str:
+        """Get prefix based on the prefix operation."""
+        if self.prefix_operation == Prefix.ADD_COUNTER:
             self.prefix = f"{counter} "
             return self.prefix
-        elif self.to_add_prefix == 2:
-            self.prefix = f"{datetime.fromtimestamp(os.stat(self.prefix).st_mtime)} "
+        elif self.prefix_operation == Prefix.ADD_TIMESTAMP:
+            self.prefix = f"{datetime.fromtimestamp(os.stat(self.text).st_mtime)} "
             return self.prefix
-        elif self.to_add_prefix == 3:
-            self.prefix = f"{self.prefix_str} "
+        elif self.prefix_operation == Prefix.ADD_CUSTOM:
+            self.prefix = f"{self.prefix} "
             return self.prefix
+        else:
+            return self.text
 
-    def get_suffix(self, counter):
-        """return the suffix"""
-        if self.to_add_suffix == 0:
-            self.suffix = ""
-            return self.suffix
-        elif self.to_add_suffix == 1:
+    def get_suffix(self, counter: int) -> str:
+        """Get prefix based on the suffix operation."""
+        if self.suffix_operation == Suffix.ADD_COUNTER:
             self.suffix = f" {counter}"
             return self.suffix
-        elif self.to_add_suffix == 2:
+        elif self.suffix_operation == Suffix.ADD_TIMESTAMP:
             self.suffix = f" {datetime.fromtimestamp(os.stat(self.text).st_mtime)}"
             return self.suffix
-        elif self.to_add_suffix == 3:
-            self.suffix = f" {self.suffix_str}"
+        elif self.suffix_operation == Suffix.ADD_CUSTOM:
+            self.suffix = f" {self.suffix}"
+            return self.suffix
+        else:
             return self.suffix
 
-    def change_case(self):
-        """return the text in selected case"""
-        if self.to_change_case == 1:
+    def change_case(self) -> str:
+        """Change the case of the text based on the case operation."""
+        if self.case_operation == Case.TITLE:
             self.text = self.get_title_case()
             return self.text
-        elif self.to_change_case == 2:
+        elif self.case_operation == Case.UPPER:
             self.text = self.text.upper()
             return self.text
-        elif self.to_change_case == 3:
+        elif self.case_operation == Case.LOWER:
             self.text = self.text.lower()
             return self.text
-        return self.text
+        else:
+            return self.text
 
     def get_title_case(self):
         """return the text in title case"""

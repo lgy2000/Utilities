@@ -57,7 +57,7 @@ Utilities
 │   │   rename_file.py
 │   │       ['main']
 │   │   text_operation.py
-│   │       ['__init__', 'clean_string', 'get_title_from_text', 'remove_prefix', 'get_prefix', 'get_suffix', 'change_case', 'get_title_case']
+│   │       ['__init__', 'clean_string', 'get_title_from_text', '_remove_prefix', 'get_prefix', 'get_suffix', 'change_case', 'get_title_case']
 │   │   word_to_pdf_in_folder.py
 │   │       ['main']
 │   │   

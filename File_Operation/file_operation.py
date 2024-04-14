@@ -229,21 +229,35 @@ class FileOperation:
         convert(folder1, folder2)
 
     def rename_file_in_folder(self, args):
+        """
+        Renames all files in a specified folder based on the provided arguments.
+        This method iterates over each file in the specified folder, and for each file, it performs a series of operations
+        defined by the arguments. These operations can include adding a title from the file, removing a prefix, adding a prefix or suffix,
+        and changing the case of the filename. The method uses an instance of the TextOperation class to perform these operations.
+        After the operations are performed, the file is renamed with the new filename.
+        Args:
+            args (argparse.Namespace): The parsed command line arguments. These arguments define the operations to be performed on the filenames
+        Note:
+            This method creates a new TextOperation object for each file, and deletes it after the file is renamed. This is done to minimize memory
+            usage.
+        """
         counter = 1
         folder = Path(args.input)
-        text_ops = self.text_ops
-        text_ops.set_args(args)
 
         # Get the list of files once and iterate over it
         for entry in os.scandir(folder):
             if entry.is_file():
+                # Create a new TextOperation object for each file
+                text_ops = TextOperation(text="")
+                text_ops.set_args(args)
+
                 # Get the full file path once and reuse it
                 file_path = Path(entry.path)
                 full_filename = Path(entry.name)
 
-                if self.text_ops.to_add_title_from_file == 1:
+                if self.text_ops.add_title == 1:
                     # To-do: detect for file type and create functions to get title from word/excel/text in the future
-                    filename1 = self.pdf_ops.get_title_from_pdf(file_path, keyword="Title")
+                    filename1 = self.pdf_ops.get_title_from_pdf(file_path, title_keyword="Title")
                 else:
                     filename1 = os.path.splitext(full_filename)[0]
 
@@ -252,8 +266,9 @@ class FileOperation:
                 # Get prefix or suffix
                 text_ops.set_counter(counter)
 
-                # file 2 properties
+                # Reset the text attribute for each file
                 text_ops.text = filename1
+
                 filename2 = text_ops.process_text()
                 file2 = folder / f"{filename2}{extension}"
 
@@ -261,3 +276,6 @@ class FileOperation:
                 print(file2)
                 file_path.rename(file2)
                 counter += 1
+
+                # Delete the TextOperation object to free up memory
+                del text_ops
