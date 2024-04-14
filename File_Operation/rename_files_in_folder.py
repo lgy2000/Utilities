@@ -27,8 +27,6 @@ from file_operation import FileOperation
 
 logging_load_human_config()
 
-sys.path.insert(0, r'D:\YK\Python\Utilities')
-
 
 def get_test_folder():
     """

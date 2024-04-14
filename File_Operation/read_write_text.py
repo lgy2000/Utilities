@@ -19,17 +19,17 @@ import traceback
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from config import input_text, file_allowed_paths, file_input_file
+from config import input_text, file_allowed_paths
 from file_operation import FileOperation
 
 logging_load_human_config()
+from tkinter import filedialog
 
 
 def main():
     try:
         file_ops = FileOperation()
-        # file_input_file = filedialog.askopenfilename()
-        # file_input_file = r'D:\YK\Resources\input.txt'
+        file_input_file = filedialog.askopenfilename()
         if not file_input_file:
             raise SystemExit("No input file selected.")
         file_ops.read_write_txt(file_input_file, input_text, file_allowed_paths)

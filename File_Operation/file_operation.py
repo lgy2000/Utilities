@@ -41,6 +41,18 @@ class FileOperation:
         self.pdf_ops = PdfOperation()
 
     @staticmethod
+    def get_current_folder_path():
+        # Get the directory of the current file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        return current_dir
+
+    def get_parent_folder_path(self):
+        current_dir = self.get_current_folder_path()
+        # Go up one level
+        parent_dir = os.path.dirname(current_dir)
+        return parent_dir
+
+    @staticmethod
     def copy_folder_structure(input_folder=None):
         """
         Copies a selected folder structure and appends the current date and time to the copied folder's name.

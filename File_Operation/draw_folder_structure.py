@@ -14,8 +14,11 @@ import ast
 import os
 import sys
 import traceback
+from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
+
+from file_operation import FileOperation
 
 logging_load_human_config()
 
@@ -130,10 +133,13 @@ def main():
     """
     try:
         # Ask the user for the directory path
-        print("Enter the directory path: ")
-        folder = input()
+        folder = filedialog.askdirectory()
         # Check if the path exists, otherwise use a default path
-        folder = folder if os.path.exists(folder) else r"D:\YK\Python\Utilities"
+        if not os.path.exists(folder):
+            file_ops = FileOperation()
+            folder = file_ops.get_parent_folder_path()
+        print(folder)
+
         # Define the folders to exclude
         exclude_folders = ["__pycache__", ".temp", ".idea", ".git", ".test", "youtube_transcript_api"]
         # Draw the directory structure
