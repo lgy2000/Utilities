@@ -22,7 +22,7 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from ..Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
+from Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
 from file_operation import FileOperation
 
 logging_load_human_config()
@@ -89,7 +89,7 @@ def parse_command_line_args():
     parser.add_argument('--suffix',
                         default='',
                         help='Suffix string to use if to_add_suffix is set')
-    parser.add_argument('--_remove_prefix',
+    parser.add_argument('--remove_prefix',
                         action='store_true',
                         help='Whether to remove prefix')
     parser.add_argument('--prefix_delimiter',
@@ -111,15 +111,15 @@ def get_user_input(arguments):
     """
     # Define a dictionary to store the prompts and corresponding attribute names
     configurations = {
-        'to-get-title-from-file': "Whether to get title from file? (yes/no) ",
-        'to-remove-prefix': "Whether to remove prefix? (yes/no) ",
-        'to-add-prefix': "Whether to add prefix? (yes/no) ",
-        'to-add-suffix': "Whether to add suffix? (yes/no) ",
-        'to-change-case': "Whether to change case? (yes/no) ",
-        'title_keyword': "Keyword to use if to_get_title_from_file is set: ",
-        'prefix-delimiter': "Prefix delimiter to use if _remove_prefix is set: ",
-        'prefix-str': "Prefix string to use if to_add_prefix is set: ",
-        'suffix-str': "Suffix string to use if to_add_suffix is set: "
+        'add_title': "Whether to add title from file? (yes/no) ",
+        'title_keyword': "Keyword to use if add_title is set: ",
+        'prefix_operation': "Prefix operation to perform (none/counter/timestamp/custom): ",
+        'suffix_operation': "Suffix operation to perform (none/counter/timestamp/custom): ",
+        'case_operation': "Case operation to perform (none/title/upper/lower): ",
+        'prefix': "Prefix string to use if to_add_prefix is set (str): ",
+        'suffix': "Suffix string to use if to_add_suffix is set (str): ",
+        'remove_prefix': "Whether to remove prefix? (yes/no) ",
+        'prefix_delimiter': "Prefix delimiter to use if _remove_prefix is set (str): "
     }
 
     # Get the input folder from the user
@@ -136,15 +136,27 @@ def get_user_input(arguments):
         for attr, prompt in configurations.items():
             while True:  # Loop until a valid input is provided
                 user_input = input(prompt).lower()
-                if user_input in ['yes', 'no', '']:
+                if attr in ['add_title', 'remove_prefix']:
                     bool_map = {'yes': True, 'no': False, '': False}
-                    if attr in ['to-get-title-from-file', 'to-remove-prefix', 'to-add-prefix', 'to-add-suffix', 'to-change-case']:
+                    if user_input in bool_map:
                         setattr(arguments, attr, bool_map[user_input])  # Set the attribute based on the user input
+                        break  # Break the loop as a valid input is provided
                     else:
-                        setattr(arguments, attr, user_input if user_input else None)
-                    break  # Break the loop as a valid input is provided
+                        print("Invalid input. Please try again.")
+                elif attr in ['prefix_operation', 'suffix_operation', 'case_operation']:
+                    valid_operations = ['none', 'counter', 'timestamp', 'custom'] if attr in ['prefix_operation',
+                                                                                              'suffix_operation'] else ['none',
+                                                                                                                        'title',
+                                                                                                                        'upper',
+                                                                                                                        'lower']
+                    if user_input in valid_operations:
+                        setattr(arguments, attr, user_input.upper() if user_input else None)
+                        break  # Break the loop as a valid input is provided
+                    else:
+                        print("Invalid input. Please try again.")
                 else:
-                    print("Invalid input. Please try again.")
+                    setattr(arguments, attr, user_input if user_input else None)
+                    break  # Break the loop as a valid input is provided
 
 
 def main():
@@ -158,7 +170,6 @@ def main():
         if len(sys.argv) == 1:
             get_user_input(args)
 
-        print(f"{args.input} is processed.")
         _, folder = file_ops.copy_folder_and_files(args.input)
         args.input = folder
         file_ops.rename_file_in_folder(args)

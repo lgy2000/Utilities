@@ -64,8 +64,9 @@ class FileOperation:
             if not os.path.isdir(structure):
                 os.mkdir(structure)
 
-        print(folder1)
-        print(folder2)
+        print(f"Input: {folder1}")
+        print(f"Input: {folder2}")
+        print("\n")
         return folder1, folder2
 
     @staticmethod
@@ -89,8 +90,9 @@ class FileOperation:
         # copy folder
         copytree(folder1, folder2)
 
-        print(folder1)
-        print(folder2)
+        print(f"Input: {folder1}")
+        print(f"Input: {folder2}")
+        print("\n")
         return folder1, folder2
 
     def create_folders_in_folder(self, folder, text):
@@ -106,7 +108,7 @@ class FileOperation:
             raise SystemExit
         folder_path = os.path.join(folder, folder_name)
         os.makedirs(folder_path)
-        print(f"Created folder '{folder_name}'.")
+        print(f"Output: {folder_name}")
 
     @staticmethod
     def select_folder_word_csv():
@@ -255,7 +257,7 @@ class FileOperation:
                 file_path = Path(entry.path)
                 full_filename = Path(entry.name)
 
-                if self.text_ops.add_title == 1:
+                if text_ops.add_title == 1:
                     # To-do: detect for file type and create functions to get title from word/excel/text in the future
                     filename1 = self.pdf_ops.get_title_from_pdf(file_path, title_keyword="Title")
                 else:
@@ -263,13 +265,10 @@ class FileOperation:
 
                 extension = full_filename.suffix.lower()
 
-                # Get prefix or suffix
-                text_ops.set_counter(counter)
-
                 # Reset the text attribute for each file
                 text_ops.text = filename1
 
-                filename2 = text_ops.process_text()
+                filename2 = text_ops.process_text(counter)
                 file2 = folder / f"{filename2}{extension}"
 
                 # rename file parsed in
@@ -279,3 +278,17 @@ class FileOperation:
 
                 # Delete the TextOperation object to free up memory
                 del text_ops
+
+        # print(args)
+        # print(text_ops)
+        # print(text_ops.text)
+        # print(text_ops.add_title)
+        # print(text_ops.title_keyword)
+        # print(text_ops.prefix_operation)
+        # print(text_ops.suffix_operation )
+        # print(text_ops.case_operation)
+        # print(text_ops.prefix)
+        # print(text_ops.suffix)
+        # print(text_ops.remove_prefix)
+        # print(text_ops.prefix_delimiter)
+        # print(text_ops.page_text)

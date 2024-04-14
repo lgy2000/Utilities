@@ -17,49 +17,49 @@ from enum import Enum
 
 
 class Prefix(Enum):
-    NONE = 0
-    ADD_COUNTER = 1
-    ADD_TIMESTAMP = 2
-    ADD_CUSTOM = 3
+    NONE = "NONE"
+    COUNTER = "COUNTER"
+    TIMESTAMP = "TIMESTAMP"
+    CUSTOM = "CUSTOM"
 
 
 class Suffix(Enum):
-    NONE = 0
-    ADD_COUNTER = 1
-    ADD_TIMESTAMP = 2
-    ADD_CUSTOM = 3
+    NONE = "NONE"
+    COUNTER = "COUNTER"
+    TIMESTAMP = "TIMESTAMP"
+    CUSTOM = "CUSTOM"
 
 
 class Case(Enum):
-    NONE = 0
-    TITLE = 1
-    UPPER = 2
-    LOWER = 3
+    NONE = "NONE"
+    TITLE = "TITLE"
+    UPPER = "UPPER"
+    LOWER = "LOWER"
 
 
 class TextOperation:
     def __init__(self, text: str,
                  add_title: bool = False,
+                 title_keyword: str = "Title",
                  prefix_operation: Prefix = Prefix.NONE,
                  suffix_operation: Suffix = Suffix.NONE,
                  case_operation: Case = Case.NONE,
                  prefix: str = "",
                  suffix: str = "",
-                 page_text: str = "",
-                 title_keyword: str = "Title",
                  remove_prefix: bool = False,
-                 prefix_delimiter: str = ""):
+                 prefix_delimiter: str = "",
+                 page_text: str = ""):
         self.text = text
         self.add_title = add_title
+        self.title_keyword = title_keyword if self.add_title else ""
         self.prefix_operation = prefix_operation
         self.suffix_operation = suffix_operation
         self.case_operation = case_operation
         self.prefix = prefix
         self.suffix = suffix
-        self.page_text = page_text
-        self.title_keyword = title_keyword if self.add_title else ""
         self.remove_prefix = remove_prefix
         self.prefix_delimiter = prefix_delimiter
+        self.page_text = page_text
 
     def set_args(self, args):
         self.add_title = args.add_title
@@ -67,19 +67,17 @@ class TextOperation:
         self.prefix_operation = args.prefix_operation
         self.suffix_operation = args.suffix_operation
         self.case_operation = args.case_operation.upper()
-        self.prefix = args.prefix if self.prefix_operation == Prefix.ADD_CUSTOM else ""
-        self.suffix = args.suffix if self.suffix_operation == Suffix.ADD_CUSTOM else ""
+        self.prefix = args.prefix if self.prefix_operation == Prefix.CUSTOM.value else ""
+        self.suffix = args.suffix if self.suffix_operation == Suffix.CUSTOM.value else ""
         self.remove_prefix = args.remove_prefix
         self.prefix_delimiter = args.prefix_delimiter if self.remove_prefix == 1 else ""
 
-    def set_counter(self, counter):
-        self.prefix = self.get_prefix(counter)
-        self.suffix = self.get_suffix(counter)
-
-    def process_text(self):
+    def process_text(self, counter):
         text = self.text
         if self.remove_prefix:
             text = self._remove_prefix()
+        self.prefix = self.get_prefix(counter)
+        self.suffix = self.get_suffix(counter)
         text = f"{self.prefix}{text}{self.suffix}"
         self.text = text
         self.text = self.change_case()
@@ -131,27 +129,27 @@ class TextOperation:
 
     def get_prefix(self, counter: int) -> str:
         """Get prefix based on the prefix operation."""
-        if self.prefix_operation == Prefix.ADD_COUNTER:
+        if self.prefix_operation == Prefix.COUNTER.value:
             self.prefix = f"{counter} "
             return self.prefix
-        elif self.prefix_operation == Prefix.ADD_TIMESTAMP:
+        elif self.prefix_operation == Prefix.TIMESTAMP.value:
             self.prefix = f"{datetime.fromtimestamp(os.stat(self.text).st_mtime)} "
             return self.prefix
-        elif self.prefix_operation == Prefix.ADD_CUSTOM:
+        elif self.prefix_operation == Prefix.CUSTOM.value:
             self.prefix = f"{self.prefix} "
             return self.prefix
         else:
-            return self.text
+            return self.prefix
 
     def get_suffix(self, counter: int) -> str:
         """Get prefix based on the suffix operation."""
-        if self.suffix_operation == Suffix.ADD_COUNTER:
+        if self.suffix_operation == Suffix.COUNTER.value:
             self.suffix = f" {counter}"
             return self.suffix
-        elif self.suffix_operation == Suffix.ADD_TIMESTAMP:
+        elif self.suffix_operation == Suffix.TIMESTAMP.value:
             self.suffix = f" {datetime.fromtimestamp(os.stat(self.text).st_mtime)}"
             return self.suffix
-        elif self.suffix_operation == Suffix.ADD_CUSTOM:
+        elif self.suffix_operation == Suffix.CUSTOM.value:
             self.suffix = f" {self.suffix}"
             return self.suffix
         else:
