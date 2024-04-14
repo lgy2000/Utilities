@@ -6,9 +6,8 @@ pdf_operation.py
 Provides a set of operations for manipulating PDF files.
 
 Description:
-This module provides a set of operations for manipulating PDF files. It includes functions for deleting pages, rotating pages, extracting text from
-a PDF file, checking if a string is present in a PDF file, and extracting a title from a PDF file. It uses the PyPDF2 and pikepdf libraries for PDF
-file operations.
+This module includes functions for deleting pages, rotating pages, extracting text from a PDF file, checking if a string is present in a PDF file,
+and extracting a title from a PDF file. It uses the PyPDF2 and pikepdf libraries for PDF file operations.
 """
 
 import logging
@@ -16,6 +15,7 @@ import os
 
 import pikepdf
 from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfWriter
 
 from Text_Operation.text_operation import TextOperation
 
@@ -74,6 +74,7 @@ class PdfOperation:
 
     @staticmethod
     def check_pdf_rotation(file_path):
+        """Returns a list of rotation angles for each page in a PDF file."""
         pdf = PdfReader(file_path)
         rotations = []
         for page in range(len(pdf.pages)):
@@ -82,11 +83,13 @@ class PdfOperation:
         return rotations
 
     def is_string_in_pdf(self, file_path, search_string):
+        """Checks if a given string is present in the text of a PDF file."""
         content = self.get_text_from_pdf(file_path)
         return search_string in content
 
     @staticmethod
     def get_text_from_pdf(file_path):
+        """Extracts and returns all text from a PDF file."""
         pdf = PdfReader(file_path)
         text = ""
         for page in range(len(pdf.pages)):
@@ -94,9 +97,26 @@ class PdfOperation:
         return text
 
     def get_title_from_pdf(self, file, title_keyword):
+        """Extracts and returns the title from a PDF file based on a keyword."""
         # Extract text from the PDF file
         page_text = self.get_text_from_pdf(file)
         # Search for the title block in the extracted text
         if title_keyword in page_text or title_keyword.upper() in page_text or title_keyword.capitalize() in page_text:
             return self.text_ops.get_title_from_text(page_text, title_keyword)
         return None
+
+    @staticmethod
+    def compress_pdf(filename):
+        """Compresses a PDF file to reduce its size."""
+        writer = PdfWriter(clone_from=filename)
+        for page in writer.pages:
+            page.compress_content_streams()  # This is CPU intensive!
+        with open("out.pdf", "wb") as f:
+            writer.write(f)
+
+    def compress_pdf_in_folder(self, folder: str) -> None:
+        """Compresses all PDF files within a folder."""
+        for filename in os.listdir(folder):
+            if filename.endswith('.pdf'):
+                filename = os.path.join(folder, filename)
+                self.compress_pdf(filename)
