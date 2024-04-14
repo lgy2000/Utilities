@@ -4,7 +4,7 @@ import configparser
 config = configparser.ConfigParser()
 
 # Read the configuration file
-config.read(r"D:\YK\Python\Utilities\config.ini")
+config.read(r"Utilities\config.ini")
 
 # Retrieve values from the configuration file
 email_operation = 'EMAIL OPERATION'
