@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 kindle_operation.py
 
@@ -9,7 +11,6 @@ converting the notes to Markdown format, and exporting the output to a file or t
 various options such as whether to include the location of notes/highlights and whether to override an existing output file.
 """
 
-# !/usr/bin/env python3
 import os
 from collections import OrderedDict
 

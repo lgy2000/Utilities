@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 kindle_notes_html_to_md.py
 
@@ -9,7 +11,6 @@ to a Markdown document. It allows users to specify various options such as wheth
 whether to export the output to the clipboard or a file, and whether to override an existing output file.
 """
 
-# !/usr/bin/env python3
 import argparse
 import os
 import sys

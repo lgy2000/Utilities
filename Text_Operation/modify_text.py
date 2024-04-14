@@ -1,20 +1,14 @@
+# !/usr/bin/env python3
+
 """
-Module name: modify_text.py
+modify_text.py
+
+Modifies text based on specified configurations.
 
 Description:
-Modifies text based on specified configurations, such as adding prefixes or suffixes, removing prefixes, adding titles, and changing text case.
-
-Notes:
-- The module utilizes the `os` and `datetime` modules for file system operations and date-time manipulation respectively.
-- It also imports functionality from the `get_title_from_pdf.py` module for extracting titles from PDF files.
-- The `remove_prefix()` function removes prefixes from the input text based on the specified configuration.
-- The `get_prefix()` function adds prefixes to the input text based on the specified configuration, including options for counters, timestamps,
-and custom strings.
-- The `get_suffix()` function adds suffixes to the input text based on the specified configuration, similar to the `get_prefix()` function.
-- The `get_title_from_pdf()` function retrieves titles from PDF files if enabled in the configuration.
-- The `change_case()` function modifies the case of the input text based on the specified configuration, including options for title case,
-uppercase, and lowercase.
-- The `main()` function orchestrates the text modification process according to the specified configurations and prints the modified text.
+This module provides functionality to modify text according to user-specified configurations. It includes options to add or remove prefixes and
+suffixes, change case, and extract titles from files. The module uses the `os` and `datetime` modules for file system operations and date-time
+manipulation respectively. It also imports functionality from the `get_title_from_pdf.py` module for extracting titles from PDF files.
 """
 
 from PDF_Operation.pdf_operation import PdfOperation

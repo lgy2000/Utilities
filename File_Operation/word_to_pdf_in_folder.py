@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 word_to_pdf_in_folder.py
 
@@ -12,7 +14,6 @@ selected folder into PDF files and saves them in the same folder. The `main()` f
 Word to PDF conversion process and prints "done" upon completion.
 """
 
-# !/usr/bin/env python3
 import sys
 import traceback
 

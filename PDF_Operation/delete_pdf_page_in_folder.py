@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 delete_pdf_page_in_folder.py
 
@@ -8,7 +10,6 @@ This module provides functionality to delete specific pages from all PDF files i
 It uses the pdf_operation module for PDF file operations and the config module for configuration settings.
 """
 
-# !/usr/bin/env python3
 import argparse
 import sys
 import traceback

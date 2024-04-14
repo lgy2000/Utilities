@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 rotate_pdf.py
 
@@ -10,7 +12,6 @@ and the pdf_operation module for PDF file operations.
 The rotation angle and file to process can be provided as command-line arguments or retrieved from the config module.
 """
 
-# !/usr/bin/env python3
 import argparse
 import sys
 import traceback

@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 draw_folder_structure.py
 
@@ -8,7 +10,6 @@ This module provides a function to draw the structure of a specified folder. It 
 indicating subfolders. It utilizes the os module for directory operations.
 """
 
-# !/usr/bin/env python3
 import ast
 import os
 import sys

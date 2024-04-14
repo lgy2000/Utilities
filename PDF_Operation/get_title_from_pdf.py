@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 get_title_from_pdf.py
 
@@ -8,7 +10,6 @@ This module uses the PdfOperation class from the pdf_operation module to extract
 that is passed to the get_title_from_pdf method. The module can either prompt the user to select a file or use a predefined file path.
 """
 
-# !/usr/bin/env python3
 import argparse
 import sys
 import traceback

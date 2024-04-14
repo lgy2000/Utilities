@@ -1,23 +1,18 @@
-"""
-Module name: rename_file_in_folder.py
+# !/usr/bin/env python3
 
-Description:
+"""
+rename_file_in_folder.py
+
 Renames all files within a specified folder according to configured patterns and modifications.
 
-Notes:
-- The module depends on the `os` module for file system operations and imports functionalities from other modules (`config.py`,
-`copy_folder_and_files.py`,
-`get_title_from_pdf.py`, `modify_text.py`).
-- The `rename_file_in_folder()` function prompts the user to input keyword, delimiter, prefix, and suffix if configured, and then iterates through
-all files in the specified folder to rename them accordingly.
-- If configured, it extracts titles from files using the specified keyword using functionality from the `get_title_from_pdf.py` module.
-- Prefixes and suffixes are added to filenames based on the configured options, and case modifications are applied as specified.
-- The `main()` function initiates the process by copying files from one folder to another using functionality from the `copy_folder_and_files.py`
-module,
-and then calls the `rename_file_in_folder()` function to rename files in the copied folder.
+Description:
+This module provides functionality to rename all files in a given folder based on user-specified patterns and modifications. It includes options to
+add or remove prefixes and suffixes, change case, and extract titles from files. The module uses the `os` module for file system operations and
+imports functionalities from other modules (`config.py`, `copy_folder_and_files.py`, `get_title_from_pdf.py`, `modify_text.py`). The main function
+initiates the process by copying files from one folder to another and then calls the `rename_file_in_folder()` function to rename files in the
+copied folder.
 """
 
-# !/usr/bin/env python3
 import argparse
 import os
 import sys
@@ -26,7 +21,7 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from Text_Operation.text_operation import TextOperation
+from Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
 from file_operation import FileOperation
 
 logging_load_human_config()
@@ -69,17 +64,20 @@ def parse_command_line_args():
                         action='store_true',
                         help='Whether to remove prefix')
 
-    parser.add_argument('--to-add-prefix',
-                        action='store_true',
-                        help='Whether to add prefix')
+    parser.add_argument('--prefix-operation',
+                        choices=list(Prefix),
+                        default=Prefix.NONE,
+                        help='Prefix operation to perform')
 
-    parser.add_argument('--to-add-suffix',
-                        action='store_true',
-                        help='Whether to add suffix')
+    parser.add_argument('--suffix-operation',
+                        choices=list(Suffix),
+                        default=Suffix.NONE,
+                        help='Suffix operation to perform')
 
-    parser.add_argument('--to-change-case',
-                        action='store_true',
-                        help='Whether to change case')
+    parser.add_argument('--case-operation',
+                        choices=list(Case),
+                        default=Case.NONE,
+                        help='Case operation to perform')
 
     parser.add_argument('--keyword',
                         default='',

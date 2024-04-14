@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 file_operation.py
 
@@ -12,7 +14,6 @@ which encapsulates all the file operation methods. The `main()` function is prov
 and prints "done" upon completion.
 """
 
-# !/usr/bin/env python3
 import os
 from datetime import datetime
 from pathlib import Path
@@ -253,7 +254,7 @@ class FileOperation:
 
                 # file 2 properties
                 text_ops.text = filename1
-                filename2 = text_ops.process_filename()
+                filename2 = text_ops.process_text()
                 file2 = folder / f"{filename2}{extension}"
 
                 # rename file parsed in

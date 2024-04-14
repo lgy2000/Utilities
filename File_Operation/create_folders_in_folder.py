@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 create_folders_in_folder.py
 
@@ -8,7 +10,6 @@ This module provides a function to create multiple folders within a specified di
 text file. It utilizes the os module for directory and file operations.
 """
 
-# !/usr/bin/env python3
 import sys
 import traceback
 from tkinter import filedialog

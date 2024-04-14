@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 copy_folder_and_files.py
 
@@ -8,7 +10,6 @@ This module provides a function to copy a selected folder along with all its con
 and time. It utilizes the datetime, shutil, and tkinter modules for date-time manipulation, file copying, and GUI functionality respectively.
 """
 
-# !/usr/bin/env python3
 import sys
 import traceback
 

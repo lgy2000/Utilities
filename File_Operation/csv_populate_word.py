@@ -1,3 +1,5 @@
+# !/usr/bin/env python3
+
 """
 csv_populate_word.py
 
@@ -8,7 +10,6 @@ This module provides a function to populate a Word template document with data f
 values from each row of the CSV. It utilizes the pandas and docx modules for data manipulation and Word document operations respectively.
 """
 
-# !/usr/bin/env python3
 import sys
 import traceback
 
