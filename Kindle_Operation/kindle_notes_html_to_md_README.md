@@ -1,7 +1,8 @@
 # Kindle Notes HTML to MD
 
-Convert an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
 Originally forked from https://github.com/krystofl/kindle-notes-to-md.
+
+Convert an HTML file of book notes exported from an Amazon Kindle to a Markdown document.
 
 The output format is particularly suitable for copy-pasting into
 [Roam Research](https://roamresearch.com):
@@ -9,13 +10,11 @@ The output format is particularly suitable for copy-pasting into
 ![Screenshot](kindle_notes_html_to_md_screenshot.png)
 
 <!-- TOC -->
-
 * [Kindle Notes HTML to MD](#kindle-notes-html-to-md)
 * [Quickstart](#quickstart)
 * [Optional functions](#optional-functions)
   * [Copying the output directly to the clipboard](#copying-the-output-directly-to-the-clipboard)
 * [How to get your notes in HTML format](#how-to-get-your-notes-in-html-format)
-
 <!-- TOC -->
 
 # Quickstart
