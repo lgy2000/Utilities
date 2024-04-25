@@ -17,9 +17,9 @@ def extract_files_with_keywords(directory, keywords, destination_directory):
 
 
 def main():
-    keywords = ["WPR"]
-    directory = r"D:\YK\Downloads\TRANSMITTAL_UNZIPPED"
-    destination_directory = r"D:\YK\Downloads\REP_WPR"
+    keywords = ["RESET-EXE-HES-93-INC-DWG-4214"]
+    directory = r"D:\YK\Honeywell\2023 MYP-000302 RESET MRCSB\WP126 PU\Transmittal Outgoing 2024.4.25"
+    destination_directory = r"D:\YK\Downloads\RESET-EXE-HES-93-INC-DWG-4214"
     extract_files_with_keywords(directory, keywords, destination_directory)
 
 
