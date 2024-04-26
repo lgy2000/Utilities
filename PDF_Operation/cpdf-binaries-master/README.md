@@ -36,7 +36,6 @@ Functionality
 * Convert text to PDF
 * Draw on PDF files with graphics and text
 
-
 Documentation
 ---
 

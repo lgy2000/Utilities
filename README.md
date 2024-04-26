@@ -60,7 +60,7 @@ This directory contains modules and scripts related to PDF operations. The follo
   operations.
 - `delete_pdf_pages.py`: Deletes specific pages from a PDF file.
 - `delete_pdf_pages_in_folder.py`: Deletes specific pages from all PDF files within a folder.
-- `get_title_from_pdf.py`: Extracts the title from a PDF file.
+- `extract_title_from_pdf.py`: Extracts the title from a PDF file.
 - `pdf_operation_test.py`: Contains tests for the pdf_operation.py module.
 - `rotate_pdf.py`: Rotates each page in a PDF file by a specified angle.
 - `rotate_pdf-in_folder.py`: Rotates each page in all PDF files within a folder by a specified angle.

@@ -73,10 +73,10 @@ Utilities
 │   │       ['main']
 │   │   delete_pdf_page_in_folder.py
 │   │       ['main']
-│   │   get_title_from_pdf.py
+│   │   extract_title_from_pdf.py
 │   │       ['main']
 │   │   pdf_operation.py
-│   │       ['__init__', 'delete_pdf_page', 'delete_pdf_page_in_folder', 'rotate_pdf_page', 'rotate_pdf', 'rotate_pdf_in_folder', 'check_pdf_rotation', 'is_string_in_pdf', 'get_text_from_pdf', 'get_title_from_pdf', 'compress_pdf']
+│   │       ['__init__', 'delete_pdf_page', 'delete_pdf_page_in_folder', 'rotate_pdf_page', 'rotate_pdf', 'rotate_pdf_in_folder', 'check_pdf_rotation', 'is_string_in_pdf', 'get_text_from_pdf', 'extract_title_from_pdf', 'compress_pdf']
 │   │   pdf_operation_test.py
 │   │       ['main', 'setUp', 'test_delete_pdf_page_1', 'test_rotate_pdf']
 │   │   rotate_pdf.py

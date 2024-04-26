@@ -1,3 +1,17 @@
+# !/usr/bin/env python3
+
+"""
+unzip_archive_in_folder.py
+
+Unzips archive files in a given directory.
+
+Description:
+This module contains a function that traverses a given directory and unzips any archive files it encounters. It supports both .zip and .rar file
+formats. The unzipped files are placed in the same directory as the original archive.
+"""
+
+# Todo: move function to PDF_Operation folder
+
 import os
 import zipfile
 
