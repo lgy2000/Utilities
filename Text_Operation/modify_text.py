@@ -8,7 +8,7 @@ Modifies text based on specified configurations.
 Description:
 This module provides functionality to modify text according to user-specified configurations. It includes options to add or remove prefixes and
 suffixes, change case, and extract titles from files. The module uses the `os` and `datetime` modules for file system operations and date-time
-manipulation respectively. It also imports functionality from the `get_title_from_pdf.py` module for extracting titles from PDF files.
+manipulation respectively. It also imports functionality from the `extract_title_from_pdf.py` module for extracting titles from PDF files.
 """
 
 from PDF_Operation.pdf_operation import PdfOperation
@@ -34,7 +34,7 @@ def main():
     text_ops.text = text_ops.remove_prefix()
     prefix = text_ops.get_prefix(counter)
     suffix = text_ops.get_suffix(counter)
-    title = pdf_ops.get_title_from_pdf(file="", title_keyword="Title")
+    title = pdf_ops.extract_title_from_pdf(file="", title_keyword="Title")
     text_ops.text = f"{prefix}{text_ops.text}{suffix}{title}"
     text_ops.text = text_ops.change_case()
 

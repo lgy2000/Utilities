@@ -275,7 +275,7 @@ class FileOperation:
 
                 if text_ops.add_title == 1:
                     # To-do: detect for file type and create functions to get title from word/excel/text in the future
-                    filename1 = self.pdf_ops.get_title_from_pdf(file_path, title_keyword="Title")
+                    filename1 = self.pdf_ops.extract_title_from_pdf(file_path, title_keyword="Title")
                 else:
                     filename1 = os.path.splitext(full_filename)[0]
 

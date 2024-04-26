@@ -1,3 +1,17 @@
+# !/usr/bin/env python3
+
+"""
+extract_delete_files_in_folder.py
+
+Extracts and deletes files with specified keywords in a directory.
+
+Description:
+This module contains a function that traverses a given directory and deletes any files whose names contain specified keywords. The function returns
+a list of the file paths that were deleted.
+"""
+
+# Todo: move function to FileOperation
+
 import fnmatch
 import os
 

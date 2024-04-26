@@ -8,7 +8,7 @@ Provides operations for modifying and handling text.
 Description:
 This module provides a variety of operations for handling and modifying text. It includes functionality to add or remove prefixes and suffixes,
 change the case of text, and extract titles from text. The module uses the `os` and `datetime` modules for file system operations and date-time
-manipulation respectively. It also imports functionality from the `get_title_from_pdf.py` module for extracting titles from PDF files.
+manipulation respectively. It also imports functionality from the `extract_title_from_pdf.py` module for extracting titles from PDF files.
 """
 
 import os

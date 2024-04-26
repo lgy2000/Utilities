@@ -17,7 +17,6 @@ import traceback
 from eglogging import logging_load_human_config, CRITICAL
 
 from File_Operation.file_operation import FileOperation
-from config import pdf_input_folder
 from pdf_operation import PdfOperation
 
 logging_load_human_config()
@@ -36,6 +35,7 @@ def main():
         else:
             folder = args.folder
 
+        pdf_ops.loadDLL_libpycpdf()
         pdf_ops.compress_pdf_in_folder(folder)
         if len(sys.argv) > 1:
             input("Press any key to exit")

@@ -8,7 +8,7 @@ Renames all files within a specified folder according to configured patterns and
 Description:
 This module provides functionality to rename all files in a given folder based on user-specified patterns and modifications. It includes options to
 add or remove prefixes and suffixes, change case, and extract titles from files. The module uses the `os` module for file system operations and
-imports functionalities from other modules (`config.py`, `copy_folder_and_files.py`, `get_title_from_pdf.py`, `modify_text.py`). The main function
+imports functionalities from other modules (`config.py`, `copy_folder_and_files.py`, `extract_title_from_pdf.py`, `modify_text.py`). The main function
 initiates the process by copying files from one folder to another and then calls the `rename_file_in_folder()` function to rename files in the
 copied folder.
 """
