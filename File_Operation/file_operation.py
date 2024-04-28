@@ -229,6 +229,23 @@ class FileOperation:
 
         return file
 
+    # def word_to_pdf_in_folder(self):
+    #     """
+    #     Converts all Word documents in a specified folder to PDF format.
+    #     """
+    #     root = Tk()
+    #     root.withdraw()
+    #     folder1, folder2 = self.copy_folder_structure()
+    #     convert(folder1, folder2)
+    #     for root, dirs, files in os.walk(folder1):
+    #         for directory in dirs:
+    #             print(root)
+    #             print(files)
+    #             folder_path1 = os.path.join(root, directory)
+    #             folder_path2 = folder_path1.replace(folder1, folder2)
+    #             convert(folder_path1, folder_path2)
+    #             print("\n")
+
     def word_to_pdf_in_folder(self):
         """
         Converts all Word documents in a specified folder to PDF format.
@@ -239,7 +256,7 @@ class FileOperation:
         convert(folder1, folder2)
         for root, dirs, files in os.walk(folder1):
             for directory in dirs:
-                print(root)
+                print(directory)
                 print(files)
                 folder_path1 = os.path.join(root, directory)
                 folder_path2 = folder_path1.replace(folder1, folder2)
@@ -274,7 +291,7 @@ class FileOperation:
                 full_filename = Path(entry.name)
 
                 if text_ops.add_title == 1:
-                    # To-do: detect for file type and create functions to get title from word/excel/text in the future
+                    # Todo: detect for file type and create functions to get title from word/excel/text
                     filename1 = self.pdf_ops.extract_title_from_pdf(file_path, title_keyword="Title")
                 else:
                     filename1 = os.path.splitext(full_filename)[0]
