@@ -13,9 +13,9 @@ The project is organized into the following directories:
 - `Kindle_Operation`
 - `PDF_Operation`
 
-### Data_Operation (to-do list)
+### Data_Operation (Todo list)
 
-This directory contains modules and scripts related to data operations.
+This directory contains modules and scripts related to data operations. The following files are included:
 
 ### Email_Operation
 
@@ -69,7 +69,7 @@ This directory contains modules and scripts related to PDF operations. The follo
 
 Each script can be run independently or run from the `main_menu.py`. Please refer to the individual script files for specific usage instructions.
 
-## Current To-do List
+## Current Todo List
 
 - Add more comments and docstrings in the classes and modules `File_Operation`.
 - Add more functionality and instructions in the main menu.
