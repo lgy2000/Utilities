@@ -298,9 +298,8 @@ class KindleOperation:
                 INFO("The Markdown file has already exists. Use -y or --override flag.", LOG_COLORS['RED'])
         # print(args)
 
-    # ================================================================================================================
     # TODO: Implement the following methods
-    # ================================================================================================================
+
     def _get_book_info(self):
         """
         Get the book title and author from the parsed HTML.
