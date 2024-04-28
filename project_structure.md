@@ -12,11 +12,9 @@ Utilities
 │   __init__.py
 │   
 ├───Data_Operation
+│   │   scrap_amazon.py
+│   │   scrap_shopee.py
 │   │   __init__.py
-│   │   
-│   ├───Web Scrapping
-│   │       scrap_amazon.py
-│   │       scrap_shopee.py
 │   │   
 │   ├───Youtube Transcript API
 │   │   │   .coveragerc
@@ -47,12 +45,18 @@ Utilities
 │   │       ['main']
 │   │   draw_folder_structure.py
 │   │       ['get_callable_functions', 'calculate_indent', 'print_with_indent', 'print_callable_functions', 'draw_directory_structure', 'main']
+│   │   extract_copy_files_in_folder.py
+│   │       ['extract_files_with_keywords', 'main']
+│   │   extract_delete_files_in_folder.py
+│   │       ['extract_files_with_keywords', 'main']
 │   │   file_operation.py
 │   │       ['__init__', 'get_current_folder_path', 'get_parent_folder_path', 'copy_folder_structure', 'copy_folder_and_files', 'create_folders_in_folder', 'select_folder_word_csv', 'csv_populate_word', 'is_filepath_valid', 'read_write_txt', 'word_to_pdf_in_folder', 'rename_file_in_folder']
 │   │   read_write_text.py
 │   │       ['main']
 │   │   rename_files_in_folder.py
 │   │       ['get_test_folder', 'to_uppercase', 'parse_command_line_args', 'get_user_input', 'main']
+│   │   unzip_archive_in_folder.py
+│   │       ['unzip_archives_in_folder', 'main']
 │   │   word_to_pdf_in_folder.py
 │   │       ['main']
 │   │   __init__.py
@@ -68,15 +72,23 @@ Utilities
 │   
 ├───PDF_Operation
 │   │   compress_pdf.py
-│   │       ['compress_pdf']
+│   │       ['main']
+│   │   compress_pdf_in_folder.py
+│   │       ['main']
+│   │   compress_pdf_remain_in_folder.py
+│   │       ['main']
 │   │   delete_pdf_page.py
 │   │       ['main']
 │   │   delete_pdf_page_in_folder.py
 │   │       ['main']
+│   │   extract_page_from_pdf_contain_keywords.py
+│   │       ['extract_page_from_pdf_contain_keywords', 'main']
+│   │   extract_text_from_pdf.py
+│   │       ['extract_text_from_pdf', 'is_in_list', 'main']
 │   │   extract_title_from_pdf.py
 │   │       ['main']
 │   │   pdf_operation.py
-│   │       ['__init__', 'delete_pdf_page', 'delete_pdf_page_in_folder', 'rotate_pdf_page', 'rotate_pdf', 'rotate_pdf_in_folder', 'check_pdf_rotation', 'is_string_in_pdf', 'get_text_from_pdf', 'extract_title_from_pdf', 'compress_pdf']
+│   │       ['__init__', 'get_current_folder_path', 'get_parent_folder_path', 'delete_pdf_page', 'delete_pdf_page_in_folder', 'rotate_pdf_page', 'rotate_pdf', 'rotate_pdf_in_folder', 'check_pdf_rotation', 'is_string_in_pdf', 'get_text_from_pdf', 'extract_title_from_pdf', 'load_pycpdflib_dll', 'loadDLL_libpycpdf', 'compress_pdf', 'compress_pdf_in_folder']
 │   │   pdf_operation_test.py
 │   │       ['main', 'setUp', 'test_delete_pdf_page_1', 'test_rotate_pdf']
 │   │   rotate_pdf.py
@@ -84,6 +96,40 @@ Utilities
 │   │   rotate_pdf_in_folder.py
 │   │       ['main']
 │   │   __init__.py
+│   │   
+│   ├───Compress-PDFs
+│   │   │   .env
+│   │   │   .env.example
+│   │   │   .gitignore
+│   │   │   compress.py
+│   │   │   LICENSE
+│   │   │   MAKE_SCRIPT_GLOBAL.sh
+│   │   │   README.md
+│   │   
+│   ├───cpdf-binaries-master
+│   │   │   cpdfmanual.pdf
+│   │   │   LICENSE
+│   │   │   README.md
+│   │   │   
+│   │   ├───Linux-Intel-64bit
+│   │   │       cpdf
+│   │   │   
+│   │   ├───old32bit
+│   │   │   │   
+│   │   │   ├───Linux-Intel-32bit
+│   │   │   │       cpdf
+│   │   │   
+│   │   ├───OSX-ARM
+│   │   │       cpdf
+│   │   │   
+│   │   ├───OSX-Intel
+│   │   │       cpdf
+│   │   │   
+│   │   ├───Windows32bit
+│   │   │       cpdf.exe
+│   │   │   
+│   │   ├───Windows64bit
+│   │   │       cpdf.exe
 │   
 ├───Text_Operation
 │   │   modify_text.py
