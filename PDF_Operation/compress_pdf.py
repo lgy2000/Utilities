@@ -3,7 +3,7 @@
 """
 compress_pdf.py
 
-Compresses a specific PDF file.
+Compresses a specific PDF file using pycpdflib.
 
 Description:
 This module provides a command-line interface to compress a selected PDF file. It uses the argparse module for command-line argument parsing,

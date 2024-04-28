@@ -3,7 +3,7 @@
 """
 compress_pdf_in_folder.py
 
-Compresses all PDF files in a given folder, and save the compressed files in a new folder.
+Compresses all PDF files in a given folder using pycpdflib, and save the compressed files in a new folder.
 
 Description:
 This module provides functionality to compress all PDF files in a given folder. It uses the pdf_operation module for PDF file operations and the

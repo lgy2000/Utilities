@@ -141,7 +141,7 @@ class PdfOperation:
         loadDLL("libpycpdf.dll")
 
     def compress_pdf(self, file):
-        """Compresses a PDF file to reduce its size."""
+        """Compresses a PDF file to reduce its size using pycpdflib."""
         try:
             if file.endswith('.pdf'):
                 # Create a PDF object from the file path
@@ -153,7 +153,7 @@ class PdfOperation:
             logging.error(f"Error processing file {file}:\n{e}")
 
     def compress_pdf_in_folder(self, folder: str) -> None:
-        """Compresses all PDF files within a folder and its subfolders."""
+        """Compresses all PDF files within a folder and its subfolders using pycpdflib."""
         for root, dirs, files in os.walk(folder):
             for file in files:
                 if file.endswith('.pdf'):
