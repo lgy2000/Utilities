@@ -37,6 +37,20 @@ class Case(Enum):
     LOWER = "LOWER"
 
 
+class TextOperationArgs:
+    def __init__(self, input="", add_title=False, title_keyword="", prefix_operation=None, suffix_operation=None, case_operation=None,
+                 prefix="", suffix="", remove_prefix=False, prefix_delimiter=""):
+        self.input = input
+        self.add_title = add_title
+        self.title_keyword = title_keyword
+        self.prefix_operation = prefix_operation
+        self.suffix_operation = suffix_operation
+        self.case_operation = case_operation
+        self.prefix = prefix
+        self.suffix = suffix
+        self.remove_prefix = remove_prefix
+        self.prefix_delimiter = prefix_delimiter
+
 class TextOperation:
     def __init__(self, text: str,
                  full_path: str = "",
@@ -66,13 +80,17 @@ class TextOperation:
     def set_args(self, args):
         self.add_title = args.add_title
         self.title_keyword = args.title_keyword if self.add_title == 1 else ""
-        self.prefix_operation = args.prefix_operation
-        self.suffix_operation = args.suffix_operation
+        self.prefix_operation = args.prefix_operation.upper()
+        self.suffix_operation = args.suffix_operation.upper()
         self.case_operation = args.case_operation.upper()
         self.prefix = args.prefix if self.prefix_operation == Prefix.CUSTOM.value else ""
         self.suffix = args.suffix if self.suffix_operation == Suffix.CUSTOM.value else ""
         self.remove_prefix = args.remove_prefix
         self.prefix_delimiter = args.prefix_delimiter if self.remove_prefix == 1 else ""
+
+    def print_args(self):
+        print(f"{self.text}\n{self.full_path, self.add_title, self.title_keyword, self.prefix_operation, self.suffix_operation, self.case_operation,
+        self.prefix, self.suffix, self.remove_prefix, self.prefix_delimiter, self.page_text}")
 
     def process_text(self, counter):
         text = self.text
@@ -161,13 +179,13 @@ class TextOperation:
 
     def change_case(self) -> str:
         """Change the case of the text based on the case operation."""
-        if self.case_operation == Case.TITLE:
+        if self.case_operation == Case.TITLE.value:
             self.text = self.get_title_case()
             return self.text
-        elif self.case_operation == Case.UPPER:
+        elif self.case_operation == Case.UPPER.value:
             self.text = self.text.upper()
             return self.text
-        elif self.case_operation == Case.LOWER:
+        elif self.case_operation == Case.LOWER.value:
             self.text = self.text.lower()
             return self.text
         else:

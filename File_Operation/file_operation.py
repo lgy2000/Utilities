@@ -269,14 +269,15 @@ class FileOperation:
                 text_ops = TextOperation(text="")
                 text_ops.set_args(args)
                 text_ops.full_path = Path(entry.path)
+                # text_ops.print_args()
 
                 # Get the full file path once and reuse it
-                file_path = Path(entry.path)
+                file1 = Path(entry.path)
                 full_filename = Path(entry.name)
 
                 if text_ops.add_title == 1:
                     # Todo: detect for file type and create functions to get title from word/excel/text
-                    filename1 = self.pdf_ops.extract_title_from_pdf(file_path, title_keyword="Title")
+                    filename1 = self.pdf_ops.extract_title_from_pdf(file1, title_keyword="Title")
                 else:
                     filename1 = os.path.splitext(full_filename)[0]
 
@@ -284,28 +285,15 @@ class FileOperation:
 
                 # Reset the text attribute for each file
                 text_ops.text = filename1
-
                 filename2 = text_ops.process_text(counter)
-                file2 = folder / f"{filename2}{extension}"
+                file2 = os.path.join(folder, f"{filename2}{extension}")
 
                 # rename file parsed in
                 print(file2)
-                file_path.rename(file2)
+                file1.rename(file2)
+
                 counter += 1
+                # text_ops.print_args()
 
                 # Delete the TextOperation object to free up memory
                 del text_ops
-
-        # print(args)
-        # print(text_ops)
-        # print(text_ops.text)
-        # print(text_ops.add_title)
-        # print(text_ops.title_keyword)
-        # print(text_ops.prefix_operation)
-        # print(text_ops.suffix_operation )
-        # print(text_ops.case_operation)
-        # print(text_ops.prefix)
-        # print(text_ops.suffix)
-        # print(text_ops.remove_prefix)
-        # print(text_ops.prefix_delimiter)
-        # print(text_ops.page_text)

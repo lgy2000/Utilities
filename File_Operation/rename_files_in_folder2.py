@@ -22,14 +22,13 @@ from tkinter import filedialog
 
 from eglogging import logging_load_human_config, CRITICAL
 
-from Text_Operation.text_operation import TextOperationArgs
+from Text_Operation.text_operation import TextOperation, Prefix, Suffix, Case
 from file_operation import FileOperation
 
 logging_load_human_config()
 
 
 # TODO: case operation not working
-
 
 def get_test_folder():
     """
@@ -40,6 +39,66 @@ def get_test_folder():
     base_dir = os.path.dirname(os.path.abspath(__file__))  # get the directory of the current script
     test_folder = os.path.join(base_dir, r".test\test1")
     return test_folder
+
+
+def to_uppercase(value: str) -> str:
+    return value.upper()
+
+
+def parse_command_line_args():
+    """
+    Parses the command line arguments passed to the script.
+    Returns:
+        argparse.Namespace: The parsed command line arguments.
+    """
+    description = "Renames all files within a specified folder " \
+                  "according to configured patterns and modifications."
+    parser = argparse.ArgumentParser(description=description)
+
+    test_folder = get_test_folder()
+
+    # positional input argument
+    parser.add_argument('input',
+                        nargs='?',  # makes the input argument optional
+                        default=test_folder,  # default value if no input argument is provided
+                        help='Input folder path')
+    parser.add_argument('--add_title',
+                        action='store_true',
+                        help='Whether to add title from file')
+    parser.add_argument('--title_keyword',
+                        default='',
+                        help='Keyword to use if to_get_title_from_file is set')
+    parser.add_argument('--prefix_operation',
+                        choices=[prefix.name for prefix in Prefix],
+                        type=to_uppercase,
+                        default=Prefix.NONE.name,
+                        help='Prefix operation to perform')
+    parser.add_argument('--suffix_operation',
+                        choices=[suffix.name for suffix in Suffix],
+                        type=to_uppercase,
+                        default=Suffix.NONE.name,
+                        help='Suffix operation to perform')
+    parser.add_argument('--case_operation',
+                        choices=[case.name for case in Case],
+                        type=to_uppercase,
+                        default=Case.NONE.name,
+                        help='Case operation to perform')
+    parser.add_argument('--prefix',
+                        default='',
+                        help='Prefix string to use if to_add_prefix is set')
+    parser.add_argument('--suffix',
+                        default='',
+                        help='Suffix string to use if to_add_suffix is set')
+    parser.add_argument('--remove_prefix',
+                        action='store_true',
+                        help='Whether to remove prefix')
+    parser.add_argument('--prefix_delimiter',
+                        default=' ',
+                        help='Prefix delimiter to use if _remove_prefix is set')
+
+    arguments = parser.parse_args()
+
+    return arguments
 
 
 def get_user_input(arguments):
@@ -102,13 +161,17 @@ def get_user_input(arguments):
 
 def main():
     try:
-        folder = filedialog.askdirectory()
-        args = TextOperationArgs(input=folder, add_title=False, title_keyword="", prefix_operation="", suffix_operation="",
-                                 case_operation="UPPER", prefix="", suffix="", remove_prefix=False, prefix_delimiter="")
         file_ops = FileOperation()
+        text_ops = TextOperation(text="")  # create an instance of TextOperation
+        file_ops.text_ops = text_ops  # assign the instance to the text_ops attribute of file_ops
 
-        _, folder = file_ops.copy_folder_and_files(args.input)
-        args.input = folder  # If no folder is provided, open a file dialog to select a folder
+        args = parse_command_line_args()
+        # if no arguments are provided from the system terminal, get user input from the console
+        if len(sys.argv) == 1:
+            get_user_input(args)
+
+        _, folder = file_ops.copy_folder_and_files(args.input)  # If no folder is provided, open a file dialog to select a folder
+        args.input = folder
         file_ops.rename_file_in_folder(args)
 
         # Call gc.collect() to free up memory immediately
