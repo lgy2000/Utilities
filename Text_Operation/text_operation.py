@@ -39,6 +39,7 @@ class Case(Enum):
 
 class TextOperation:
     def __init__(self, text: str,
+                 full_path: str = "",
                  add_title: bool = False,
                  title_keyword: str = "Title",
                  prefix_operation: Prefix = Prefix.NONE,
@@ -50,6 +51,7 @@ class TextOperation:
                  prefix_delimiter: str = "",
                  page_text: str = ""):
         self.text = text
+        self.full_path = full_path
         self.add_title = add_title
         self.title_keyword = title_keyword if self.add_title else ""
         self.prefix_operation = prefix_operation
@@ -133,7 +135,8 @@ class TextOperation:
             self.prefix = f"{counter} "
             return self.prefix
         elif self.prefix_operation == Prefix.TIMESTAMP.value:
-            self.prefix = f"{datetime.fromtimestamp(os.stat(self.text).st_mtime)} "
+            timestamp = datetime.fromtimestamp(os.stat(self.full_path).st_mtime)
+            self.suffix = f" {timestamp.strftime('%Y-%m-%d %H.%M.%S')}"
             return self.prefix
         elif self.prefix_operation == Prefix.CUSTOM.value:
             self.prefix = f"{self.prefix} "
@@ -147,7 +150,8 @@ class TextOperation:
             self.suffix = f" {counter}"
             return self.suffix
         elif self.suffix_operation == Suffix.TIMESTAMP.value:
-            self.suffix = f" {datetime.fromtimestamp(os.stat(self.text).st_mtime)}"
+            timestamp = datetime.fromtimestamp(os.stat(self.full_path).st_mtime)
+            self.suffix = f" {timestamp.strftime('%Y-%m-%d %H.%M.%S')}"
             return self.suffix
         elif self.suffix_operation == Suffix.CUSTOM.value:
             self.suffix = f" {self.suffix}"

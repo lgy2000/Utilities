@@ -1,3 +1,15 @@
+# !/usr/bin/env python3
+
+"""
+main.py
+
+This is the main entry point of the application.
+
+Description:
+This module is responsible for initiating the application and orchestrating the execution of other modules. The specific operations performed by
+this module depend on the user input.
+"""
+
 import ast
 import os
 import subprocess

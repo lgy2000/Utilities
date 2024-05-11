@@ -28,6 +28,8 @@ from file_operation import FileOperation
 logging_load_human_config()
 
 
+# TODO: case operation not working
+
 def get_test_folder():
     """
     Get the test file path.

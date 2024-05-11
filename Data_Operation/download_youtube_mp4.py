@@ -1,7 +1,7 @@
 # !/usr/bin/env python3
 
 """
-download_mp4_youtube.py
+download_youtube_mp4.py
 
 Downloads a YouTube video in MP4 format.
 
@@ -10,11 +10,12 @@ This module contains a function that takes a YouTube video URL as input, fetches
 to a specified folder.
 """
 
-from pytube import YouTube
+from pytube.__main__ import YouTubeHack
 
 
 def download_youtube(url, folder):
-    yt = YouTube(url)
+    yt = YouTubeHack(url)  # Use OAuth to avoid the 403 error (HTTP Error 403: Forbidden
+    print("URL: ", url)
     print("Title: ", yt.title)
     print("Views: ", yt.views)
     yd = yt.streams.get_highest_resolution()
@@ -25,10 +26,14 @@ def download_youtube(url, folder):
 def main():
     folder = r"D:\YK\Downloads\Youtube"
     link = input("Youtube Video link: ")
-    while link:
-        download_youtube(link, folder)
+    error_file = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS2.txt"  # File to write URLs that caused exceptions
+    try:
+        download_youtube(link.strip(), folder)
         print("\n")
-        link = input("Youtube Video link: ")
+    except Exception as e:
+        print(f"Error downloading video: {e}")
+        with open(error_file, "a") as error_file:
+            error_file.write(f"{link}")  # Write the URL to the file
 
 
 if __name__ == '__main__':

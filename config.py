@@ -1,3 +1,15 @@
+# !/usr/bin/env python3
+
+"""
+config.py
+
+This module is used for handling configuration settings for the application.
+
+Description:
+This module uses the configparser library to read configuration settings from a .ini file. It provides easy access to these settings throughout the
+application, including settings related to email operations, file operations, and PDF operations.
+"""
+
 import configparser
 import os
 

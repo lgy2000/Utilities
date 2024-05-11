@@ -1,3 +1,13 @@
+# !/usr/bin/env python3
+"""
+scrap_shopee.py
+
+This module is used for scraping data from Shopee.
+
+Description:
+This module uses the BeautifulSoup library to parse HTML data from Shopee's website. It extracts specific data from the page, such as product details.
+"""
+
 from bs4 import BeautifulSoup
 
 # url = 'https://shopee.com.my/cart/'

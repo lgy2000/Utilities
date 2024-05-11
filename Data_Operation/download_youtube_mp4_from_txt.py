@@ -10,11 +10,12 @@ This module contains a function that reads a text file containing YouTube video 
 in MP4 format to a specified folder.
 """
 
-from pytube import YouTube
+from pytube.__main__ import YouTubeHack
 
 
 def download_youtube(url, folder):
-    yt = YouTube(url)
+    yt = YouTubeHack(url)  # Use OAuth to avoid the 403 error (HTTP Error 403: Forbidden
+    print("URL: ", url)
     print("Title: ", yt.title)
     print("Views: ", yt.views)
     yd = yt.streams.get_highest_resolution()
@@ -24,12 +25,18 @@ def download_youtube(url, folder):
 
 def main():
     folder = r"D:\YK\Downloads\Youtube"
-    text_contains_link = r"D:\YK\Downloads\youtube_links.txt"
-    with open(text_contains_link, "r") as file:
+    text_contains_link = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS.txt"
+    error_file = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS2.txt"  # File to write URLs that caused exceptions
+
+    with open(text_contains_link, "r") as file, open(error_file, "a") as error_file:
         links = file.readlines()
         for link in links:
-            download_youtube(link, folder)
-            print("\n")
+            try:
+                download_youtube(link.strip(), folder)
+                print("\n")
+            except Exception as e:
+                print(f"Error downloading video: {e}")
+                error_file.write(f"{link}")  # Write the URL to the file
 
 
 if __name__ == '__main__':

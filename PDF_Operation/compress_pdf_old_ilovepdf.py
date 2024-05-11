@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 """
-compress_pdf_in_folder_ilovepdf.py
+compress_pdf_old_ilovepdf.py
 
-This module is used for compressing all PDF files in a selected folder using the iLovePDF API.
+This module is used for compressing old PDF files in a selected folder using the iLovePDF API.
 
 Description:
-This module reads the public keys from a configuration file, asks the user to select a folder, and then compresses all PDF files in the selected
-folder using the iLovePDF API. The compressed files are saved with a specific naming pattern.
+This module reads the public keys from a configuration file, asks the user to select a folder, finds old PDF files in the selected folder,
+and then compresses these files using the iLovePDF API. The compressed files are saved with a specific naming pattern.
 """
 
 import configparser
@@ -15,6 +15,7 @@ import logging
 import os
 from tkinter import filedialog
 
+from find_old_pdf import main as find_old_pdf
 from pdf_operation import PdfOperation
 
 # Create a logger
@@ -56,10 +57,18 @@ def main():
     # Ask the user to select a directory
     action_path = filedialog.askdirectory()
 
-    # Compress all PDF files in the subdirectory
-    pdf_ops.compress_pdf_folder_ilovepdf(action_path, compress_level, all_pdfs_pattern, compressed_pdfs_pattern, compressed_zip_pattern,
-                                         compressed_file_regex_pattern, compressed_file_regex_pattern2, output_errors, public_key1, public_key2,
-                                         public_key3)
+    old_file_path = find_old_pdf(action_path)
+    compressed_done = 0
+
+    if old_file_path:
+        print(f"Old PDF files found: {len(old_file_path)}")
+        for file_path in old_file_path:
+            # Compress all PDF files in the subdirectory
+            pdf_ops.compress_pdf_file_ilovepdf(file_path, compress_level, compressed_pdfs_pattern, output_errors, public_key1, public_key2,
+                                               public_key3)
+            compressed_done += 1
+
+    print(f"Old PDF files found compressed: {compressed_done}")
 
 
 if __name__ == '__main__':

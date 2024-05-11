@@ -1,3 +1,14 @@
+# !/usr/bin/env python3
+"""
+scrap_amazon.py
+
+This module is used for scraping data from Amazon.
+
+Description:
+This module uses the requests and BeautifulSoup libraries to send HTTP requests to Amazon's website and parse the HTML response. It extracts
+specific data from the page, such as product details.
+"""
+
 import requests
 from bs4 import BeautifulSoup
 
