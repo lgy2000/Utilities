@@ -1,6 +1,6 @@
 # !/usr/bin/env python3
 """
-scrap_amazon.py
+_scrap_amazon.py
 
 This module is used for scraping data from Amazon.
 

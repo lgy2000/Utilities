@@ -15,8 +15,8 @@ from download_youtube_mp4 import download_youtube
 
 def main():
     folder = r"D:\YK\Downloads\Youtube"
-    text_contains_link = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS.txt"
-    error_file = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS2.txt"  # File to write URLs that caused exceptions
+    text_contains_link = r"D:\YK\Downloads\Youtube\Youtube URLS.txt"
+    error_file = r"D:\YK\Downloads\Youtube\Youtube Download Error URLS.txt"  # File to write URLs that caused exceptions
 
     with open(text_contains_link, "r") as file, open(error_file, "a") as error_file:
         links = file.readlines()

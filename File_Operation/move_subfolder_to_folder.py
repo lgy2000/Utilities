@@ -6,7 +6,8 @@ move_subfolder_to_folder.py
 This module is used for moving all files from a subfolder to its parent folder.
 
 Description:
-This module moves all files from a specified subfolder to its parent folder. If the subfolder is empty after the move, it is removed.
+This module contains a function that iterates over all files in a specified subfolder and moves them to the parent directory. If the subfolder is
+empty after the move, it is removed.
 """
 
 import os
@@ -40,7 +41,7 @@ def move_subfolder_to_folder(directory, subfolder_name='subfolder_'):
 
 def main():
     folder = filedialog.askdirectory()
-    subfolder_name = 'subfolder_'
+    subfolder_name = ''
     move_subfolder_to_folder(folder, subfolder_name)
 
 

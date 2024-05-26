@@ -1,7 +1,7 @@
 # !/usr/bin/env python3
 
 """
-docstring_manager.py
+check_docstring.py
 
 This module is used for managing docstrings in Python files.
 
