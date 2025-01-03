@@ -6,7 +6,8 @@ from fuzzywuzzy import fuzz
 
 def rename_files_based_on_excel(excel_file_path, folder_path, error_file_path, extension="pdf", similarity_percentage=-1):
     """
-    Renames files in a folder based on a mapping provided in an Excel file.
+    Renames files in a folder based on a mapping provided in an Excel file. The input Excel file doesn’t need a fixed header. The code uses the first
+    and second columns as the old and new file names, respectively, as specified by the skiprows=0 parameter
 
     Parameters:
     excel_file_path (str): Path to the Excel file containing old and new file names.
@@ -16,7 +17,7 @@ def rename_files_based_on_excel(excel_file_path, folder_path, error_file_path, e
     similarity_percentage (int): Minimum similarity percentage for renaming (default is 100).
     """
     # Read the Excel file into a DataFrame, skipping the first row (header)
-    df = pd.read_excel(excel_file_path, skiprows=0)
+    df = pd.read_excel(excel_file_path, skiprows=0)  # skiprows=0 indicates that the reading starts from the first row (index 0), no headers
 
     # Open the error file in append mode with UTF-8 encoding to handle special characters
     with open(error_file_path, 'a', encoding='utf-8') as error_file:
