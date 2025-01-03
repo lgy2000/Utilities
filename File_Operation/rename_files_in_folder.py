@@ -3,7 +3,7 @@
 """
 rename_files_in_folder.py
 
-This module is used for renaming all files within a specified folder according to configured patterns and modifications.
+Renames all files within a specified folder according to configured patterns.
 
 Description:
 This module provides functionality to rename all files in a given folder based on user-specified patterns and modifications. It includes options to
@@ -98,11 +98,11 @@ def get_user_input(arguments):
 def main():
     try:
         folder = filedialog.askdirectory()
-        args = TextOperationArgs(input=folder, add_title=False, title_keyword="", prefix_operation="", suffix_operation="",
-                                 case_operation="UPPER", prefix="", suffix="", remove_prefix=False, prefix_delimiter="")
+        args = TextOperationArgs(input=folder, add_title=False, title_keyword="", prefix_operation="custom", suffix_operation="",
+                                 case_operation="none", prefix="Philosopher's Notes Summary - ", suffix="", remove_prefix=False, prefix_delimiter="")
         file_ops = FileOperation()
 
-        _, folder = file_ops.copy_folder_and_files(args.input)
+        # _, folder = file_ops.copy_folder_and_files(args.input)
         args.input = folder  # If no folder is provided, open a file dialog to select a folder
         file_ops.rename_file_in_folder(args)
 

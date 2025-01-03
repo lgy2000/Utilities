@@ -16,7 +16,6 @@ import os
 import cv2
 import pandas as pd
 
-
 def get_date_today():
     # Get today's date
     today = datetime.date.today()

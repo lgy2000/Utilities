@@ -40,25 +40,25 @@ This directory contains modules and scripts related to email operations. The fol
 
 This directory contains modules and scripts related to file operations. The following files are included:
 
+- `file_operation.py`: Provides various file operations including reading and writing text files, validating file paths, converting Word documents to
+  PDF, and renaming files in a folder.
 - `check_docstring.py`: Scans Python files in a specified directory, checks for docstrings, and prints the file paths of those without docstrings.
 - `copy_folder.py`: Copies a selected folder and its contents, appending the current date and time to the copied folder's name.
 - `count_file_size_by_type_in_folder.py`: Calculates the total size of files of a specific type in a folder.
-- `create_folders_in_folder.py`: Creates a new folder with a specified name within a given folder.
+- `create_folders_in_folder.py`: Creates a list of folders with a specified name within a given folder.
 - `csv_populate_word.py`: Fills a Word template document with data from a CSV file, replacing placeholders with CSV values.
 - `delete_empty_folders_in_folder.py`: Removes all empty directories in a specified path.
 - `delete_empty_folders_in_folder_with_rename_index.py`: Deletes all empty directories and renames the remaining directories in a specified path.
 - `draw_folder_structure.py`: Illustrates the structure of a specified folder.
 - `extract_copy_files_in_folder.py`: Copies files with specified keywords from a directory to a destination directory.
 - `extract_delete_files_in_folder.py`: Deletes files with specified keywords in a directory.
-- `file_operation.py`: Provides various file operations including reading and writing text files, validating file paths, converting Word documents to
-  PDF, and renaming files in a folder.
 - `list_file_in_csv.py`: Lists all files in a specified directory and writes their full path, file name, and extension into a CSV file in the same
   directory.
 - `manage_files_in_folder.py`: Moves files containing specified keywords to corresponding subdirectories in a specified directory.
 - `move_folder_to_subfolder_count.py`: Moves files from a specified folder to newly created subfolders, ensuring a maximum file count in each
   subfolder.
-- `move_folder_to_subfolder_size.py`: Moves folders from a specified directory to newly created subfolders, ensuring the total size of the folders in
-  each subfolder does not exceed a specified maximum size.
+- `move_folder_to_subfolder_size.py`: Moves folders from a specified directory to newly created subfolders, ensuring a maximum file size in each
+  subfolder.
 - `move_subfolder_to_folder.py`: Moves all files from a specified subfolder to its parent folder, removing the subfolder if it's empty after the move.
 - `read_write_text.py`: Reads a text file and overwrites it with a specified text input.
 - `rename_files_in_folder.py`: Renames all files in a given folder based on user-specified patterns and modifications.

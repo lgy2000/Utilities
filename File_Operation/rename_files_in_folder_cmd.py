@@ -3,7 +3,7 @@
 """
 rename_file_in_folder.py
 
-Renames all files within a specified folder according to configured patterns and modifications.
+Renames all files within a specified folder according to configured patterns and modifications and provide cmd line interface.
 
 Description:
 This module provides functionality to rename all files in a given folder based on user-specified patterns and modifications. It includes options to
