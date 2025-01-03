@@ -18,9 +18,13 @@ from tkinter import filedialog
 # TODO: move function to file_operations.py
 
 def has_docstring(filename):
-    with open(filename, "r", encoding='utf-8') as source:
-        tree = ast.parse(source.read())
-        return ast.get_docstring(tree) is not None
+    try:
+        with open(filename, "r", encoding='utf-8') as source:
+            tree = ast.parse(source.read())
+            return ast.get_docstring(tree) is not None
+    except IndentationError:
+        print(f"IndentationError in file: {filename}")
+        return False
 
 
 def main():
