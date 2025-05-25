@@ -30,6 +30,6 @@ def list_files_to_excel(folder_path, excel_file_path):
 
 
 if __name__ == "__main__":
-    folder_path = r"D:\YK\Downloads\Book"  # replace with your folder path
+    folder_path = r"D:\YK\Python\ObsiGen Framework\data\frameworks"  # replace with your folder path
     excel_file_path = folder_path + r"\_Summary.xlsx"  # replace with your Excel file path
     list_files_to_excel(folder_path, excel_file_path)

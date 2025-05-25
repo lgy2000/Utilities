@@ -28,6 +28,12 @@ email_password = config[email_operation]['email_password']
 email_folder = config[email_operation]['email_folder']
 require_original_filename = config.getboolean(email_operation, 'require_original_filename')
 
+data_operation = 'DATA OPERATION'
+email_address_heroic = config[data_operation]['email_address_heroic']
+email_password_heroic = config[data_operation]['email_password_heroic']
+email_address_ios_calendar = config[data_operation]['email_address_ios_calendar']
+email_password_ios_calendar = config[data_operation]['email_password_ios_calendar']
+
 file_operation = 'FILE OPERATION'
 file_allowed_paths = config[file_operation]['allowed_paths'].split('"')
 file_allowed_paths = [item for item in file_allowed_paths if item != '']

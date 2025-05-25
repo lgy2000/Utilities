@@ -141,7 +141,7 @@ def main():
         print(folder)
 
         # Define the folders to exclude
-        exclude_folders = ["__pycache__", ".temp", ".idea", ".git", ".test", "youtube_transcript_api"]
+        exclude_folders = ["__pycache__", ".temp", ".idea", ".git", ".test", "youtube_transcript_api", "webpack", "dist"]
         # Draw the directory structure
         md_file = os.path.join(folder, 'project_structure.md')
         with open(md_file, 'w', encoding='utf-8') as file:

@@ -18,7 +18,6 @@ def list_files_to_excel(folder_path, excel_file_path):
 
 
 if __name__ == "__main__":
-    folder_path = (r"D:\YK\Honeywell\2024 MYP-000360 Biocon BMS & EMS HMI Replacement\1 Project Document\3.0 Project Engineering\Manual\Vendor "
-    r"Documents")  # replace with your folder path
-    excel_file_path = folder_path + r"\_Summary2.xlsx"  # replace with your Excel file path
+    folder_path = (r"E:\All\6 Resources\6.1 Non-Technical Books\6.1.9 Book Summaries")  # replace with your folder path
+    excel_file_path = folder_path + r"\_Summary.xlsx"  # replace with your Excel file path
     list_files_to_excel(folder_path, excel_file_path)

@@ -3,7 +3,7 @@
 """
 download_email_files.py
 
-Downloads email attachments from a specified email folder and save them to a local directory.
+Downloads all email attachments from a specified email folder and save them to a local directory.
 
 Description:
 This module logs into the email account, fetches emails, downloads attachments, and logs out. It also provides an option to rename the downloaded

@@ -49,5 +49,6 @@ def main():
 if __name__ == "__main__":
     excel_file = (r"D:\YK\Honeywell\2024 MYP-000360 Biocon BMS & EMS HMI Replacement\1 Project Document\3.0 Project Engineering\GRAPHICS APPROVAL "
                   r"PACKAGE\BMS\v0.6\HMI BMS TOC.xlsx")
-    doc_file = r"D:\YK\Downloads\1.docx"
+    doc_file = (r"D:\YK\Honeywell\2024 MYP-000360 Biocon BMS & EMS HMI Replacement\1 Project Document\3.0 Project Engineering\GRAPHICS APPROVAL "
+                  r"PACKAGE\BMS\v0.6\HMI BMS TOC.docx")
     main()

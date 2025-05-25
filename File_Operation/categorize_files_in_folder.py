@@ -1,9 +1,9 @@
 # !/usr/bin/env python3
 
 """
-manage_files_in_folder.py
+categorize_files_in_folder.py
 
-This module is used for managing files in a directory based on keywords.
+This module is used for categorizing files in a directory based on keywords.
 
 Description:
 This module contains a function that iterates over all files in a specified directory. If a file's name contains any of the provided keywords,

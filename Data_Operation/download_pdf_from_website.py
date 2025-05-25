@@ -120,7 +120,7 @@ def download_file(url, pathname, headers):
 
 
 # Main function
-def main():
+def main(email_address_heroic, email_password_heroic):
     domain_url = r"https://www.heroic.us"
     base_url = r"https://www.heroic.us/pn"
     download_path = r"D:\YK\Downloads\heroic"
@@ -142,8 +142,8 @@ def main():
     login_url = 'https://www.heroic.us/account/sign-in?returnUrl=%2Fdashboard'
     # Your login credentials
     payload = {
-        'username': 'limgeenyue@yahoo.com',
-        'password': 'Zs2hf4u^8M$G'
+        'username': email_address_heroic,
+        'password': email_password_heroic
     }
     # Start a session
     with requests.Session() as session:
@@ -173,4 +173,5 @@ def main():
 
 # Run the main function
 if __name__ == "__main__":
-    main()
+    from config import email_address_heroic, email_password_heroic
+    main(email_address_heroic, email_password_heroic)
